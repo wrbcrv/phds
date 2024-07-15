@@ -1,0 +1,155 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()" #ticketForm="ngForm">
+    <div class="form-group">
+      <label for="type">Tipo *</label>
+      <div class="dropdown">
+        <input
+          type="text"
+          id="typeInput"
+          class="form-control dropdown-toggle"
+          [class.input-dropdown-visible]="showTypeDropdown"
+          (click)="toggleDropdown('type')"
+          [value]="selectedType || 'Selecione uma opção'"
+          readonly
+        />
+        @if (showTypeDropdown) {
+          <div class="dropdown-menu">
+            @for (value of types; track $index) {
+              <div class="dropdown-option" (click)="selectOption('type', value)">{{ value }}</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="status">Status *</label>
+      <div class="dropdown">
+        <input
+          type="text"
+          id="statusInput"
+          class="form-control dropdown-toggle"
+          [class.input-dropdown-visible]="showStatusDropdown"
+          (click)="toggleDropdown('status')"
+          [value]="selectedStatus || 'Selecione uma opção'"
+          readonly
+        />
+        @if (showStatusDropdown) {
+          <div class="dropdown-menu">
+            @for (value of status; track $index) {
+              <div class="dropdown-option" (click)="selectOption('status', value)">{{ value }}</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="priority">Prioridade *</label>
+      <div class="dropdown">
+        <input
+          type="text"
+          id="priorityInput"
+          class="form-control dropdown-toggle"
+          [class.input-dropdown-visible]="showPriorityDropdown"
+          (click)="toggleDropdown('priority')"
+          [value]="selectedPriority || 'Selecione uma opção'"
+          readonly
+        />
+        @if (showPriorityDropdown) {
+          <div class="dropdown-menu">
+            @for (value of priorities; track $index) {
+              <div class="dropdown-option" (click)="selectOption('priority', value)">{{ value }}</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="location">Localização *</label>
+      <div class="dropdown">
+        <input
+          type="text"
+          id="locationInput"
+          class="form-control dropdown-toggle"
+          [class.input-dropdown-visible]="showLocationDropdown"
+          (click)="toggleDropdown('location')"
+          [value]="selectedLocation || 'Selecione uma opção'"
+          readonly
+        />
+        @if (showLocationDropdown) {
+          <div class="dropdown-menu">
+            @for (agency of agencies; track $index) {
+              <div class="dropdown-option" (click)="selectOption('location', agency.id, agency.name)">
+                <span [innerHTML]="agency.name"></span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="customerSearch">Cliente *</label>
+      <div class="search-container">
+        <input 
+          type="text" 
+          id="customerSearch" 
+          class="form-control" 
+          [class.input-dropdown-visible]="showCustomersDropdown"
+          (input)="searchUsers($event, 'customer')" 
+        />
+        @if (showCustomersDropdown) {
+          <div class="dropdown-menu">
+            @for (user of filteredCustomers; track $index) { 
+              <div class="dropdown-option" (click)="selectUser(user, 'customer')">{{ user.fullname }}</div>
+            }
+          </div>
+        }
+        @for (user of selectedCustomers; track $index) {
+          <div class="selected-user">
+            <span>{{ user.fullname }}</span>
+            <span class="close" (click)="removeUser(user.id, 'customer')">&#10005;</span>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="assigneeSearch">Responsável *</label>
+      <div class="search-container">
+        <input 
+          type="text" 
+          id="assigneeSearch" 
+          class="form-control" 
+          [class.input-dropdown-visible]="showAssigneesDropdown"
+          (input)="searchUsers($event, 'assignee')" 
+        />
+        @if (showAssigneesDropdown) {
+          <div class="dropdown-menu">
+            @for (user of filteredAssignees; track $index) {
+              <div class="dropdown-option" (click)="selectUser(user, 'assignee')">{{ user.fullname }}</div>
+            }
+          </div>
+        }
+        @for (user of selectedAssignees; track $index) {
+          <div class="selected-user">
+            <span>{{ user.fullname }}</span>
+            <span class="close" (click)="removeUser(user.id, 'assignee')">&#10005;</span>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="subject">Assunto *</label>
+      <input 
+        type="text" 
+        id="subject"
+        class="form-control"
+        [(ngModel)]="ticket.subject" 
+        name="subject" 
+      />
+    </div>
+    <div class="form-group">
+      <label for="description">Descrição *</label>
+      <textarea rows="20" id="description" class="form-control" [(ngModel)]="ticket.description" name="description"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Ticket</button>
+  </form>
+</div>
