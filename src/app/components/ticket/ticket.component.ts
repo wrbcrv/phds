@@ -136,21 +136,12 @@ export class TicketComponent implements OnInit {
   }
 
   toggleDropdown(field: string): void {
-    if (field === 'type') {
-      this.showTypeDropdown = !this.showTypeDropdown;
-    }
-
-    if (field === 'status') {
-      this.showStatusDropdown = !this.showStatusDropdown;
-    }
-
-    if (field === 'priority') {
-      this.showPriorityDropdown = !this.showPriorityDropdown;
-    }
-
-    if (field === 'location') {
-      this.showLocationDropdown = !this.showLocationDropdown;
-    }
+    this.showTypeDropdown = field === 'type' ? !this.showTypeDropdown : false;
+    this.showStatusDropdown = field === 'status' ? !this.showStatusDropdown : false;
+    this.showPriorityDropdown = field === 'priority' ? !this.showPriorityDropdown : false;
+    this.showLocationDropdown = field === 'location' ? !this.showLocationDropdown : false;
+    this.showCustomersDropdown = field === 'customers' ? !this.showCustomersDropdown : false;
+    this.showAssigneesDropdown = field === 'assignees' ? !this.showCustomersDropdown : false
   }
 
   selectOption(field: string, value: any, name?: string): void {

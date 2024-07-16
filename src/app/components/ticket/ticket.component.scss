@@ -4,6 +4,7 @@
 }
 
 .dropdown {
+    position: relative;
     width: 100%;
 }
 
@@ -16,7 +17,7 @@
 
 .form-group label {
     font-weight: 600;
-    width: 120px;
+    min-width: 120px;
     text-align: end;
 }
 
@@ -41,9 +42,13 @@ select {
 }
 
 .dropdown-menu {
+    position: absolute;
+    background: #fff;
     overflow: hidden;
     border: 2px solid #CED4DA;
     border-radius: 1px 1px 10px 10px;
+    width: 100%;
+    z-index: 1;
 }
 
 .dot {
@@ -86,5 +91,6 @@ select {
 }
 
 .search-container {
+    position: relative;
     width: 100%;
 }
