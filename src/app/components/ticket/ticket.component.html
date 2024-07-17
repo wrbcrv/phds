@@ -76,7 +76,7 @@
           readonly
         />
         @if (showLocationDropdown) {
-          <div class="dropdown-menu">
+          <div class="dropdown-menu overflow">
             @for (agency of agencies; track $index) {
               <div class="dropdown-option" (click)="selectOption('location', agency.id, agency.name)">
                 <span [innerHTML]="agency.name"></span>
@@ -87,13 +87,14 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="customerSearch">Cliente *</label>
+      <label for="customerSearch">Clientes *</label>
       <div class="search-container">
         <input 
           type="text" 
           id="customerSearch" 
           class="form-control" 
           [class.input-dropdown-visible]="showCustomersDropdown"
+          [class.bottom-radius]="selectedCustomers.length > 0"
           (input)="searchUsers($event, 'customer')" 
         />
         @if (showCustomersDropdown) {
@@ -112,13 +113,14 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="assigneeSearch">Responsável *</label>
+      <label for="assigneeSearch">Responsáveis *</label>
       <div class="search-container">
         <input 
           type="text" 
           id="assigneeSearch" 
           class="form-control" 
           [class.input-dropdown-visible]="showAssigneesDropdown"
+          [class.bottom-radius]="selectedAssignees.length > 0"
           (input)="searchUsers($event, 'assignee')" 
         />
         @if (showAssigneesDropdown) {

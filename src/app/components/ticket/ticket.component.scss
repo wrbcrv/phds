@@ -47,14 +47,38 @@ select {
     overflow: hidden;
     border: 2px solid #CED4DA;
     border-radius: 1px 1px 10px 10px;
-    width: 100%;
+    width: -webkit-fill-available;
+    width: -moz-available;
     z-index: 1;
+}
+
+.overflow {
+    overflow-y: scroll;
+    max-height: 334px;
+}
+
+.overflow::-webkit-scrollbar {
+    width: 5px;
+}
+
+.overflow::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.overflow::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.overflow::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
 .dot {
     display: block;
     background-color: black;
-    width:  10px;
+    width: 10px;
     height: 10px;
     border-radius: 50px;
 }
@@ -77,8 +101,12 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ddd;
+    background-color: #CED4DA;
     padding: 8px;
+}
+
+.selected-user:last-child {
+    border-radius: 0 0 10px 10px;
 }
 
 .close {
@@ -93,4 +121,9 @@ select {
 .search-container {
     position: relative;
     width: 100%;
+}
+
+.bottom-radius {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
