@@ -120,17 +120,19 @@ export class TicketComponent implements OnInit {
     );
   }
 
-  formatAgencies(agencies: any[], prefix: string = ''): any[] {
+  formatAgencies(agencies: any[], prefix: string = '', path: string = ''): any[] {
     let formatted: any[] = [];
 
     for (let agency of agencies) {
+      const currentPath = path ? `${path} > ${agency.name}` : agency.name;
       formatted.push({
         id: agency.id,
-        name: prefix + agency.name
+        name: prefix + agency.name,
+        path: currentPath
       });
 
       if (agency.children && agency.children.length > 0) {
-        formatted = formatted.concat(this.formatAgencies(agency.children, prefix + '&nbsp;'));
+        formatted = formatted.concat(this.formatAgencies(agency.children, prefix + '&nbsp;', currentPath));
       }
     }
 
@@ -143,10 +145,10 @@ export class TicketComponent implements OnInit {
     this.showPriorityDropdown = field === 'priority' ? !this.showPriorityDropdown : false;
     this.showLocationDropdown = field === 'location' ? !this.showLocationDropdown : false;
     this.showCustomersDropdown = field === 'customers' ? !this.showCustomersDropdown : false;
-    this.showAssigneesDropdown = field === 'assignees' ? !this.showCustomersDropdown : false
+    this.showAssigneesDropdown = field === 'assignees' ? !this.showAssigneesDropdown : false;
   }
 
-  selectOption(field: string, value: any, name?: string): void {
+  selectOption(field: string, value: any, name?: string, path?: string): void {
     if (field === 'type') {
       this.ticket.type = value;
       this.selectedType = value;
@@ -167,7 +169,7 @@ export class TicketComponent implements OnInit {
 
     if (field === 'location') {
       this.ticket.locationId = value;
-      this.selectedLocation = name!.replace(/&nbsp;/g, '');
+      this.selectedLocation = path!;
       this.showLocationDropdown = false;
     }
   }
