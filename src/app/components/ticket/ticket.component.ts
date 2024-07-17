@@ -5,13 +5,15 @@ import { TicketRequest, TicketService } from '../../services/ticket.service';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-ticket',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    QuillModule
   ],
   templateUrl: './ticket.component.html',
   styleUrls: ['./ticket.component.scss']

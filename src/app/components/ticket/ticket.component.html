@@ -150,7 +150,7 @@
     </div>
     <div class="form-group">
       <label for="description">Descrição *</label>
-      <textarea rows="20" id="description" class="form-control" [(ngModel)]="ticket.description" name="description"></textarea>
+      <quill-editor [(ngModel)]="ticket.description" name="description" [styles]="{height: '400px'}"></quill-editor>
     </div>
     <button type="submit" class="btn btn-primary">Create Ticket</button>
   </form>
