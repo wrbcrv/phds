@@ -124,15 +124,16 @@ export class TicketComponent implements OnInit {
     let formatted: any[] = [];
 
     for (let agency of agencies) {
-      const currentPath = path ? `${path} > ${agency.name}` : agency.name;
+      const current = path ? `${path} > ${agency.name}` : agency.name;
       formatted.push({
         id: agency.id,
         name: prefix + agency.name,
-        path: currentPath
+        root: agency.root,
+        path: current,
       });
 
       if (agency.children && agency.children.length > 0) {
-        formatted = formatted.concat(this.formatAgencies(agency.children, prefix + '&nbsp;', currentPath));
+        formatted = formatted.concat(this.formatAgencies(agency.children, prefix + '&nbsp&nbsp', current));
       }
     }
 

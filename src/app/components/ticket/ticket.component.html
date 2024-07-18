@@ -73,13 +73,18 @@
           [class.input-dropdown-visible]="showLocationDropdown"
           (click)="toggleDropdown('location')"
           [value]="selectedLocation || 'Selecione uma opção'"
+          [title]="selectedLocation"
           readonly
         />
-        <div *ngIf="showLocationDropdown" class="dropdown-menu overflow">
-          <div *ngFor="let agency of agencies" class="dropdown-option" (click)="selectOption('location', agency.id, agency.name, agency.path)">
-            <span [innerHTML]="agency.name"></span>
+        @if (showLocationDropdown) {
+          <div class="dropdown-menu overflow">
+            @for (agency of agencies; track $index) {
+              <div class="dropdown-option" [class.disabled]="agency.root" (click)="!agency.root && selectOption('location', agency.id, agency.name, agency.path)">
+                <span [innerHTML]="agency.name"></span>
+              </div>
+            }
           </div>
-        </div>
+        }
       </div>
     </div>
     <div class="form-group">
