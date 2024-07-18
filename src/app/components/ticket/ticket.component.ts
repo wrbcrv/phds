@@ -34,7 +34,9 @@ export class TicketComponent implements OnInit {
   status: string[] = [];
   types: string[] = [];
   agencies: any[] = [];
+  filteredAgencies: any[] = [];
   users: any[] = [];
+  searchTerm: string = '';
 
   filteredCustomers: any[] = [];
   filteredAssignees: any[] = [];
@@ -92,6 +94,7 @@ export class TicketComponent implements OnInit {
     this.agencyService.findAll().subscribe(
       (res) => {
         this.agencies = this.formatAgencies(res);
+        this.filteredAgencies = this.agencies;
       },
       (err) => {
         console.error(err);
@@ -120,25 +123,27 @@ export class TicketComponent implements OnInit {
     );
   }
 
-  formatAgencies(agencies: any[], prefix: string = '', path: string = ''): any[] {
+  formatAgencies(agencies: any[], level: number = 0, path: string = ''): any[] {
     let formatted: any[] = [];
-
+  
     for (let agency of agencies) {
       const current = path ? `${path} > ${agency.name}` : agency.name;
       formatted.push({
         id: agency.id,
-        name: prefix + agency.name,
+        name: agency.name,
+        level: level,  // Nível de profundidade
         root: agency.root,
         path: current,
       });
-
+  
       if (agency.children && agency.children.length > 0) {
-        formatted = formatted.concat(this.formatAgencies(agency.children, prefix + '&nbsp&nbsp', current));
+        formatted = formatted.concat(this.formatAgencies(agency.children, level + 1, current));
       }
     }
-
+  
     return formatted;
   }
+  
 
   toggleDropdown(field: string): void {
     this.showTypeDropdown = field === 'type' ? !this.showTypeDropdown : false;
@@ -173,6 +178,27 @@ export class TicketComponent implements OnInit {
       this.selectedLocation = path!;
       this.showLocationDropdown = false;
     }
+  }
+
+  filterLocations(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm = input.value.toLowerCase();
+
+    if (this.searchTerm) {
+      this.filteredAgencies = this.agencies.filter(agency =>
+        agency.name.toLowerCase().includes(this.searchTerm)
+      );
+    } else {
+      this.filteredAgencies = this.agencies;
+    }
+  }
+
+  highlightTerm(name: string, term: string): string {
+    if (!term) {
+      return name;
+    }
+    const regex = new RegExp(`(${term})`, 'gi');
+    return name.replace(regex, '<u>$1</u>');
   }
 
   searchUsers(event: Event, type: 'customer' | 'assignee'): void {

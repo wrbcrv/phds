@@ -72,15 +72,17 @@
           class="form-control dropdown-toggle"
           [class.input-dropdown-visible]="showLocationDropdown"
           (click)="toggleDropdown('location')"
+          (input)="filterLocations($event)"
           [value]="selectedLocation || 'Selecione uma opção'"
           [title]="selectedLocation"
           readonly
         />
         @if (showLocationDropdown) {
           <div class="dropdown-menu overflow">
-            @for (agency of agencies; track $index) {
+            <input type="text" class="form-control" placeholder="Pesquisar..." (input)="filterLocations($event)" />
+            @for (agency of filteredAgencies; track $index) {
               <div class="dropdown-option" [class.disabled]="agency.root" (click)="!agency.root && selectOption('location', agency.id, agency.name, agency.path)">
-                <span [innerHTML]="agency.name"></span>
+                <span [ngStyle]="{'margin-left': (agency.level * 20) + 'px'}" [innerHTML]="highlightTerm(agency.name, searchTerm)"></span>
               </div>
             }
           </div>
