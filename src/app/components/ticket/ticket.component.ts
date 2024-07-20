@@ -125,25 +125,24 @@ export class TicketComponent implements OnInit {
 
   formatAgencies(agencies: any[], level: number = 0, path: string = ''): any[] {
     let formatted: any[] = [];
-  
+
     for (let agency of agencies) {
       const current = path ? `${path} > ${agency.name}` : agency.name;
       formatted.push({
         id: agency.id,
         name: agency.name,
-        level: level,  // Nível de profundidade
+        level: level,
         root: agency.root,
         path: current,
       });
-  
+
       if (agency.children && agency.children.length > 0) {
         formatted = formatted.concat(this.formatAgencies(agency.children, level + 1, current));
       }
     }
-  
+
     return formatted;
   }
-  
 
   toggleDropdown(field: string): void {
     this.showTypeDropdown = field === 'type' ? !this.showTypeDropdown : false;
@@ -184,19 +183,36 @@ export class TicketComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     this.searchTerm = input.value.toLowerCase();
 
+    if (!this.searchTerm) {
+      setTimeout(() => {
+        const dropdownContent = document.querySelector('.dropdown-content');
+        if (dropdownContent) {
+          dropdownContent.scrollTo(0, 0);
+        }
+      });
+      return;
+    }
+
     if (this.searchTerm) {
-      this.filteredAgencies = this.agencies.filter(agency =>
+      const agencyIndex = this.agencies.findIndex(agency =>
         agency.name.toLowerCase().includes(this.searchTerm)
       );
-    } else {
-      this.filteredAgencies = this.agencies;
+
+      if (agencyIndex !== -1) {
+        setTimeout(() => {
+          const element = document.getElementById(`option-${agencyIndex}`);
+          if (element) {
+            element.scrollIntoView({ block: 'center' });
+          }
+        });
+      }
     }
   }
 
   highlightTerm(name: string, term: string): string {
-    if (!term) {
+    if (!term)
       return name;
-    }
+
     const regex = new RegExp(`(${term})`, 'gi');
     return name.replace(regex, '<u>$1</u>');
   }

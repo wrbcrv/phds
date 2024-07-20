@@ -32,7 +32,7 @@ select {
     border: 2px solid #CED4DA;
     border-radius: 8px;
     padding: 8px;
-    font-family: 'Inter';
+    font-family: 'Inter', sans-serif;
     font-weight: 500;
     color: #333333;
 }
@@ -44,33 +44,43 @@ select {
 .dropdown-menu {
     position: absolute;
     background: #fff;
-    overflow: hidden;
     border: 2px solid #CED4DA;
     border-radius: 1px 1px 10px 10px;
     width: -webkit-fill-available;
     width: -moz-available;
     z-index: 1;
-}
-
-.overflow {
-    overflow-y: scroll;
     max-height: 334px;
+    overflow-y: hidden;
 }
 
-.overflow::-webkit-scrollbar {
+.dropdown-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    padding: 8px;
+    border-bottom: 1px solid #CED4DA;
+}
+
+.dropdown-content {
+    max-height: 167px;
+    overflow-y: auto;
+}
+
+.dropdown-content::-webkit-scrollbar {
     width: 5px;
 }
 
-.overflow::-webkit-scrollbar-thumb {
+.dropdown-content::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 10px;
 }
 
-.overflow::-webkit-scrollbar-thumb:hover {
+.dropdown-content::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 
-.overflow::-webkit-scrollbar-track {
+.dropdown-content::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 10px;
 }
@@ -80,12 +90,12 @@ select {
     background-color: black;
     width: 10px;
     height: 10px;
-    border-radius: 50px;
+    border-radius: 50%;
 }
 
 .dropdown-option {
     font-family: "Roboto Mono", monospace;
-    padding: 8px;
+    padding: 8px 12px;
     cursor: pointer;
 }
 
@@ -114,8 +124,13 @@ select {
 }
 
 .dropdown-option.disabled {
-    color: #CED4DA;
+    color: #000;
+    font-weight: 600;
     pointer-events: none;
+}
+
+.dropdown-option.disabled:hover {
+    background-color: #f5f5f5;
 }
 
 .search-container {
@@ -126,35 +141,4 @@ select {
 .bottom-radius {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-}
-
-.dropdown-option.disabled {
-    color: #999;
-    font-style: italic;
-    cursor: not-allowed;
-    pointer-events: none;
-    background-color: #f5f5f5;
-}
-
-.dropdown-option.disabled:hover {
-    background-color: #f5f5f5;
-}
-
-.dropdown-menu {
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.dropdown-option {
-    cursor: pointer;
-    padding: 8px 12px;
-}
-
-.dropdown-option.disabled {
-    color: #888;
-    cursor: not-allowed;
-}
-
-.dropdown-option:hover {
-    background-color: #f0f0f0;
 }
