@@ -4,11 +4,13 @@ import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent
+    path: '',
+    component: LoginComponent,
+    title: 'Entrar · PHDS'
   },
   {
     path: 'ticket/new',
-    component: TicketComponent
+    component: TicketComponent,
+    title: 'Novo chamado · PHDS'
   }
 ];
