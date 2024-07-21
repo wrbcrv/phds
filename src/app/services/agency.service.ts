@@ -12,7 +12,7 @@ export class AgencyService {
     private http: HttpClient
   ) { }
 
-  findAll(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, { withCredentials: true });
+  findAll(page: number, size: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}?page=${page}&size=${size}`, { withCredentials: true });
   }
 }

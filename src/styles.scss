@@ -12,6 +12,11 @@
     src: url('../public/fonts/RobotoMono-Regular.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Sui Genesis';
+    src: url('../public/fonts/sui-generis-free.rg-regular.otf') format('opentype');
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: #F8F9FA;

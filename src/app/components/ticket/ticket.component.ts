@@ -91,7 +91,7 @@ export class TicketComponent implements OnInit {
       }
     );
 
-    this.agencyService.findAll().subscribe(
+    this.agencyService.findAll(0, this.agencies.length).subscribe(
       (res) => {
         this.agencies = this.formatAgencies(res);
         this.filteredAgencies = this.agencies;
@@ -101,7 +101,7 @@ export class TicketComponent implements OnInit {
       }
     );
 
-    this.userService.findAll().subscribe(
+    this.userService.findAll(0, this.users.length).subscribe(
       (res) => {
         this.users = res;
       },

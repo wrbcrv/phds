@@ -9,6 +9,15 @@ form {
     width: 320px;
 }
 
+.logo {
+    font-family: 'Sui Genesis';
+    text-align: center;
+}
+
+.heading {
+    text-align: center;
+}
+
 input,
 button {
     box-sizing: border-box;
@@ -25,7 +34,6 @@ button {
     border-radius: 10px;
     margin-bottom: 10px;
     width: 100%;
-    /* font-size: 14px; */
 }
 
 .submit-button {
