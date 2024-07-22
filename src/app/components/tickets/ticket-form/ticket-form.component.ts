@@ -1,24 +1,24 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AgencyService } from '../../services/agency.service';
-import { TicketRequest, TicketService } from '../../services/ticket.service';
-import { UserService } from '../../services/user.service';
+import { AgencyService } from '../../../services/agency.service';
+import { TicketRequest, TicketService } from '../../../services/ticket.service';
+import { UserService } from '../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 
 @Component({
-  selector: 'app-ticket',
+  selector: 'phds-open-ticket',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     QuillModule
   ],
-  templateUrl: './ticket.component.html',
-  styleUrls: ['./ticket.component.scss']
+  templateUrl: './ticket-form.component.html',
+  styleUrls: ['./ticket-form.component.scss']
 })
-export class TicketComponent implements OnInit {
+export class TicketFormComponent implements OnInit {
   ticket: TicketRequest = {
     subject: '',
     description: '',

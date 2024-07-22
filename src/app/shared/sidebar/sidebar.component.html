@@ -8,12 +8,12 @@
       <div class="menu-text">Home</div>
     </a>
     <a class="menu-item" (click)="toggleDrawer('chamados')">
-      <i class="menu-icon fa-solid fa-ticket-simple"></i>
+      <i class="menu-icon fa-solid fa-circle-exclamation"></i>
       <div class="menu-text">Chamados</div>
     </a>
   </div>
 </div>
 <div class="drawer" [ngClass]="{'open': drawerOpen === 'chamados'}">
-  <a class="drawer-item">Chamados Abertos</a>
-  <a class="drawer-item" href="/create-ticket">Abrir Chamado</a>
+  <a class="drawer-item" href="/ticket-list">Chamados Abertos</a>
+  <a class="drawer-item" href="/ticket-form">Abrir Chamado</a>
 </div>

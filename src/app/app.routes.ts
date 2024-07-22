@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { TicketComponent } from './components/ticket/ticket.component';
 import { LoginComponent } from './components/login/login.component';
+import { TicketFormComponent } from './components/tickets/ticket-form/ticket-form.component';
+import { TicketListComponent } from './components/tickets/ticket-list/ticket-list.component';
 
 export const routes: Routes = [
   {
@@ -9,8 +10,13 @@ export const routes: Routes = [
     title: 'Entrar · PHDS'
   },
   {
-    path: 'create-ticket',
-    component: TicketComponent,
+    path: 'ticket-form',
+    component: TicketFormComponent,
     title: 'Novo chamado · PHDS'
+  },
+  {
+    path: 'ticket-list',
+    component: TicketListComponent,
+    title: 'Chamados · PHDS'
   }
 ];

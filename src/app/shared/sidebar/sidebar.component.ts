@@ -18,7 +18,9 @@ export class SidebarComponent {
   toggleDrawer(menuItem: string) {
     if (this.drawerOpen === menuItem) {
       this.drawerOpen = null;
-    } else {
+    }
+
+    if (this.drawerOpen !== menuItem) {
       this.drawerOpen = menuItem;
     }
   }
