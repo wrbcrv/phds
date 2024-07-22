@@ -9,7 +9,7 @@ export const routes: Routes = [
     title: 'Entrar · PHDS'
   },
   {
-    path: 'ticket/new',
+    path: 'create-ticket',
     component: TicketComponent,
     title: 'Novo chamado · PHDS'
   }

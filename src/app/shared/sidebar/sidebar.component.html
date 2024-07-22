@@ -3,13 +3,17 @@
     <a class="search">
       <i class="fa-solid fa-magnifying-glass"></i>
     </a>
-    <a class="menu-item">
+    <a class="menu-item" (click)="toggleDrawer('home')">
       <i class="menu-icon fa-solid fa-house"></i>
       <div class="menu-text">Home</div>
     </a>
-    <a class="menu-item">
+    <a class="menu-item" (click)="toggleDrawer('chamados')">
       <i class="menu-icon fa-solid fa-ticket-simple"></i>
       <div class="menu-text">Chamados</div>
     </a>
   </div>
+</div>
+<div class="drawer" [ngClass]="{'open': drawerOpen === 'chamados'}">
+  <a class="drawer-item">Chamados Abertos</a>
+  <a class="drawer-item" href="/create-ticket">Abrir Chamado</a>
 </div>
