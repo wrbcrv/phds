@@ -27,8 +27,8 @@ export class TicketService {
     return this.http.post<any>(this.apiUrl, ticket);
   }
 
-  findAll(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  findAll(page: number, size: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}?page=${page}&size=${size}`);
   }
 
   findOne(id: number): Observable<any> {

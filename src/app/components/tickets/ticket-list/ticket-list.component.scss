@@ -1,0 +1,100 @@
+.ticket-list {
+    margin: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+}
+
+td {
+    background-color: #fff;
+    font-size: 14px;
+}
+
+tr {
+    height: 40px;
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+tr:hover td {
+    background-color: #f1f1f1;
+}
+
+.subject {
+    min-width: 196px;
+}
+
+.created-at,
+.updated-at {
+    font-family: monospace;
+}
+
+.description {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.status-circle,
+.priority-circle {
+    display: inline-block;
+    margin-right: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.priority-low {
+    background-color: #9ACD32;
+}
+
+.priority-medium {
+    background-color: #FFB347;
+}
+
+.priority-high {
+    background-color: #FF6F61;
+}
+
+.priority-urgent {
+    background-color: #FF4500;
+}
+
+.status-open {
+    background-color: #87CEEB;
+}
+
+.status-in-progress {
+    background-color: #FFFF99;
+}
+
+.status-resolved {
+    background-color: #9ACD32;
+}
+
+.status-closed {
+    background-color: #C0C0C0;
+}

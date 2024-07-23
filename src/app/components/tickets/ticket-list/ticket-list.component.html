@@ -1,1 +1,55 @@
-<p>ticket-list works!</p>
+<div class="ticket-list">
+  <h2>Chamados Abertos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Criado em</th>
+        <th>Última atualização</th>
+        <th class="subject">Assunto</th>
+        <th>Status</th>
+        <th>Prioridade</th>
+        <th>Localização</th>
+        <th>Cliente</th>
+        <th>Responsável</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (ticket of tickets; track $index) {
+        <tr>
+          <td>{{ ticket.id }}</td>
+          <td class="created-at">{{ ticket.createdAt }}</td>
+          <td class="updated-at">{{ ticket.updatedAt }}</td>
+          <td class="subject">{{ ticket.subject }}</td>
+          <td class="status">
+            <span 
+              class="status-circle"
+              [ngClass]="{
+                'status-open'       : ticket.status === 'Aberto',
+                'status-in-progress': ticket.status === 'Em atendimento',
+                'status-resolved'   : ticket.status === 'Solucionado',
+                'status-closed'     : ticket.status === 'Fechado'
+              }">
+            </span>
+            {{ ticket.status }}
+          </td>
+          <td class="priority">
+            <span 
+              class="priority-circle"
+              [ngClass]="{
+                'priority-low'   : ticket.priority === 'Baixo',
+                'priority-medium': ticket.priority === 'Médio',
+                'priority-high'  : ticket.priority === 'Alto',
+                'priority-urgent': ticket.priority === 'Urgente'
+              }">
+            </span>
+            {{ ticket.priority }}
+          </td>
+          <td class="location" [title]="getLocationHierarchy(ticket.location)">{{ getLocationName(ticket.location) }}</td>
+          <td>{{ ticket.customers[0].fullname }}</td>
+          <td>{{ ticket.assignees[0].fullname }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
