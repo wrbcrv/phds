@@ -15,41 +15,55 @@
       </tr>
     </thead>
     <tbody>
-      @for (ticket of tickets; track $index) {
-        <tr>
-          <td>{{ ticket.id }}</td>
-          <td class="created-at">{{ ticket.createdAt }}</td>
-          <td class="updated-at">{{ ticket.updatedAt }}</td>
-          <td class="subject">{{ ticket.subject }}</td>
-          <td class="status">
-            <span 
-              class="status-circle"
-              [ngClass]="{
-                'status-open'       : ticket.status === 'Aberto',
-                'status-in-progress': ticket.status === 'Em atendimento',
-                'status-resolved'   : ticket.status === 'Solucionado',
-                'status-closed'     : ticket.status === 'Fechado'
-              }">
-            </span>
-            {{ ticket.status }}
-          </td>
-          <td class="priority">
-            <span 
-              class="priority-circle"
-              [ngClass]="{
-                'priority-low'   : ticket.priority === 'Baixo',
-                'priority-medium': ticket.priority === 'Médio',
-                'priority-high'  : ticket.priority === 'Alto',
-                'priority-urgent': ticket.priority === 'Urgente'
-              }">
-            </span>
-            {{ ticket.priority }}
-          </td>
-          <td class="location" [title]="getLocationHierarchy(ticket.location)">{{ getLocationName(ticket.location) }}</td>
-          <td>{{ ticket.customers[0].fullname }}</td>
-          <td>{{ ticket.assignees[0].fullname }}</td>
-        </tr>
-      }
+      <tr *ngFor="let ticket of tickets; let $index = index;">
+        <td>{{ ticket.id }}</td>
+        <td class="created-at">{{ ticket.createdAt }}</td>
+        <td class="updated-at">{{ ticket.updatedAt }}</td>
+        <td class="subject">{{ ticket.subject }}</td>
+        <td class="status">
+          <span 
+            class="status-circle"
+            [ngClass]="{
+              'status-open'       : ticket.status === 'Aberto',
+              'status-in-progress': ticket.status === 'Em atendimento',
+              'status-resolved'   : ticket.status === 'Solucionado',
+              'status-closed'     : ticket.status === 'Fechado'
+            }">
+          </span>
+          {{ ticket.status }}
+        </td>
+        <td class="priority">
+          <span 
+            class="priority-circle"
+            [ngClass]="{
+              'priority-low'   : ticket.priority === 'Baixo',
+              'priority-medium': ticket.priority === 'Médio',
+              'priority-high'  : ticket.priority === 'Alto',
+              'priority-urgent': ticket.priority === 'Urgente'
+            }">
+          </span>
+          {{ ticket.priority }}
+        </td>
+        <td class="location" [title]="getLocationHierarchy(ticket.location)">{{ getLocationName(ticket.location) }}</td>
+        <td>{{ ticket.customers[0].fullname }}</td>
+        <td>{{ ticket.assignees[0].fullname }}</td>
+      </tr>
     </tbody>
   </table>
+  <div class="pagination-container">
+    <div class="page-size-selector">
+      <label for="pageSize">Itens / página</label>
+      <select id="pageSize" [(ngModel)]="size" (change)="loadTickets()">
+        <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+      </select>
+    </div>
+    <div>{{ paginationText }}</div>
+    <div class="pagination-controls">
+      <button (click)="prevPage()" [disabled]="page === 1">Anterior</button>
+      <ng-container *ngFor="let pageNum of pages">
+        <button (click)="goToPage(pageNum)" [disabled]="pageNum === page">{{ pageNum }}</button>
+      </ng-container>
+      <button (click)="nextPage()" [disabled]="page * size >= totalItems">Próximo</button>
+    </div>
+  </div>
 </div>

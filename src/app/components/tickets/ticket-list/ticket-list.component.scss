@@ -32,6 +32,7 @@ td {
 
 tr {
     height: 40px;
+    cursor: pointer;
 }
 
 tr:nth-child(even) td {
@@ -48,7 +49,7 @@ tr:hover td {
 
 .created-at,
 .updated-at {
-    font-family: monospace;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .description {
@@ -97,4 +98,10 @@ tr:hover td {
 
 .status-closed {
     background-color: #C0C0C0;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
