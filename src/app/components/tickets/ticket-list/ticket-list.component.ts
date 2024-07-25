@@ -16,7 +16,7 @@ export class TicketListComponent implements OnInit {
   page: number = 1;
   size: number = 10;
   totalItems: number = 0;
-  pageSizeOptions: number[] = [1, 5, 10, 20, 50];
+  pageSizeOptions: number[] = [10, 25, 50, 75, 100];
   dropdownOpen: boolean = false;
 
   constructor(private ticketService: TicketService) { }

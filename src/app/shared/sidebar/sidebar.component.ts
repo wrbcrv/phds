@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 export class SidebarComponent {
   drawerOpen: string | null = null;
 
-  toggleDrawer(menuItem: string) {
+  toggleDrawer(menuItem: string | null) {
     if (this.drawerOpen === menuItem) {
       this.drawerOpen = null;
     }

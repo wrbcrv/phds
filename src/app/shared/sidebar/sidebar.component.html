@@ -10,6 +10,9 @@
   </div>
 </div>
 <div class="drawer" [ngClass]="{'open': drawerOpen === 'chamados'}">
-  <a class="drawer-item" href="/ticket-list">Chamados Abertos</a>
-  <a class="drawer-item" href="/ticket-form">Abrir Chamado</a>
+  <div class="wrapper">
+    <a class="drawer-item" href="/ticket-list">Chamados Abertos</a>
+    <a class="drawer-item" href="/ticket-form">Abrir Chamado</a>
+  </div>
+  <button class="close-drawer" (click)="toggleDrawer(null)">Fechar</button>
 </div>
