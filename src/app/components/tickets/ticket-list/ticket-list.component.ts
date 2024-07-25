@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { TicketService } from '../../../services/ticket.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PhdsSelectComponent } from '../../../shared/phds-select/phds-select.component';
 
 @Component({
   selector: 'app-ticket-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PhdsSelectComponent],
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']
 })
@@ -16,6 +17,7 @@ export class TicketListComponent implements OnInit {
   size: number = 10;
   totalItems: number = 0;
   pageSizeOptions: number[] = [5, 10, 20, 50];
+  dropdownOpen: boolean = false;
 
   constructor(private ticketService: TicketService) { }
 
@@ -34,6 +36,11 @@ export class TicketListComponent implements OnInit {
         console.error(err);
       }
     );
+  }
+
+  onPageSizeChange(size: number): void {
+    this.size = size;
+    this.loadTickets();
   }
 
   prevPage(): void {

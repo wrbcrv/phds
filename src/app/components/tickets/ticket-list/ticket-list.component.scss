@@ -25,6 +25,45 @@ th {
     color: #555;
 }
 
+th.id,
+td.id {
+    width: 20px;
+}
+
+th.created-at,
+td.created-at,
+th.updated-at,
+td.updated-at {
+    width: 80px;
+}
+
+th.subject,
+td.subject {
+    width: 150px;
+}
+
+th.status,
+td.status {
+    width: 50px;
+}
+
+th.priority,
+td.priority {
+    width: 50px;
+}
+
+th.location,
+td.location {
+    width: 200px;
+}
+
+th.customer,
+td.customer,
+th.assignee,
+td.assignee {
+    width: 150px;
+}
+
 td {
     background-color: #fff;
     font-size: 14px;
@@ -44,7 +83,7 @@ tr:hover td {
 }
 
 .subject {
-    min-width: 196px;
+    width: 150px;
 }
 
 .created-at,
@@ -104,4 +143,79 @@ tr:hover td {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.page-size-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 0.5em;
+}
+
+.control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007BFF;
+    width: 20px;
+    height: 20px;
+    padding: 15px;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.pagination-controls .control:disabled {
+    background-color: #c0c0c0;
+}
+
+.pagination-controls .control:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.custom-select-selected {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.custom-select-dropdown {
+    display: block;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    top: 100%;
+    left: 0;
+}
+
+.custom-select-dropdown div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.custom-select-dropdown div:hover {
+    background-color: #f1f1f1;
+}
+
+.custom-select-dropdown.hidden {
+    display: none;
 }

@@ -1,0 +1,14 @@
+<div class="phds-select">
+  <div 
+    class="phds-select-selected" 
+    [ngClass]="{'open': dropdownOpen}"
+    (click)="toggleDropdown()">
+    {{ selectedValue }}
+    <i class="fa" [ngClass]="{'fa-chevron-down': !dropdownOpen, 'fa-chevron-up': dropdownOpen}"></i>
+  </div>
+  <div class="phds-select-dropdown" [ngClass]="{'hidden': !dropdownOpen}">
+    <div *ngFor="let option of options" (click)="selectOption(option)">
+      {{ option }}
+    </div>
+  </div>
+</div>
