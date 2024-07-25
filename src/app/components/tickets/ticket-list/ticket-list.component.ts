@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TicketService } from '../../../services/ticket.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +16,7 @@ export class TicketListComponent implements OnInit {
   page: number = 1;
   size: number = 10;
   totalItems: number = 0;
-  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSizeOptions: number[] = [1, 5, 10, 20, 50];
   dropdownOpen: boolean = false;
 
   constructor(private ticketService: TicketService) { }
@@ -40,6 +40,7 @@ export class TicketListComponent implements OnInit {
 
   onPageSizeChange(size: number): void {
     this.size = size;
+    this.page = 1;
     this.loadTickets();
   }
 
@@ -67,7 +68,25 @@ export class TicketListComponent implements OnInit {
   }
 
   get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    const total = this.totalPages;
+    let start = Math.max(1, this.page - 1);
+    let end = Math.min(total, this.page + 1);
+
+    if (this.page === 1) {
+      end = Math.min(total, 3);
+    }
+
+    if (this.page === total) {
+      start = Math.max(1, total - 2);
+    }
+
+    const pages: number[] = [];
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
   }
 
   get paginationText(): string {
@@ -82,12 +101,10 @@ export class TicketListComponent implements OnInit {
 
   getLocationHierarchy(location: any): string {
     let names = [];
-
     while (location) {
       names.push(location.name);
       location = location.parent;
     }
-    
     return names.reverse().join(' > ');
   }
 }
