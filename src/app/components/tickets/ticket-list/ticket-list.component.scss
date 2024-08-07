@@ -31,9 +31,7 @@ td.id {
 }
 
 th.created-at,
-td.created-at,
-th.updated-at,
-td.updated-at {
+td.created-at {
     width: 80px;
 }
 
@@ -86,8 +84,7 @@ tr:hover td {
     width: 150px;
 }
 
-.created-at,
-.updated-at {
+td.created-at {
     font-family: 'Roboto Mono', monospace;
 }
 

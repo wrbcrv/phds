@@ -4,9 +4,8 @@
     <thead>
       <tr>
         <th class="id">ID</th>
-        <th class="created-at">Criado em</th>
-        <th class="updated-at">Última atualização</th>
         <th class="subject">Assunto</th>
+        <th class="created-at">Criado em</th>
         <th class="status">Status</th>
         <th class="priority">Prioridade</th>
         <th class="location">Localização</th>
@@ -18,9 +17,8 @@
       @for (ticket of tickets; track $index) {
         <tr>
           <td class="id">{{ ticket.id }}</td>
-          <td class="created-at">{{ ticket.createdAt }}</td>
-          <td class="updated-at">{{ ticket.updatedAt }}</td>
           <td class="subject">{{ ticket.subject }}</td>
+          <td class="created-at">{{ ticket.createdAt }}</td>
           <td class="status">
             <span 
               class="status-circle"
