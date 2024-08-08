@@ -14,75 +14,31 @@ table {
 
 th,
 td {
-    padding: 10px;
+    padding: 10px 20px;
     text-align: left;
 }
 
 th {
-    background-color: #fff;
+    background-color: #ffffff;
     font-size: 12px;
     font-weight: bold;
-    color: #555;
-}
-
-th.id,
-td.id {
-    width: 20px;
-}
-
-th.created-at,
-td.created-at {
-    width: 80px;
-}
-
-th.subject,
-td.subject {
-    width: 150px;
-}
-
-th.status,
-td.status {
-    width: 50px;
-}
-
-th.priority,
-td.priority {
-    width: 50px;
-}
-
-th.location,
-td.location {
-    width: 200px;
-}
-
-th.customer,
-td.customer,
-th.assignee,
-td.assignee {
-    width: 150px;
+    color: #444746;
 }
 
 td {
-    background-color: #fff;
+    background-color: #F2F6FC;
     font-size: 14px;
 }
 
 tr {
+    border-bottom: 1px solid #E1E7EE;
     height: 40px;
     cursor: pointer;
 }
 
-tr:nth-child(even) td {
-    background-color: #f9f9f9;
-}
-
 tr:hover td {
     background-color: #f1f1f1;
-}
-
-.subject {
-    width: 150px;
-}
+}   
 
 td.created-at {
     font-family: 'Roboto Mono', monospace;

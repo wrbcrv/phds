@@ -1,5 +1,4 @@
 <div class="ticket-list">
-  <h2>Chamados Abertos</h2>
   <table>
     <thead>
       <tr>
@@ -43,7 +42,7 @@
             </span>
             {{ ticket.priority }}
           </td>
-          <td class="location" [title]="getLocationHierarchy(ticket.location)">{{ getLocationName(ticket.location) }}</td>
+          <td class="location ellipsis" [title]="getLocationHierarchy(ticket.location)"><span>{{ getLocationName(ticket.location) }}</span></td>
           <td class="customer">{{ ticket.customers[0].fullname }}</td>
           <td class="assignee">{{ ticket.assignees[0].fullname }}</td>
         </tr>
@@ -57,18 +56,11 @@
     </div>
     <div>{{ paginationText }}</div>
     <div class="pagination-controls">
-      <button class="control" (click)="prevPage()" [disabled]="page === 1">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
+      <button class="control" (click)="prevPage()" [disabled]="page === 1"><i class="fa-solid fa-chevron-left"></i></button>
       @for (pageNum of pages; track $index) {
-        <button class="control" (click)="goToPage(pageNum)" [disabled]="pageNum === page">
-          {{ pageNum }}
-        </button>
+        <button class="control" (click)="goToPage(pageNum)" [disabled]="pageNum === page">{{ pageNum }}</button>
       }
-      <button class="control" (click)="nextPage()" [disabled]="page * size >= totalItems">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
+      <button class="control" (click)="nextPage()" [disabled]="page * size >= totalItems"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
   </div>
-  
 </div>
