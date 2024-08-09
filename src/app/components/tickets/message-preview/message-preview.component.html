@@ -1,0 +1,11 @@
+<!-- ticket-preview-modal.component.html -->
+<div class="modal-backdrop" (click)="closeModal()"></div>
+<div class="modal-content">
+  <h2>Detalhes do Ticket</h2>
+  <p><strong>ID:</strong> {{ ticket.id }}</p>
+  <p><strong>Assunto:</strong> {{ ticket.subject }}</p>
+  <p><strong>Criado em:</strong> {{ ticket.createdAt }}</p>
+  <p><strong>Status:</strong> {{ ticket.status }}</p>
+  <p><strong>Prioridade:</strong> {{ ticket.priority }}</p>
+  <button (click)="closeModal()">Fechar</button>
+</div>

@@ -36,16 +36,38 @@ tr {
     cursor: pointer;
 }
 
-tr:hover td {
-    background-color: #f1f1f1;
-}   
+.preview-container {
+    position: relative;
+}
 
-td.created-at {
-    font-family: 'Roboto Mono', monospace;
+.subject .text {
+    max-width: 250px;
+}
+
+.subject .preview {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+tr:hover {
+
+    .subject .preview {
+        display: block;
+    }
 }
 
 .description {
     max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.location .ellipsis {
+    display: block;
+    width: 250px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

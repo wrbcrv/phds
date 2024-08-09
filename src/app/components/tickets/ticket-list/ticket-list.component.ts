@@ -1,13 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { TicketService } from '../../../services/ticket.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TicketService } from '../../../services/ticket.service';
 import { PhdsSelectComponent } from '../../../shared/phds-select/phds-select.component';
+import { MessagePreviewComponent } from '../message-preview/message-preview.component';
 
 @Component({
   selector: 'app-ticket-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, PhdsSelectComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    PhdsSelectComponent,
+    MessagePreviewComponent
+  ],
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']
 })
@@ -18,6 +24,8 @@ export class TicketListComponent implements OnInit {
   totalItems: number = 0;
   pageSizeOptions: number[] = [10, 25, 50, 75, 100];
   dropdownOpen: boolean = false;
+  selectedTicket: any;
+  isModalOpen: boolean = false;
 
   constructor(private ticketService: TicketService) { }
 
@@ -61,6 +69,16 @@ export class TicketListComponent implements OnInit {
   goToPage(page: number): void {
     this.page = page;
     this.loadTickets();
+  }
+
+  preview(ticket: any) {
+    this.selectedTicket = ticket;
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.selectedTicket = null;
   }
 
   get totalPages(): number {

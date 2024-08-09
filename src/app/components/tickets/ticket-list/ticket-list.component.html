@@ -16,7 +16,12 @@
       @for (ticket of tickets; track $index) {
         <tr>
           <td class="id">{{ ticket.id }}</td>
-          <td class="subject">{{ ticket.subject }}</td>
+          <td class="subject">
+            <div class="preview-container">
+              <div class="text">{{ ticket.subject }}</div>
+              <div class="preview" title="Pré visualizar" (click)="preview(ticket)"><i class="fa-solid fa-bars-staggered"></i></div>
+            </div>
+          </td>
           <td class="created-at">{{ ticket.createdAt }}</td>
           <td class="status">
             <span 
@@ -42,7 +47,7 @@
             </span>
             {{ ticket.priority }}
           </td>
-          <td class="location ellipsis" [title]="getLocationHierarchy(ticket.location)"><span>{{ getLocationName(ticket.location) }}</span></td>
+          <td class="location" [title]="getLocationHierarchy(ticket.location)"><span class="ellipsis">{{getLocationHierarchy(ticket.location)}}</span></td>
           <td class="customer">{{ ticket.customers[0].fullname }}</td>
           <td class="assignee">{{ ticket.assignees[0].fullname }}</td>
         </tr>
@@ -64,3 +69,6 @@
     </div>
   </div>
 </div>
+@if (isModalOpen) {
+  <app-message-preview [ticket]="selectedTicket" (close)="closeModal()"></app-message-preview>
+}
