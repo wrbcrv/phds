@@ -27,10 +27,10 @@
             <span 
               class="status-circle"
               [ngClass]="{
-                'status-open'       : ticket.status === 'Aberto',
-                'status-in-progress': ticket.status === 'Em atendimento',
-                'status-resolved'   : ticket.status === 'Solucionado',
-                'status-closed'     : ticket.status === 'Fechado'
+                'status-open'       : ticket.status === 'Open',
+                'status-in-progress': ticket.status === 'InProgress',
+                'status-resolved'   : ticket.status === 'Resolved',
+                'status-closed'     : ticket.status === 'Closed'
               }">
             </span>
             {{ ticket.status }}
@@ -39,17 +39,17 @@
             <span 
               class="priority-circle"
               [ngClass]="{
-                'priority-low'   : ticket.priority === 'Baixo',
-                'priority-medium': ticket.priority === 'Médio',
-                'priority-high'  : ticket.priority === 'Alto',
-                'priority-urgent': ticket.priority === 'Urgente'
+                'priority-low'   : ticket.priority === 'Low',
+                'priority-medium': ticket.priority === 'Medium',
+                'priority-high'  : ticket.priority === 'High',
+                'priority-urgent': ticket.priority === 'Urgent'
               }">
             </span>
             {{ ticket.priority }}
           </td>
           <td class="location" [title]="getLocationHierarchy(ticket.location)"><span class="ellipsis">{{getLocationHierarchy(ticket.location)}}</span></td>
-          <td class="customer">{{ ticket.customers[0].fullname }}</td>
-          <td class="assignee">{{ ticket.assignees[0].fullname }}</td>
+          <td class="customer">{{ ticket.customers[0].username }}</td>
+          <td class="assignee">{{ ticket.assignees[0].username }}</td>
         </tr>
       }
     </tbody>
@@ -70,5 +70,5 @@
   </div>
 </div>
 @if (isModalOpen) {
-  <app-message-preview [ticket]="selectedTicket" (close)="closeModal()"></app-message-preview>
+  <app-message-preview [ticket]="selectedTicket" [userId]="currentUserId" (close)="closeModal()"></app-message-preview>
 }

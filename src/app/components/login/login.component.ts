@@ -24,7 +24,7 @@ export class LoginComponent {
   onSubmit(): void {
     this.authService.login(this.username, this.password).subscribe(
       (res) => {
-        this.router.navigateByUrl('/')
+        this.router.navigateByUrl('/ticket-list')
       },
       (err) => {
         console.log(err);

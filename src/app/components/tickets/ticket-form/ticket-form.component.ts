@@ -93,7 +93,7 @@ export class TicketFormComponent implements OnInit {
 
     this.agencyService.findAll(0, this.agencies.length).subscribe(
       (res) => {
-        this.agencies = this.formatAgencies(res);
+        this.agencies = this.formatAgencies(res.items);
         this.filteredAgencies = this.agencies;
       },
       (err) => {

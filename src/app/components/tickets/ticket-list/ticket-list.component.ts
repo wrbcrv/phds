@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TicketService } from '../../../services/ticket.service';
 import { PhdsSelectComponent } from '../../../shared/phds-select/phds-select.component';
 import { MessagePreviewComponent } from '../message-preview/message-preview.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-ticket-list',
@@ -26,11 +27,22 @@ export class TicketListComponent implements OnInit {
   dropdownOpen: boolean = false;
   selectedTicket: any;
   isModalOpen: boolean = false;
+  currentUserId: number = 0;
 
-  constructor(private ticketService: TicketService) { }
+  constructor(
+    private authService: AuthService,
+    private ticketService: TicketService) { }
 
   ngOnInit(): void {
-    this.loadTickets();
+    this.authService.getUserInfo().subscribe(
+      (user) => {
+        this.currentUserId = user.id;
+        this.loadTickets();
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
   loadTickets(): void {
