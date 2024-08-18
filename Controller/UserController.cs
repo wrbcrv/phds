@@ -93,5 +93,24 @@ namespace Api.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchUsersByFullName(string name)
+        {
+            try
+            {
+                var users = await _userService.FindByFullNameAsync(name);
+                if (users == null || users.Count == 0)
+                {
+                    return NotFound("No users found with the specified name.");
+                }
+                
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

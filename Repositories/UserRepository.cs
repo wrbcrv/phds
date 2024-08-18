@@ -58,6 +58,21 @@ namespace Api.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<User>> FindByFullNameAsync(string fullName)
+        {
+            var users = await _context.Users
+                .Include(u => u.Agency)
+                .Where(u => EF.Functions.Like(u.FullName.ToLower(), $"%{fullName.ToLower()}%"))
+                .ToListAsync();
+
+            foreach (var user in users)
+            {
+                await LoadAgencyHierarchyAsync(user.Agency);
+            }
+
+            return users;
+        }
+
         public async Task<User> FindByUsernameAsync(string username)
         {
             var user = await _context.Users

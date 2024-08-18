@@ -9,6 +9,7 @@ namespace Api.Repositories
         Task AddAsync(User user);
         Task UpdateAsync(User user);
         Task DeleteAsync(int id);
+        Task<List<User>> FindByFullNameAsync(string fullName);
         Task<User> FindByUsernameAsync(string username);
     }
 }

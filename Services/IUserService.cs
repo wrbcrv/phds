@@ -12,5 +12,6 @@ namespace Api.Services
         Task DeleteAsync(int id);
         Task<UserResponseDTO> FindByUsernameAsync(string username);
         Task<UserResponseDTO> FindByUsernameAndPasswordAsync(string username, string password);
+        Task<List<UserResponseDTO>> FindByFullNameAsync(string fullName);
     }
 }

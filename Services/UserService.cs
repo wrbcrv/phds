@@ -21,7 +21,6 @@ namespace Api.Services
         public async Task<PagedResponseDTO<UserResponseDTO>> GetAllAsync()
         {
             var users = await _userRepository.GetAllAsync();
-            /* await _agencyRepository.GetAllAsync(); */
             var userDtos = users.Select(u => UserResponseDTO.ValueOf(u)).ToList();
 
             return new PagedResponseDTO<UserResponseDTO>
@@ -34,7 +33,6 @@ namespace Api.Services
         public async Task<UserResponseDTO> GetByIdAsync(int id)
         {
             var user = await _userRepository.GetByIdAsync(id);
-            /* await _agencyRepository.GetAllAsync(); */
             return UserResponseDTO.ValueOf(user);
         }
 
@@ -84,8 +82,13 @@ namespace Api.Services
         public async Task<UserResponseDTO> FindByUsernameAsync(string username)
         {
             var user = await _userRepository.FindByUsernameAsync(username);
-            /* await _agencyRepository.GetAllAsync(); */
             return UserResponseDTO.ValueOf(user);
+        }
+
+        public async Task<List<UserResponseDTO>> FindByFullNameAsync(string fullName)
+        {
+            var users = await _userRepository.FindByFullNameAsync(fullName);
+            return users.Select(user => UserResponseDTO.ValueOf(user)).ToList();
         }
 
         public async Task<UserResponseDTO> FindByUsernameAndPasswordAsync(string username, string password)
