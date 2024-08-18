@@ -36,7 +36,8 @@ tr {
     cursor: pointer;
 }
 
-.preview-container {
+.preview-container,
+.location-container {
     position: relative;
 }
 
@@ -44,7 +45,8 @@ tr {
     max-width: 250px;
 }
 
-.subject .preview {
+.subject .preview,
+.location .info {
     display: none;
     position: absolute;
     top: 0;
@@ -53,9 +55,11 @@ tr {
 
 tr:hover {
 
-    .subject .preview {
+    .subject .preview,
+    .location .info {
         display: block;
     }
+
 }
 
 .description {
@@ -67,7 +71,7 @@ tr:hover {
 
 .location .ellipsis {
     display: block;
-    width: 250px;
+    width: 260px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

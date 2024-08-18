@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
@@ -17,7 +17,7 @@ export class UserService {
     return this.http.get<any[]>(`${this.apiUrl}?page=${page}&size=${size}`, { withCredentials: true });
   }
 
-  findByPartialName(partial: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/search/${partial}`, { withCredentials: true });
+  findByFullName(name: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/search?name=${name}`, { withCredentials: true });
   }
 }

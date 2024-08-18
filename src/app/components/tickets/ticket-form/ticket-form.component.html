@@ -112,13 +112,13 @@
         @if (showCustomersDropdown) {
           <div class="dropdown-menu">
             @for (user of filteredCustomers; track $index) { 
-              <div class="dropdown-option" (click)="selectUser(user, 'customer')">{{ user.fullname }}</div>
+              <div class="dropdown-option" (click)="selectUser(user, 'customer')">{{ user.fullName }}</div>
             }
           </div>
         }
         @for (user of selectedCustomers; track $index) {
           <div class="selected-user">
-            <span>{{ user.fullname }}</span>
+            <span>{{ user.fullName }}</span>
             <span class="close" (click)="removeUser(user.id, 'customer')">&#10005;</span>
           </div>
         }
@@ -138,13 +138,13 @@
         @if (showAssigneesDropdown) {
           <div class="dropdown-menu">
             @for (user of filteredAssignees; track $index) {
-              <div class="dropdown-option" (click)="selectUser(user, 'assignee')">{{ user.fullname }}</div>
+              <div class="dropdown-option" (click)="selectUser(user, 'assignee')">{{ user.fullName }}</div>
             }
           </div>
         }
         @for (user of selectedAssignees; track $index) {
           <div class="selected-user">
-            <span>{{ user.fullname }}</span>
+            <span>{{ user.fullName }}</span>
             <span class="close" (click)="removeUser(user.id, 'assignee')">&#10005;</span>
           </div>
         }

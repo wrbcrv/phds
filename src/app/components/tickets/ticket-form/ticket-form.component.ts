@@ -30,9 +30,9 @@ export class TicketFormComponent implements OnInit {
     assigneeIds: []
   };
 
-  priorities: string[] = [];
-  status: string[] = [];
-  types: string[] = [];
+  priorities: string[] = ['Low', 'Medium', 'High', 'Urgent'];
+  status: string[] = ['Open', 'InProgress', 'Resolved', 'Closed']; 
+  types: string[] = ['Incident', 'Request'];
   agencies: any[] = [];
   filteredAgencies: any[] = [];
   users: any[] = [];
@@ -64,33 +64,6 @@ export class TicketFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.ticketService.getPriorityValues().subscribe(
-      (res) => {
-        this.priorities = res;
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
-
-    this.ticketService.getStatusValues().subscribe(
-      (res) => {
-        this.status = res;
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
-
-    this.ticketService.getTypeValues().subscribe(
-      (res) => {
-        this.types = res;
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
-
     this.agencyService.findAll(0, this.agencies.length).subscribe(
       (res) => {
         this.agencies = this.formatAgencies(res.items);
@@ -222,7 +195,7 @@ export class TicketFormComponent implements OnInit {
     const term = input.value;
 
     if (term) {
-      this.userService.findByPartialName(term).subscribe(
+      this.userService.findByFullName(term).subscribe(
         (res) => {
           if (type === 'customer') {
             this.filteredCustomers = res;

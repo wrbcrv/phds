@@ -47,9 +47,14 @@
             </span>
             {{ ticket.priority }}
           </td>
-          <td class="location" [title]="getLocationHierarchy(ticket.location)"><span class="ellipsis">{{getLocationHierarchy(ticket.location)}}</span></td>
-          <td class="customer">{{ ticket.customers[0].username }}</td>
-          <td class="assignee">{{ ticket.assignees[0].username }}</td>
+          <td class="location" [title]="getLocationHierarchy(ticket.location)">
+            <div class="location-container">
+              <span class="ellipsis">{{ getLocationHierarchy(ticket.location) }}</span>
+              <div class="info"><i class="fa-solid fa-info"></i></div>
+            </div>
+          </td>
+          <td class="customer">{{ ticket.customers[0].fullName }}</td>
+          <td class="assignee">{{ ticket.assignees[0].fullName }}</td>
         </tr>
       }
     </tbody>
