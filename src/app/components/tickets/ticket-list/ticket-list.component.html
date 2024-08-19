@@ -1,4 +1,5 @@
 <div class="ticket-list">
+  <h2>Todos os Chamados ({{ tickets.length }})</h2>
   <table>
     <thead>
       <tr>
@@ -8,8 +9,8 @@
         <th class="status">Status</th>
         <th class="priority">Prioridade</th>
         <th class="location">Localização</th>
-        <th class="customer">Cliente</th>
-        <th class="assignee">Responsável</th>
+        <th class="customer">Cliente(s)</th>
+        <th class="assignee">Responsável(s)</th>
       </tr>
     </thead>
     <tbody>
@@ -18,7 +19,7 @@
           <td class="id">{{ ticket.id }}</td>
           <td class="subject">
             <div class="preview-container">
-              <div class="text">{{ ticket.subject }}</div>
+              <div class="text" title="{{ ticket.subject }}">{{ ticket.subject }}</div>
               <div class="preview" title="Pré visualizar" (click)="preview(ticket)"><i class="fa-solid fa-bars-staggered"></i></div>
             </div>
           </td>
@@ -49,12 +50,26 @@
           </td>
           <td class="location" [title]="getLocationHierarchy(ticket.location)">
             <div class="location-container">
-              <span class="ellipsis">{{ getLocationHierarchy(ticket.location) }}</span>
-              <div class="info"><i class="fa-solid fa-info"></i></div>
+              <div class="ellipsis">{{ getLocationHierarchy(ticket.location) }}</div>
+              <!-- <div class="info"><i class="fa-solid fa-info"></i></div> -->
             </div>
           </td>
-          <td class="customer">{{ ticket.customers[0].fullName }}</td>
-          <td class="assignee">{{ ticket.assignees[0].fullName }}</td>
+          <td class="customer">
+            <div class="customer-container">
+              <span>{{ ticket.customers[0].fullName }}</span>
+              @if (ticket.customers.length > 1) {
+                <span class="extra-count">+{{ ticket.customers.length - 1 }}</span>
+              }
+            </div>
+          </td>
+          <td class="assignee">
+            <div class="assignee-container">
+              <span>{{ ticket.assignees[0].fullName }}</span>
+              @if (ticket.assignees.length > 1) {
+                <span class="extra-count">+{{ ticket.assigees.length - 1 }}</span>
+              }
+            </div>
+          </td>
         </tr>
       }
     </tbody>

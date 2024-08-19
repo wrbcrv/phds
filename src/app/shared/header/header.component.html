@@ -1,0 +1,16 @@
+<header class="header">
+  <div class="container">
+    <div class="user-info">
+      <div class="notification-icon">
+        <i class="fa-regular fa-bell"></i>
+      </div>
+      @if (user) {
+        <div class="text-info">
+          <span class="user-name">{{ getNameAndSurname(user.fullName) }}</span>
+          <span class="user-role">{{ user.role }}</span>
+        </div>
+        <div class="avatar">{{ getInitials(user.fullName) }}</div>
+      }
+    </div>
+  </div>
+</header>

@@ -1,5 +1,6 @@
 .ticket-list {
-    margin: 20px;
+    margin: 20px auto;
+    width: fit-content;
 }
 
 h2 {
@@ -8,7 +9,8 @@ h2 {
 }
 
 table {
-    width: 100%;
+    width: auto;
+    table-layout: auto;
     border-collapse: collapse;
 }
 
@@ -28,38 +30,43 @@ th {
 td {
     background-color: #F2F6FC;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 tr {
     border-bottom: 1px solid #E1E7EE;
+    color: #202124;
     height: 40px;
     cursor: pointer;
 }
 
-.preview-container,
-.location-container {
-    position: relative;
+.preview-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .subject .text {
-    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.subject .preview,
-.location .info {
+.subject {
+    width: 400px;
+    max-width: 400px;
+}
+
+.preview {
     display: none;
-    position: absolute;
-    top: 0;
-    right: 0;
+    margin-left: 5px;
 }
 
 tr:hover {
 
-    .subject .preview,
-    .location .info {
+    .preview {
         display: block;
     }
-
 }
 
 .description {
@@ -84,6 +91,27 @@ tr:hover {
     width: 10px;
     height: 10px;
     border-radius: 50%;
+}
+
+.customer-container,
+.assignee-container {
+    display: flex;
+    align-items: center;
+}
+
+.extra-count {
+    font-family: 'Roboto Mono';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #D3E3FD;
+    color: #001D35;
+    width: 30px;
+    height: 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-left: 5px;
 }
 
 .priority-low {
