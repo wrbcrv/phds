@@ -15,7 +15,10 @@ namespace Api.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            var users = await _context.Users.Include(u => u.Agency).ToListAsync();
+            var users = await _context.Users
+            .Include(u => u.Agency)
+            .Include(u => u.AssignedTickets)
+            .ToListAsync();
 
             foreach (var user in users)
             {
@@ -29,6 +32,7 @@ namespace Api.Repositories
         {
             var user = await _context.Users
                 .Include(u => u.Agency)
+                .Include(u => u.AssignedTickets)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user != null)
@@ -62,6 +66,7 @@ namespace Api.Repositories
         {
             var users = await _context.Users
                 .Include(u => u.Agency)
+                .Include(u => u.AssignedTickets)
                 .Where(u => EF.Functions.Like(u.FullName.ToLower(), $"%{fullName.ToLower()}%"))
                 .ToListAsync();
 
@@ -77,6 +82,7 @@ namespace Api.Repositories
         {
             var user = await _context.Users
                 .Include(u => u.Agency)
+                .Include(u => u.AssignedTickets)
                 .FirstOrDefaultAsync(u => u.Username == username);
 
             if (user != null)

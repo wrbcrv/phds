@@ -35,11 +35,15 @@ namespace Api.Controllers
 
                 var token = GenerateJwt(user);
 
+                var expiresInHours = int.Parse(_configuration["Jwt:ExpiresInHours"]);
+                var expiresAt = DateTimeOffset.UtcNow.AddHours(expiresInHours);
+
                 Response.Cookies.Append("Token", token, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = SameSiteMode.Strict
+                    SameSite = SameSiteMode.Strict,
+                    Expires = expiresAt
                 });
 
                 return Ok(new { message = "Login realizado com sucesso" });
@@ -71,7 +75,7 @@ namespace Api.Controllers
             try
             {
                 var token = Request.Cookies["Token"];
-                
+
                 if (string.IsNullOrEmpty(token))
                 {
                     return Unauthorized("Token de autenticação não encontrado.");
