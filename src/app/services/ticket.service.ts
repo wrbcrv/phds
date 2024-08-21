@@ -32,7 +32,7 @@ export class TicketService {
     return this.http.get<{ items: any[], total: number }>(`${this.apiUrl}?page=${page}&size=${size}`);
   }
 
-  findOne(id: number): Observable<any> {
+  findOne(id: string | number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 

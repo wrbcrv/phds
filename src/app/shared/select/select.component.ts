@@ -7,10 +7,10 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from
   imports: [
     CommonModule
   ],
-  templateUrl: './phds-select.component.html',
-  styleUrl: './phds-select.component.scss'
+  templateUrl: './select.component.html',
+  styleUrl: './select.component.scss'
 })
-export class PhdsSelectComponent {
+export class SelectComponent {
   @Input() options: number[] = [];
   @Input() selectedValue: number = 10;
   @Output() valueChange = new EventEmitter<number>();

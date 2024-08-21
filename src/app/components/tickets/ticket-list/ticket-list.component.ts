@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TicketService } from '../../../services/ticket.service';
-import { PhdsSelectComponent } from '../../../shared/phds-select/phds-select.component';
-import { MessagePreviewComponent } from '../message-preview/message-preview.component';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { TicketService } from '../../../services/ticket.service';
+import { SelectComponent } from '../../../shared/select/select.component';
+import { MessagePreviewComponent } from '../message-preview/message-preview.component';
 
 @Component({
   selector: 'app-ticket-list',
@@ -12,8 +13,9 @@ import { AuthService } from '../../../services/auth.service';
   imports: [
     CommonModule,
     FormsModule,
-    PhdsSelectComponent,
-    MessagePreviewComponent
+    SelectComponent,
+    MessagePreviewComponent,
+    RouterModule,
   ],
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']

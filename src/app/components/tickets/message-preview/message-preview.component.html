@@ -2,16 +2,18 @@
 <div class="modal-content">
   <div class="chat-body">
     <div class="chat-message subject-message">
+      <div class="message-subject">{{ ticket.subject }}</div>
       <div class="message-content">{{ ticket.description }}</div>
     </div>
-    <div *ngFor="let comment of ticket.comments" 
-         class="chat-message" 
-         [ngClass]="{'sent': comment.author.id === userId, 'received': comment.author.id !== userId}">
-      <div class="user-avatar"></div>
-      <div class="message-content">{{ comment.content }}</div>
-    </div>
+    @for (comment of ticket.comments; track $index) {
+      <div class="chat-message" [ngClass]="{'sent': comment.author.id === userId, 'received': comment.author.id !== userId}">
+        <div class="message-container">
+          <div class="message-content">{{ comment.content }}</div>
+        </div>
+      </div>
+    }
   </div>
-  <div class="chat-footer">
+  <!-- <div class="chat-footer">
     <button class="close-button" (click)="closeModal()">Fechar</button>
-  </div>
+  </div> -->
 </div>
