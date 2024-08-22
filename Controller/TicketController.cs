@@ -16,9 +16,9 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedResponseDTO<TicketResponseDTO>>> GetAll()
+        public async Task<ActionResult<PagedResponseDTO<TicketResponseDTO>>> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10)
         {
-            var result = await _ticketService.GetAllAsync();
+            var result = await _ticketService.GetAllAsync(page, size);
             return Ok(result);
         }
 

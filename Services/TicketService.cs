@@ -20,15 +20,15 @@ namespace Api.Services
             _mapper = mapper;
         }
 
-        public async Task<PagedResponseDTO<TicketResponseDTO>> GetAllAsync()
+        public async Task<PagedResponseDTO<TicketResponseDTO>> GetAllAsync(int page, int size)
         {
-            var tickets = await _ticketRepository.GetAllAsync();
-            var ticketDtos = tickets.Select(t => _mapper.Map<TicketResponseDTO>(t)).ToList();
+            var tickets = await _ticketRepository.GetAllAsync(page, size);
+            var ticketDtos = tickets.Items.Select(t => _mapper.Map<TicketResponseDTO>(t)).ToList();
 
             return new PagedResponseDTO<TicketResponseDTO>
             {
                 Items = ticketDtos,
-                Total = ticketDtos.Count
+                Total = tickets.Total
             };
         }
 

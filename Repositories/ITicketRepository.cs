@@ -1,3 +1,4 @@
+using Api.DTOs;
 using Api.Models;
 
 namespace Api.Repositories
@@ -5,7 +6,7 @@ namespace Api.Repositories
     public interface ITicketRepository
     {
         Task<Ticket> GetByIdAsync(int id);
-        Task<IEnumerable<Ticket>> GetAllAsync();
+        Task<PagedResponseDTO<Ticket>> GetAllAsync(int page, int size);
         Task AddAsync(Ticket ticket);
         Task UpdateAsync(Ticket ticket);
         Task DeleteAsync(int id);

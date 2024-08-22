@@ -4,7 +4,7 @@ namespace Api.Services
 {
     public interface ITicketService
     {
-        Task<PagedResponseDTO<TicketResponseDTO>> GetAllAsync();
+        Task<PagedResponseDTO<TicketResponseDTO>> GetAllAsync(int pageNumber, int pageSize);
         Task<TicketResponseDTO> GetByIdAsync(int id);
         Task<TicketResponseDTO> CreateAsync(TicketDTO ticketDTO);
         Task<TicketResponseDTO> UpdateAsync(int id, TicketDTO ticketDTO);

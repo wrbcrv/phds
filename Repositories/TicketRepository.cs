@@ -1,4 +1,5 @@
 using Api.Data;
+using Api.DTOs;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,14 +40,20 @@ namespace Api.Repositories
             return ticket;
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllAsync()
+        public async Task<PagedResponseDTO<Ticket>> GetAllAsync(int page, int size)
         {
-            var tickets = await _context.Tickets
+            var query = _context.Tickets
                 .Include(t => t.Location)
                 .Include(t => t.Customers)
                 .Include(t => t.Assignees)
                 .Include(t => t.Comments)
-                .ThenInclude(c => c.Author)
+                .ThenInclude(c => c.Author);
+
+            var totalTickets = await query.CountAsync();
+
+            var tickets = await query
+                .Skip((page - 1) * size)
+                .Take(size)
                 .ToListAsync();
 
             foreach (var ticket in tickets)
@@ -62,7 +69,11 @@ namespace Api.Repositories
                 }
             }
 
-            return tickets;
+            return new PagedResponseDTO<Ticket>
+            {
+                Items = tickets,
+                Total = totalTickets
+            };
         }
 
         public async Task AddAsync(Ticket ticket)
