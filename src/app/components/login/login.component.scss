@@ -1,21 +1,84 @@
+.error-message {
+    position: fixed;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--error-red);
+    color: var(--text-white);
+    padding: 10px;
+    border-radius: 50px;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+    z-index: 1000;
+    animation: slideDown 0.25s forwards, slideUp 0.25s forwards 4.5s;
+}
+
+@keyframes slideDown {
+    from {
+        top: -50px;
+    }
+
+    to {
+        top: 10px;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        top: 10px;
+    }
+
+    to {
+        top: -50px;
+    }
+}
+
 .container {
     position: absolute;
-    top:  50%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-form {
-    width: 320px;
+.wrapper {
+    background-color: var(--background-white);
+    border-radius: 20px;
+    display: flex;
+}
+
+.heading-container,
+.login-container {
+    align-content: center;
+    padding: 30px;
+    width: 300px;
+    height: 300px;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.logo,
+.heading,
+.subheading {
+    display: block;
+    text-align: center;
 }
 
 .logo {
     font-family: 'Sui Genesis';
-    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
 .heading {
-    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.subheading {
+    font-size: 0.9rem;
 }
 
 input,
@@ -29,17 +92,28 @@ button {
 
 .field,
 .submit-button {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #CED4DA;
-    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    background-color: var(--background-light-blue);
+    border-radius: 50px;
     margin-bottom: 10px;
     width: 100%;
 }
 
 .submit-button {
-    border: 1px solid #0066ff;
-    background-color: #0066ff;
-    color: #fff;
+    background-color: var(--background-blue);
+    color: var(--text-white);
     cursor: pointer;
+}
+
+.forgot-password {
+    display: block;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--background-blue);
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
 }
