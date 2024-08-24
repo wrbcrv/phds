@@ -1,4 +1,4 @@
-.ticket-list {
+/* .ticket-list {
     margin: 20px auto;
     width: fit-content;
 }
@@ -152,11 +152,23 @@ tr:hover {
 }
 
 .pagination-container {
+    background-color: var(--background-white);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 60px;
+    padding: 0 20px;
+    border-radius: 0 0 20px 20px;
     font-size: 14px;
-    margin-top: 10px;
+}
+
+.text-controls {
+    display: flex;
+    align-items: center;
+}
+
+.pagination-text {
+    margin-right: 20px;
 }
 
 .page-size-selector {
@@ -230,4 +242,4 @@ tr:hover {
 
 .custom-select-dropdown.hidden {
     display: none;
-}
+} */

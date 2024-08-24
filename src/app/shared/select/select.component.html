@@ -1,14 +1,13 @@
-<div class="phds-select">
-  <div 
-    class="phds-select-selected" 
-    [ngClass]="{'open': dropdownOpen}"
-    (click)="toggleDropdown()">
+<div class="relative inline-block select-none cursor-pointer">
+  <div class="flex items-center justify-between w-40 h-10 p-2 bg-blue-100 text-blue-900 rounded-lg cursor-pointer" [ngClass]="{'rounded-b-none': dropdownOpen}" (click)="toggleDropdown()">
     {{ selectedValue }}
     <i class="fa" [ngClass]="{'fa-chevron-down': !dropdownOpen, 'fa-chevron-up': dropdownOpen}"></i>
   </div>
-  <div class="phds-select-dropdown" [ngClass]="{'hidden': !dropdownOpen}">
-    <div *ngFor="let option of options" (click)="selectOption(option)">
-      {{ option }}
-    </div>
+  <div class="absolute top-full left-0 w-full bg-blue-100 text-blue-900 rounded-lg rounded-t-none overflow-hidden z-10" [ngClass]="{'hidden': !dropdownOpen}">
+    @for (option of options; track $index) {
+      <div class="flex items-center w-40 h-10 p-2 cursor-pointer hover:bg-blue-700 hover:text-white" (click)="selectOption(option)">
+        {{ option }}
+      </div>
+    }
   </div>
 </div>

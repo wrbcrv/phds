@@ -1,72 +1,71 @@
-<div class="ticket-list">
-  <h2>Todos os Chamados ({{ tickets.length }})</h2>
-  <table>
+<div class="mx-auto my-5 w-fit">
+  <h2 class="mb-5 text-gray-800">Todos os Chamados ({{ tickets.length }})</h2>
+  <table class="table-auto border-collapse">
     <thead>
-      <tr>
-        <th class="id">ID</th>
-        <th class="subject">Assunto</th>
-        <th class="created-at">Criado em</th>
-        <th class="status">Status</th>
-        <th class="priority">Prioridade</th>
-        <th class="location">Localização</th>
-        <th class="customer">Cliente(s)</th>
-        <th class="assignee">Responsável(s)</th>
+      <tr class="h-10">
+        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">ID</th>
+        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Assunto</th>
+        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Criado em</th>
+        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Status</th>
+        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Prioridade</th>
+        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Localização</th>
+        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Cliente(s)</th>
+        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Responsável(s)</th>
       </tr>
     </thead>
     <tbody>
       @for (ticket of tickets; track $index) {
-        <tr>
-          <td class="id">{{ ticket.id }}</td>
-          <td class="subject">
-            <div class="preview-container">
-              <div class="text" title="{{ ticket.subject }}">{{ ticket.subject }}</div>
-              <div class="preview" title="Pré visualizar" (click)="preview(ticket)"><i class="fa-solid fa-bars-staggered"></i></div>
+        <tr class="border-b border-gray-300 text-gray-800 h-10 cursor-pointer hover:bg-gray-100 group">
+          <td class="px-5 py-2 bg-gray-100 text-sm">{{ ticket.id }}</td>
+          <td class="px-5 py-2 bg-gray-100 text-sm max-w-xs overflow-hidden">
+            <div class="flex items-center justify-between">
+              <div class="truncate" title="{{ ticket.subject }}">{{ ticket.subject }}</div>
+              <div title="Pré visualizar" (click)="preview(ticket)" class="ml-2 hidden group-hover:block">
+                <i class="fa-solid fa-bars-staggered"></i>
+              </div>
             </div>
-          </td>
-          <td class="created-at">{{ ticket.createdAt }}</td>
-          <td class="status">
+          </td>        
+          <td class="px-5 py-2 bg-gray-100 text-sm">{{ ticket.createdAt }}</td>
+          <td class="px-5 py-2 bg-gray-100 text-sm">
             <span 
-              class="status-circle"
+              class="inline-block w-2.5 h-2.5 rounded-full mr-1"
               [ngClass]="{
-                'status-open'       : ticket.status === 'Open',
-                'status-in-progress': ticket.status === 'InProgress',
-                'status-resolved'   : ticket.status === 'Resolved',
-                'status-closed'     : ticket.status === 'Closed'
+                'bg-blue-400': ticket.status === 'Open',
+                'bg-yellow-300': ticket.status === 'InProgress',
+                'bg-green-500': ticket.status === 'Resolved',
+                'bg-gray-400': ticket.status === 'Closed'
               }">
             </span>
             {{ ticket.status }}
           </td>
-          <td class="priority">
+          <td class="px-5 py-2 bg-gray-100 text-sm">
             <span 
-              class="priority-circle"
+              class="inline-block w-2.5 h-2.5 rounded-full mr-1"
               [ngClass]="{
-                'priority-low'   : ticket.priority === 'Low',
-                'priority-medium': ticket.priority === 'Medium',
-                'priority-high'  : ticket.priority === 'High',
-                'priority-urgent': ticket.priority === 'Urgent'
+                'bg-green-500': ticket.priority === 'Low',
+                'bg-orange-400': ticket.priority === 'Medium',
+                'bg-red-500': ticket.priority === 'High',
+                'bg-red-700': ticket.priority === 'Urgent'
               }">
             </span>
             {{ ticket.priority }}
           </td>
-          <td class="location" [title]="getLocationHierarchy(ticket.location)">
-            <div class="location-container">
-              <div class="ellipsis">{{ getLocationHierarchy(ticket.location) }}</div>
-              <!-- <div class="info"><i class="fa-solid fa-info"></i></div> -->
-            </div>
+          <td class="px-5 py-2 bg-gray-100 text-sm max-w-xs overflow-hidden text-ellipsis whitespace-nowrap" title="{{ getLocationHierarchy(ticket.location) }}">
+            {{ getLocationHierarchy(ticket.location) }}
           </td>
-          <td class="customer">
-            <div class="customer-container">
+          <td class="px-5 py-2 bg-gray-100 text-sm">
+            <div class="flex items-center">
               <span>{{ ticket.customers[0].fullName }}</span>
               @if (ticket.customers.length > 1) {
-                <span class="extra-count">+{{ ticket.customers.length - 1 }}</span>
+                <span class="ml-2 text-blue-900 rounded-full text-xs font-bold font-robotoMono">+{{ ticket.customers.length - 1 }}</span>
               }
             </div>
           </td>
-          <td class="assignee">
-            <div class="assignee-container">
+          <td class="px-5 py-2 bg-gray-100 text-sm">
+            <div class="flex items-center">
               <span>{{ ticket.assignees[0].fullName }}</span>
               @if (ticket.assignees.length > 1) {
-                <span class="extra-count">+{{ ticket.assigees.length - 1 }}</span>
+                <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.assignees.length - 1 }}</span>
               }
             </div>
           </td>
@@ -74,18 +73,24 @@
       }
     </tbody>
   </table>
-  <div class="pagination-container">
-    <div class="page-size-selector">
+  <div class="flex justify-between items-center h-16 bg-white px-5 rounded-b-lg text-sm">
+    <div class="flex items-center space-x-2">
       <label for="pageSize">Itens por página: </label>
       <phds-select [options]="pageSizeOptions" [selectedValue]="size" (valueChange)="onPageSizeChange($event)"></phds-select>
     </div>
-    <div>{{ paginationText }}</div>
-    <div class="pagination-controls">
-      <button class="control" (click)="prevPage()" [disabled]="page === 1"><i class="fa-solid fa-chevron-left"></i></button>
-      @for (pageNum of pages; track $index) {
-        <button class="control" (click)="goToPage(pageNum)" [disabled]="pageNum === page">{{ pageNum }}</button>
-      }
-      <button class="control" (click)="nextPage()" [disabled]="page * size >= totalItems"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="flex items-center space-x-2">
+      <div class="mr-5">{{ paginationText }}</div>
+      <div class="flex space-x-2">
+        <button class="flex items-center justify-center bg-blue-500 w-8 h-8 text-white rounded-full disabled:bg-gray-400" (click)="prevPage()" [disabled]="page === 1">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        @for (pageNum of pages; track $index) {
+          <button class="flex items-center justify-center bg-blue-500 w-8 h-8 text-white rounded-full disabled:bg-gray-400" (click)="goToPage(pageNum)" [disabled]="pageNum === page">{{ pageNum }}</button>
+        }
+        <button class="flex items-center justify-center bg-blue-500 w-8 h-8 text-white rounded-full disabled:bg-gray-400" (click)="nextPage()" [disabled]="page * size >= totalItems">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

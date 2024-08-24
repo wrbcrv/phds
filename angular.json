@@ -55,7 +55,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/normalize.scss",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
               "node_modules/quill/dist/quill.bubble.css"

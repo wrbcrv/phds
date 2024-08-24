@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -15,8 +15,12 @@ import { AuthService } from '../../services/auth.service';
 export class HeaderComponent implements OnInit {
   user: any;
   isHomeRoute: boolean = false;
+  isDropdownOpen: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.authService.getUserInfo().subscribe(
@@ -28,6 +32,27 @@ export class HeaderComponent implements OnInit {
     this.router.events.subscribe(() => {
       this.isHomeRoute = this.router.url === '/';
     });
+  }
+
+  logout(): void {
+    this.authService.logout().subscribe(
+      (res) => {
+        this.router.navigate(['/']);
+      }
+    );
+  }
+
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event): void {
+    const target = event.target as HTMLElement;
+    const clickedInside = target.closest('.user-info');
+    if (!clickedInside) {
+      this.isDropdownOpen = false;
+    }
   }
 
   getInitials(fullName: string): string {
