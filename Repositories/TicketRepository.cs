@@ -47,7 +47,8 @@ namespace Api.Repositories
                 .Include(t => t.Customers)
                 .Include(t => t.Assignees)
                 .Include(t => t.Comments)
-                .ThenInclude(c => c.Author);
+                .ThenInclude(c => c.Author)
+                .OrderByDescending(t => t.CreatedAt);
 
             var totalTickets = await query.CountAsync();
 

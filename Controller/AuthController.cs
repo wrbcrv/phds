@@ -7,7 +7,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
-namespace Api.Controllers
+namespace Api.Controller
 {
     [ApiController]
     [Route("api/auth")]
