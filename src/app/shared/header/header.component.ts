@@ -23,9 +23,9 @@ export class HeaderComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.authService.getUserInfo().subscribe(
-      (res) => {
-        this.user = res;
+    this.authService.user$.subscribe(
+      (user) => {
+        this.user = user;
       }
     );
 
