@@ -40,15 +40,53 @@ namespace Api.Repositories
             return ticket;
         }
 
-        public async Task<PagedResponseDTO<Ticket>> GetAllAsync(int page, int size)
+        public async Task<PagedResponseDTO<Ticket>> GetAllAsync(int page, int size, TicketFilter filter)
         {
-            var query = _context.Tickets
+            IQueryable<Ticket> query = _context.Tickets
                 .Include(t => t.Location)
                 .Include(t => t.Customers)
                 .Include(t => t.Assignees)
                 .Include(t => t.Comments)
                 .ThenInclude(c => c.Author)
                 .OrderByDescending(t => t.CreatedAt);
+
+            if (filter != null)
+            {
+                if (filter.Status.HasValue)
+                {
+                    query = query.Where(t => t.Status == filter.Status.Value);
+                }
+
+                if (filter.Priority.HasValue)
+                {
+                    query = query.Where(t => t.Priority == filter.Priority.Value);
+                }
+
+                if (filter.CreatedAfter.HasValue)
+                {
+                    query = query.Where(t => t.CreatedAt >= filter.CreatedAfter.Value);
+                }
+
+                if (filter.CreatedBefore.HasValue)
+                {
+                    query = query.Where(t => t.CreatedAt <= filter.CreatedBefore.Value);
+                }
+
+                if (!string.IsNullOrEmpty(filter.Subject))
+                {
+                    query = query.Where(t => t.Subject.Contains(filter.Subject));
+                }
+
+                if (!string.IsNullOrEmpty(filter.CustomerName))
+                {
+                    query = query.Where(t => t.Customers.Any(c => c.FullName.Contains(filter.CustomerName)));
+                }
+
+                if (filter.LocationId.HasValue)
+                {
+                    query = query.Where(t => t.AgencyId == filter.LocationId.Value);
+                }
+            }
 
             var totalTickets = await query.CountAsync();
 

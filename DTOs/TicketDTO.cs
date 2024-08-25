@@ -6,7 +6,6 @@ namespace Api.DTOs
     public class TicketDTO
     {
         public string Subject { get; set; }
-
         public string Description { get; set; }
         public Type Type { get; set; }
         public Status Status { get; set; }

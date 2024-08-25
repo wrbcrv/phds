@@ -426,3 +426,4 @@ C:\Users\werbt\OneDrive\Documents\GitHub\Api\obj\Debug\net8.0\refint\Api.dll
 C:\Users\werbt\OneDrive\Documents\GitHub\Api\obj\Debug\net8.0\Api.pdb
 C:\Users\werbt\OneDrive\Documents\GitHub\Api\obj\Debug\net8.0\Api.genruntimeconfig.cache
 C:\Users\werbt\OneDrive\Documents\GitHub\Api\obj\Debug\net8.0\ref\Api.dll
+C:\Users\werbt\OneDrive\Documents\GitHub\Api\bin\Debug\net8.0\Newtonsoft.Json.dll

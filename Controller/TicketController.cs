@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Api.DTOs;
 using Api.Services;
 using Microsoft.AspNetCore.Authorization;
+using Api.Models;
 
 namespace Api.Controller
 {
@@ -19,11 +20,11 @@ namespace Api.Controller
 
         [HttpGet]
         [Authorize(Roles = "Administrator, Agent, Client")]
-        public async Task<ActionResult<PagedResponseDTO<TicketResponseDTO>>> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10)
+        public async Task<ActionResult<PagedResponseDTO<TicketResponseDTO>>> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] TicketFilter filter = null)  // Adiciona o filtro como parâmetro
         {
             try
             {
-                var result = await _ticketService.GetAllAsync(page, size);
+                var result = await _ticketService.GetAllAsync(page, size, filter);
                 return Ok(result);
             }
             catch (Exception ex)
