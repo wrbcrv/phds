@@ -6,6 +6,8 @@ import { AuthService } from '../../../services/auth.service';
 import { TicketService } from '../../../services/ticket.service';
 import { SelectComponent } from '../../../shared/select/select.component';
 import { MessagePreviewComponent } from '../message-preview/message-preview.component';
+import { PRIORITY_OPTIONS } from '../../../models/priority.options';
+import { STATUS_OPTIONS } from '../../../models/status.options';
 
 @Component({
   selector: 'app-ticket-list',
@@ -32,13 +34,10 @@ export class TicketListComponent implements OnInit {
     { display: '75', value: 75 },
     { display: '100', value: 100 }
   ];
-  statusOptions = [
-    { display: 'Aberto', value: 'open' },
-    { display: 'Em Progresso', value: 'inProgress' },
-    { display: 'Resolvido', value: 'resolved' },
-    { display: 'Fechado', value: 'closed' }
-  ];
-  selectedStatus: string | null = null;
+  statusOptions = STATUS_OPTIONS;
+  selectedStatus: string | null = 'Open';
+  priorityOptions = PRIORITY_OPTIONS;
+  selectedPriority: string | null = 'Medium';
   dropdownOpen: boolean = false;
   selectedTicket: any;
   isModalOpen: boolean = false;
@@ -61,7 +60,10 @@ export class TicketListComponent implements OnInit {
   }
 
   loadTickets(): void {
-    const filter = { status: this.selectedStatus };
+    const filter = {
+      status: this.selectedStatus,
+      priority: this.selectedPriority
+    };
 
     this.ticketService.findAll(this.page, this.size, filter).subscribe(
       (res) => {
@@ -79,6 +81,12 @@ export class TicketListComponent implements OnInit {
 
   onStatusChange(status: string | null): void {
     this.selectedStatus = status;
+    this.page = 1;
+    this.loadTickets();
+  }
+
+  onPriorityChange(priority: string | null): void {
+    this.selectedPriority = priority;
     this.page = 1;
     this.loadTickets();
   }

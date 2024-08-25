@@ -1,7 +1,12 @@
 <div class="mx-auto my-5 w-fit">
   <h2 class="mb-5 text-gray-800">Todos os Chamados ({{ tickets.length }})</h2>
-  <phds-select [options]="statusOptions" [selectedValue]="selectedStatus" (valueChange)="onStatusChange($event)"></phds-select>
-  <table class="table-auto border-collapse">
+  <div class="mb-4 flex items-center text-sm">
+    <span class="mr-2 text-gray-700">Status</span>
+    <phds-select [options]="statusOptions" [selectedValue]="selectedStatus" (valueChange)="onStatusChange($event)"></phds-select>
+    <span class="mr-2 text-gray-700">Prioridade</span>
+    <phds-select [options]="priorityOptions" [selectedValue]="selectedPriority" (valueChange)="onPriorityChange($event)"></phds-select>
+  </div>
+  <table class="table-auto border-collapse w-[1664px] min-w-[1664px]">
     <thead>
       <tr class="h-10">
         <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">ID</th>
@@ -37,7 +42,7 @@
                 'bg-gray-400': ticket.status === 'Closed'
               }">
             </span>
-            {{ ticket.status }}
+            <span>{{ ticket.status }}</span>
           </td>
           <td class="px-5 py-2 bg-gray-100 text-sm">
             <span 
@@ -49,7 +54,7 @@
                 'bg-red-700': ticket.priority === 'Urgent'
               }">
             </span>
-            {{ ticket.priority }}
+            <span>{{ ticket.priority }}</span>
           </td>
           <td class="px-5 py-2 bg-gray-100 text-sm max-w-xs overflow-hidden text-ellipsis whitespace-nowrap" title="{{ getLocationHierarchy(ticket.location) }}">
             {{ getLocationHierarchy(ticket.location) }}
