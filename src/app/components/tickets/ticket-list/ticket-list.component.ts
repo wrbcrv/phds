@@ -8,6 +8,7 @@ import { SelectComponent } from '../../../shared/select/select.component';
 import { MessagePreviewComponent } from '../message-preview/message-preview.component';
 import { PRIORITY_OPTIONS } from '../../../models/priority.options';
 import { STATUS_OPTIONS } from '../../../models/status.options';
+import { PAGE_SIZE_OPTIONS } from '../../../models/page-size.options';
 
 @Component({
   selector: 'app-ticket-list',
@@ -27,16 +28,10 @@ export class TicketListComponent implements OnInit {
   page: number = 1;
   size: number = 10;
   totalItems: number = 0;
-  pageSizeOptions = [
-    { display: '10', value: 10 },
-    { display: '25', value: 25 },
-    { display: '50', value: 50 },
-    { display: '75', value: 75 },
-    { display: '100', value: 100 }
-  ];
+  pageSizeOptions = PAGE_SIZE_OPTIONS;
   statusOptions = STATUS_OPTIONS;
-  selectedStatus: string | null = 'Open';
   priorityOptions = PRIORITY_OPTIONS;
+  selectedStatus: string | null = 'Open';
   selectedPriority: string | null = 'Medium';
   dropdownOpen: boolean = false;
   selectedTicket: any;

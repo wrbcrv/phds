@@ -1,12 +1,12 @@
 <div class="fixed inset-0 bg-black bg-opacity-70 z-50" (click)="closeModal()"></div>
 <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-0 z-50 overflow-hidden rounded-2xl max-w-md w-full h-4/5 flex flex-col shadow-lg">
-  <div class="flex-1 p-2 overflow-y-auto flex flex-col bg-gray-900">
-    <div class="flex flex-col mt-2 mb-4 p-2 rounded-xl max-w-4/5 word-break bg-gray-600 text-white mx-2">
+  <div class="flex-1 overflow-y-auto flex flex-col bg-gray-900">
+    <div class="flex flex-col rounded-2xl max-w-4/5 word-break bg-gray-600 text-white">
       <div class="p-2 break-words font-bold">{{ ticket.subject }}</div>
       <div class="p-2 break-words">{{ ticket.description }}</div>
     </div>
     @for (comment of ticket.comments; track $index) {
-      <div class="flex flex-col mb-2 p-2 rounded-xl max-w-4/5 word-break relative text-white" [ngClass]="{'bg-green-600 self-end mr-1 rounded-br-none': comment.author.id === userId, 'bg-gray-600 self-start ml-2 rounded-bl-none': comment.author.id !== userId}">
+      <div class="flex flex-col p-2 rounded-2xl max-w-4/5 word-break relative text-white" [ngClass]="{'bg-green-600 self-end rounded-br-none': comment.author.id === userId, 'bg-gray-600 self-start rounded-bl-none': comment.author.id !== userId}">
         <div class="flex items-center">
           <div class="p-2 break-words">{{ comment.content }}</div>
         </div>

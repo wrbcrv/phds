@@ -9,17 +9,17 @@ export const routes: Routes = [
   {
     path: '',
     component: LoginComponent,
-    title: 'Entrar · PHDS'
+    title: 'Entrar • PHDS'
   },
   {
     path: 'ticket-form',
     component: TicketFormComponent,
-    title: 'Novo chamado · PHDS'
+    title: 'Novo chamado • PHDS'
   },
   {
     path: 'ticket-list',
     component: TicketListComponent,
-    title: 'Chamados · PHDS'
+    title: 'Chamados • PHDS'
   },
   {
     path: 'ticket/:id',

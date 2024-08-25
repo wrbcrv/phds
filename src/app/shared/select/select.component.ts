@@ -13,6 +13,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from
 export class SelectComponent<T> {
   @Input() options: { display: string, value: T }[] = [];
   @Input() selectedValue: T | null = null;
+  
   @Output() valueChange = new EventEmitter<T>();
 
   dropdownOpen: boolean = false;
