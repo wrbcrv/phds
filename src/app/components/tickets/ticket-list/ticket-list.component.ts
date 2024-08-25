@@ -25,7 +25,20 @@ export class TicketListComponent implements OnInit {
   page: number = 1;
   size: number = 10;
   totalItems: number = 0;
-  pageSizeOptions: number[] = [10, 25, 50, 75, 100];
+  pageSizeOptions = [
+    { display: '10', value: 10 },
+    { display: '25', value: 25 },
+    { display: '50', value: 50 },
+    { display: '75', value: 75 },
+    { display: '100', value: 100 }
+  ];
+  statusOptions = [
+    { display: 'Aberto', value: 'open' },
+    { display: 'Em Progresso', value: 'inProgress' },
+    { display: 'Resolvido', value: 'resolved' },
+    { display: 'Fechado', value: 'closed' }
+  ];
+  selectedStatus: string | null = null;
   dropdownOpen: boolean = false;
   selectedTicket: any;
   isModalOpen: boolean = false;
@@ -48,20 +61,24 @@ export class TicketListComponent implements OnInit {
   }
 
   loadTickets(): void {
-    this.ticketService.findAll(this.page, this.size).subscribe(
+    const filter = { status: this.selectedStatus };
+
+    this.ticketService.findAll(this.page, this.size, filter).subscribe(
       (res) => {
         this.tickets = res.items;
         this.totalItems = res.total;
-        console.log(this.tickets);
-      },
-      (err) => {
-        console.error(err);
       }
     );
   }
 
   onPageSizeChange(size: number): void {
     this.size = size;
+    this.page = 1;
+    this.loadTickets();
+  }
+
+  onStatusChange(status: string | null): void {
+    this.selectedStatus = status;
     this.page = 1;
     this.loadTickets();
   }

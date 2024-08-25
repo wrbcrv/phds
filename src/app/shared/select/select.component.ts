@@ -8,12 +8,12 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from
     CommonModule
   ],
   templateUrl: './select.component.html',
-  styleUrl: './select.component.scss'
+  styleUrls: ['./select.component.scss']
 })
-export class SelectComponent {
-  @Input() options: number[] = [];
-  @Input() selectedValue: number = 10;
-  @Output() valueChange = new EventEmitter<number>();
+export class SelectComponent<T> {
+  @Input() options: { display: string, value: T }[] = [];
+  @Input() selectedValue: T | null = null;
+  @Output() valueChange = new EventEmitter<T>();
 
   dropdownOpen: boolean = false;
 
@@ -23,10 +23,15 @@ export class SelectComponent {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  selectOption(option: number): void {
-    this.selectedValue = option;
+  selectOption(value: T): void {
+    this.selectedValue = value;
     this.dropdownOpen = false;
     this.valueChange.emit(this.selectedValue);
+  }
+
+  getDisplayValue(value: T | null): string {
+    const option = this.options.find(opt => opt.value === value);
+    return option ? option.display : '';
   }
 
   @HostListener('document:click', ['$event'])

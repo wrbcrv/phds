@@ -1,5 +1,6 @@
 <div class="mx-auto my-5 w-fit">
   <h2 class="mb-5 text-gray-800">Todos os Chamados ({{ tickets.length }})</h2>
+  <phds-select [options]="statusOptions" [selectedValue]="selectedStatus" (valueChange)="onStatusChange($event)"></phds-select>
   <table class="table-auto border-collapse">
     <thead>
       <tr class="h-10">

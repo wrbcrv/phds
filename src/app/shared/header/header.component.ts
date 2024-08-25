@@ -19,8 +19,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute) { }
+    private router: Router) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe(
@@ -32,6 +31,8 @@ export class HeaderComponent implements OnInit {
     this.router.events.subscribe(() => {
       this.isHomeRoute = this.router.url === '/';
     });
+
+    this.authService.getUserInfo().subscribe();
   }
 
   logout(): void {
