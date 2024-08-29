@@ -1,13 +1,11 @@
 <div class="relative inline-block select-none cursor-pointer text-sm">
   <div class="flex items-center justify-between w-32 h-8 p-2 bg-blue-100 text-blue-900 rounded-lg cursor-pointer" [ngClass]="{'rounded-b-none': dropdownOpen}" (click)="toggleDropdown()">
-    <span>{{ getDisplayValue(selectedValue) || 'Selecionar' }}</span>
+    <span>{{ getDisplayValue(selectedValue) }}</span>
     <i class="fa" [ngClass]="{'fa-chevron-down': !dropdownOpen, 'fa-chevron-up': dropdownOpen}"></i>
   </div>
-  <div class="absolute top-full left-0 w-full bg-blue-100 text-blue-900 rounded-lg rounded-t-none overflow-hidden z-10" [ngClass]="{'hidden': !dropdownOpen}">
+  <ul class="absolute top-full left-0 w-full bg-blue-100 text-blue-900 rounded-lg rounded-t-none overflow-hidden z-10 list-none p-0 m-0" [ngClass]="{'hidden': !dropdownOpen}">
     @for (option of options; track $index) {
-      <div (click)="selectOption(option.value)" class="flex items-center w-full h-8 p-2 cursor-pointer hover:bg-blue-700 hover:text-white">
-        {{ option.display }}
-      </div>
+      <li (click)="selectOption(option.value)" class="flex items-center w-full h-8 p-2 cursor-pointer hover:bg-blue-700 hover:text-white">{{ option.label }}</li>
     }
-  </div>
+  </ul>
 </div>

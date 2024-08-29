@@ -1,8 +1,8 @@
 import { Priority } from "./priority.enum";
 
 export const PRIORITY_OPTIONS = [
-  { display: 'Baixa', value: Priority.Low },
-  { display: 'Média', value: Priority.Medium },
-  { display: 'Alta', value: Priority.High },
-  { display: 'Urgente', value: Priority.Urgent }
+  { label: 'Baixa', value: Priority.Low },
+  { label: 'Média', value: Priority.Medium },
+  { label: 'Alta', value: Priority.High },
+  { label: 'Urgente', value: Priority.Urgent }
 ];

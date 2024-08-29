@@ -31,10 +31,10 @@ export class TicketListComponent implements OnInit {
   pageSizeOptions = PAGE_SIZE_OPTIONS;
   statusOptions = STATUS_OPTIONS;
   priorityOptions = PRIORITY_OPTIONS;
-  selectedStatus: string | null = 'Open';
-  selectedPriority: string | null = 'Medium';
-  dropdownOpen: boolean = false;
+  selectedStatus: string | null = null
+  selectedPriority: string | null = null;
   selectedTicket: any;
+  dropdownOpen: boolean = false;
   isModalOpen: boolean = false;
   currentUserId: number = 0;
 

@@ -11,8 +11,9 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from
   styleUrls: ['./select.component.scss']
 })
 export class SelectComponent<T> {
-  @Input() options: { display: string, value: T }[] = [];
+  @Input() options: { label: string, value: T }[] = [];
   @Input() selectedValue: T | null = null;
+  @Input() placeholder: string = 'Selecionar'; 
   
   @Output() valueChange = new EventEmitter<T>();
 
@@ -32,7 +33,7 @@ export class SelectComponent<T> {
 
   getDisplayValue(value: T | null): string {
     const option = this.options.find(opt => opt.value === value);
-    return option ? option.display : '';
+    return option ? option.label : this.placeholder;
   }
 
   @HostListener('document:click', ['$event'])
