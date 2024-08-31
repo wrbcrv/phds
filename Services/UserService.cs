@@ -65,6 +65,7 @@ namespace Api.Services
         public async Task<UserResponseDTO> UpdateAsync(int id, UserDTO userDTO)
         {
             var user = await _userRepository.GetByIdAsync(id) ?? throw new Exception("Usuário não encontrado");
+            
             var agency = await _agencyRepository.GetByIdAsync(userDTO.AgencyId) ?? throw new Exception("Órgão não encontrado");
 
             if (user.Username != userDTO.Username)

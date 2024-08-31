@@ -3,6 +3,7 @@ using Api.DTOs;
 using Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Api.Models;
+using System.Security.Claims;
 
 namespace Api.Controller
 {
@@ -136,7 +137,9 @@ namespace Api.Controller
         {
             try
             {
-                var result = await _ticketService.UpdateCommentAsync(commentId, commentDTO.Content);
+                var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var result = await _ticketService.UpdateCommentAsync(commentId, commentDTO.Content, currentUserId);
 
                 if (result == null)
                 {
@@ -144,6 +147,10 @@ namespace Api.Controller
                 }
 
                 return Ok(result);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, ex.Message);
             }
             catch (Exception ex)
             {

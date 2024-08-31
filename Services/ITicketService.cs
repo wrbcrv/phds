@@ -11,6 +11,6 @@ namespace Api.Services
         Task<TicketResponseDTO> UpdateAsync(int id, TicketDTO ticketDTO);
         Task DeleteAsync(int id);
         Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content);
-        Task<CommentResponseDTO> UpdateCommentAsync(int commentId, string newContent);
+        Task<CommentResponseDTO> UpdateCommentAsync(int commentId, string newContent, int currentUserId);
     }
 }

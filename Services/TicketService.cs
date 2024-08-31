@@ -100,12 +100,13 @@ namespace Api.Services
             return CommentResponseDTO.ValueOf(comment);
         }
 
-        public async Task<CommentResponseDTO> UpdateCommentAsync(int commentId, string newContent)
+        public async Task<CommentResponseDTO> UpdateCommentAsync(int commentId, string newContent, int currentUserId)
         {
-            var comment = await _ticketRepository.GetCommentByIdAsync(commentId);
-            if (comment == null)
+            var comment = await _ticketRepository.GetCommentByIdAsync(commentId) ?? throw new KeyNotFoundException("Comentário não encontrado.");
+            
+            if (comment.AuthorId != currentUserId)
             {
-                throw new KeyNotFoundException("Comentário não encontrado.");
+                throw new UnauthorizedAccessException("Você não tem permissão para editar este comentário.");
             }
 
             comment.Content = newContent;

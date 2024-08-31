@@ -95,11 +95,31 @@ namespace Api.Controller
                     ClockSkew = TimeSpan.Zero
                 };
 
-                var claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
+                ClaimsPrincipal claimsPrincipal;
+                SecurityToken validatedToken;
+
+                try
+                {
+                    claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out validatedToken);
+                }
+                catch (Exception ex)
+                {
+                    return Unauthorized($"Token inválido: {ex.Message}");
+                }
+
+                if (claimsPrincipal?.Identity == null || !claimsPrincipal.Identity.IsAuthenticated)
+                {
+                    return Unauthorized("Token inválido ou não autenticado.");
+                }
 
                 var email = claimsPrincipal.Identity.Name;
 
-                var user = await _userService.FindByUsernameAsync(email);
+                if (string.IsNullOrEmpty(email))
+                {
+                    return Unauthorized("Email não encontrado no token.");
+                }
+
+                var user = await _userService.FindByEmailAsync(email);
 
                 if (user == null)
                 {
@@ -114,6 +134,7 @@ namespace Api.Controller
             }
             catch (Exception ex)
             {
+
                 return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
             }
         }
@@ -126,6 +147,7 @@ namespace Api.Controller
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Email),
                     new Claim(ClaimTypes.Role, user.Role.ToString())
                 }),
