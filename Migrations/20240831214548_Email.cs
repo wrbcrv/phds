@@ -5,13 +5,13 @@
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class FullName : Migration
+    public partial class Email : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "FullName",
+                name: "Email",
                 table: "Users",
                 type: "text",
                 nullable: false,
@@ -22,7 +22,7 @@ namespace Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "FullName",
+                name: "Email",
                 table: "Users");
         }
     }

@@ -11,5 +11,6 @@ namespace Api.Repositories
         Task DeleteAsync(int id);
         Task<List<User>> FindByFullNameAsync(string fullName);
         Task<User> FindByUsernameAsync(string username);
+        Task<User> FindByEmailAsync(string email);
     }
 }

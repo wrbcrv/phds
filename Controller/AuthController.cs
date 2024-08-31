@@ -97,9 +97,9 @@ namespace Api.Controller
 
                 var claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
 
-                var username = claimsPrincipal.Identity.Name;
+                var email = claimsPrincipal.Identity.Name;
 
-                var user = await _userService.FindByUsernameAsync(username);
+                var user = await _userService.FindByUsernameAsync(email);
 
                 if (user == null)
                 {
@@ -126,7 +126,7 @@ namespace Api.Controller
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Name, user.Email),
                     new Claim(ClaimTypes.Role, user.Role.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(int.Parse(_configuration["Jwt:ExpiresInHours"])),

@@ -11,6 +11,7 @@ namespace Api.Services
         Task<UserResponseDTO> UpdateAsync(int id, UserDTO userDTO);
         Task DeleteAsync(int id);
         Task<UserResponseDTO> FindByUsernameAsync(string username);
+        Task<UserResponseDTO> FindByEmailAsync(string email);
         Task<UserResponseDTO> FindByUsernameAndPasswordAsync(string username, string password);
         Task<List<UserResponseDTO>> FindByFullNameAsync(string fullName);
     }

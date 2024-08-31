@@ -38,41 +38,56 @@ namespace Api.Services
 
         public async Task<UserResponseDTO> CreateAsync(UserDTO userDTO)
         {
-            var agency = await _agencyRepository.GetByIdAsync(userDTO.AgencyId);
-            if (agency == null)
+            var agency = await _agencyRepository.GetByIdAsync(userDTO.AgencyId) ?? throw new Exception("Orgão não encontrado");
+
+            var existingUser = await _userRepository.FindByUsernameAsync(userDTO.Username);
+
+            if (existingUser != null)
             {
-                throw new Exception("Agency not found");
+                throw new Exception("Nome de usuário já existe");
             }
 
             var user = new User
             {
                 FullName = userDTO.FullName,
                 Username = userDTO.Username,
+                Email = userDTO.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(userDTO.Password),
                 Role = userDTO.Role,
                 Agency = agency
             };
 
             await _userRepository.AddAsync(user);
+
             return UserResponseDTO.ValueOf(user);
         }
 
         public async Task<UserResponseDTO> UpdateAsync(int id, UserDTO userDTO)
         {
-            var user = await _userRepository.GetByIdAsync(id);
+            var user = await _userRepository.GetByIdAsync(id) ?? throw new Exception("Usuário não encontrado");
+            var agency = await _agencyRepository.GetByIdAsync(userDTO.AgencyId) ?? throw new Exception("Órgão não encontrado");
 
-            var agency = await _agencyRepository.GetByIdAsync(userDTO.AgencyId);
-            if (agency == null)
+            if (user.Username != userDTO.Username)
             {
-                throw new Exception("Agency not found");
+                var existingUser = await _userRepository.FindByUsernameAsync(userDTO.Username);
+                if (existingUser != null)
+                {
+                    throw new Exception("Nome de usuário já existe");
+                }
             }
 
-            _mapper.Map(userDTO, user);
+            user.FullName = userDTO.FullName;
+            user.Username = userDTO.Username;
+            user.Email = userDTO.Email;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
+            user.Role = userDTO.Role;
             user.Agency = agency;
 
             await _userRepository.UpdateAsync(user);
+
             return UserResponseDTO.ValueOf(user);
         }
+
 
         public async Task DeleteAsync(int id)
         {
@@ -90,6 +105,13 @@ namespace Api.Services
             var users = await _userRepository.FindByFullNameAsync(fullName);
             return users.Select(user => UserResponseDTO.ValueOf(user)).ToList();
         }
+
+        public async Task<UserResponseDTO> FindByEmailAsync(string email)
+        {
+            var user = await _userRepository.FindByEmailAsync(email);
+            return UserResponseDTO.ValueOf(user);
+        }
+
 
         public async Task<UserResponseDTO> FindByUsernameAndPasswordAsync(string username, string password)
         {

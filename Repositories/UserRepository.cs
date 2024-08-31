@@ -93,6 +93,11 @@ namespace Api.Repositories
             return user;
         }
 
+        public async Task<User> FindByEmailAsync(string email)
+        {
+            return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        }
+
         private async Task LoadAgencyHierarchyAsync(Agency agency)
         {
             if (agency == null || agency.ParentId == null)

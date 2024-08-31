@@ -132,6 +132,10 @@ namespace Api.Migrations
                     b.Property<int?>("AgencyId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("text");

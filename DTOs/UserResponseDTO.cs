@@ -7,6 +7,7 @@ namespace Api.DTOs
         public int Id { get; set; }
         public string FullName { get; set; }
         public string Username { get; set; }
+        public string Email { get; set; }
         public string Role { get; set; }
         public AgencyHierarchyDTO Agency { get; set; }
         public List<AssignedTicketResponseDTO> AssignedTickets { get; set; } = new List<AssignedTicketResponseDTO>();
@@ -18,6 +19,7 @@ namespace Api.DTOs
                 Id = user.Id,
                 FullName = user.FullName,
                 Username = user.Username,
+                Email = user.Email,
                 Role = user.Role.ToString(),
                 Agency = user.Agency != null ? AgencyHierarchyDTO.ValueOf(user.Agency) : null,
                 AssignedTickets = user.AssignedTickets?.Select(AssignedTicketResponseDTO.FromTicket).ToList()

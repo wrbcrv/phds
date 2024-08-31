@@ -7,13 +7,30 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class Ticket : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AgencyClosures");
+            migrationBuilder.CreateTable(
+                name: "Agencies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    ParentId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agencies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Agencies_Agencies_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Agencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Tickets",
@@ -42,12 +59,37 @@ namespace Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FullName = table.Column<string>(type: "text", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    Role = table.Column<int>(type: "integer", nullable: false),
+                    AgencyId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Agencies_AgencyId",
+                        column: x => x.AgencyId,
+                        principalTable: "Agencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsUpdated = table.Column<bool>(type: "boolean", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     AuthorId = table.Column<int>(type: "integer", nullable: false),
                     TicketId = table.Column<int>(type: "integer", nullable: false)
@@ -118,6 +160,11 @@ namespace Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Agencies_ParentId",
+                table: "Agencies",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_AuthorId",
                 table: "Comments",
                 column: "AuthorId");
@@ -141,6 +188,11 @@ namespace Api.Migrations
                 name: "IX_Tickets_AgencyId",
                 table: "Tickets",
                 column: "AgencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_AgencyId",
+                table: "Users",
+                column: "AgencyId");
         }
 
         /// <inheritdoc />
@@ -158,35 +210,11 @@ namespace Api.Migrations
             migrationBuilder.DropTable(
                 name: "Tickets");
 
-            migrationBuilder.CreateTable(
-                name: "AgencyClosures",
-                columns: table => new
-                {
-                    AncestorId = table.Column<int>(type: "integer", nullable: false),
-                    DescendantId = table.Column<int>(type: "integer", nullable: false),
-                    Depth = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AgencyClosures", x => new { x.AncestorId, x.DescendantId });
-                    table.ForeignKey(
-                        name: "FK_AgencyClosures_Agencies_AncestorId",
-                        column: x => x.AncestorId,
-                        principalTable: "Agencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AgencyClosures_Agencies_DescendantId",
-                        column: x => x.DescendantId,
-                        principalTable: "Agencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+            migrationBuilder.DropTable(
+                name: "Users");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AgencyClosures_DescendantId",
-                table: "AgencyClosures",
-                column: "DescendantId");
+            migrationBuilder.DropTable(
+                name: "Agencies");
         }
     }
 }
