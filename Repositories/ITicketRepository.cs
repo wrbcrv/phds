@@ -12,7 +12,9 @@ namespace Api.Repositories
         Task DeleteAsync(int id);
         Task<Agency> GetAgencyByIdAsync(int id);
         Task<List<User>> GetUsersByIdsAsync(IEnumerable<int> ids);
-
+        Task<Comment> GetCommentByIdAsync(int commentId);
         Task AddCommentAsync(Comment comment);
+        Task UpdateCommentAsync(Comment comment);
+
     }
 }

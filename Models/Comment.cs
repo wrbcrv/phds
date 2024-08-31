@@ -5,6 +5,8 @@ namespace Api.Models
 
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsUpdated { get; set; } = false;
         public string Content { get; set; }
         public int AuthorId { get; set; }
         public User Author { get; set; }

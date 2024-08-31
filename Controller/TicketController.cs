@@ -129,5 +129,26 @@ namespace Api.Controller
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpPut("comments/{commentId}")]
+        [Authorize(Roles = "Administrator, Agent, Client")]
+        public async Task<IActionResult> UpdateComment(int commentId, [FromBody] CommentDTO commentDTO)
+        {
+            try
+            {
+                var result = await _ticketService.UpdateCommentAsync(commentId, commentDTO.Content);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

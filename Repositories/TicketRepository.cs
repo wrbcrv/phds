@@ -147,9 +147,23 @@ namespace Api.Repositories
             return await _context.Users.Where(u => ids.Contains(u.Id)).ToListAsync();
         }
 
+        public async Task<Comment> GetCommentByIdAsync(int commentId)
+        {
+            return await _context.Comments
+                .Include(c => c.Author)
+                .Include(c => c.Ticket)
+                .FirstOrDefaultAsync(c => c.Id == commentId);
+        }
+        
         public async Task AddCommentAsync(Comment comment)
         {
             _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateCommentAsync(Comment comment)
+        {
+            _context.Comments.Update(comment);
             await _context.SaveChangesAsync();
         }
 

@@ -99,5 +99,22 @@ namespace Api.Services
 
             return CommentResponseDTO.ValueOf(comment);
         }
+
+        public async Task<CommentResponseDTO> UpdateCommentAsync(int commentId, string newContent)
+        {
+            var comment = await _ticketRepository.GetCommentByIdAsync(commentId);
+            if (comment == null)
+            {
+                throw new KeyNotFoundException("Comentário não encontrado.");
+            }
+
+            comment.Content = newContent;
+            comment.UpdatedAt = DateTime.UtcNow;
+            comment.IsUpdated = true;
+
+            await _ticketRepository.UpdateCommentAsync(comment);
+
+            return CommentResponseDTO.ValueOf(comment);
+        }
     }
 }
