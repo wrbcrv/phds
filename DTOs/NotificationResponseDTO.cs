@@ -6,7 +6,7 @@ namespace Api.DTOs
     {
         public int Id { get; set; }
         public string Message { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string CreatedAt { get; set; }
         public bool IsRead { get; set; }
 
         public static NotificationResponseDTO ValueOf(Notification notification)
@@ -15,7 +15,7 @@ namespace Api.DTOs
             {
                 Id = notification.Id,
                 Message = notification.Message,
-                CreatedAt = notification.CreatedAt,
+                CreatedAt = notification.CreatedAt.ToString("dd/MM/yyyy HH:mm"),
                 IsRead = notification.IsRead
             };
         }

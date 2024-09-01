@@ -32,14 +32,50 @@ namespace Api.Services
             await _notificationRepository.AddAsync(notification);
         }
 
-        public async Task UpdateNotificationAsync(Notification notification)
-        {
-            await _notificationRepository.UpdateAsync(notification);
-        }
-
         public async Task DeleteNotificationAsync(int id)
         {
             await _notificationRepository.DeleteAsync(id);
+        }
+
+        public async Task Notify(Ticket ticket, User author, string commentContent)
+        {
+            var notifiedUserIds = new HashSet<int>();
+
+            var assigneeNotifications = ticket.Assignees
+                .Where(user => user.Id != author.Id)
+                .Select(user => new Notification
+                {
+                    UserId = user.Id,
+                    Message = $"Novo comentário no chamado #{ticket.Id} – '{ticket.Subject}': {commentContent}",
+                    CreatedAt = DateTime.UtcNow,
+                    IsRead = false
+                });
+
+            foreach (var notification in assigneeNotifications)
+            {
+                if (notifiedUserIds.Add(notification.UserId))
+                {
+                    await AddNotificationAsync(notification);
+                }
+            }
+
+            var customerNotifications = ticket.Customers
+                .Where(customer => customer.Id != author.Id)
+                .Select(customer => new Notification
+                {
+                    UserId = customer.Id,
+                    Message = $"Novo comentário no chamado #{ticket.Id} – '{ticket.Subject}': {commentContent}",
+                    CreatedAt = DateTime.UtcNow,
+                    IsRead = false
+                });
+
+            foreach (var notification in customerNotifications)
+            {
+                if (notifiedUserIds.Add(notification.UserId))
+                {
+                    await AddNotificationAsync(notification);
+                }
+            }
         }
     }
 }

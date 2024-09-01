@@ -11,14 +11,14 @@ namespace Api.Services
     {
         private readonly ITicketRepository _ticketRepository;
         private readonly IUserRepository _userRepository;
-        private readonly INotificationRepository _notificationRepository;
+        private readonly INotificationService _notificationService;
         private readonly IMapper _mapper;
 
-        public TicketService(ITicketRepository ticketRepository, IUserRepository userRepository, INotificationRepository notificationRepository, IMapper mapper)
+        public TicketService(ITicketRepository ticketRepository, IUserRepository userRepository, INotificationService notificationRepository, IMapper mapper)
         {
             _ticketRepository = ticketRepository;
             _userRepository = userRepository;
-            _notificationRepository = notificationRepository;
+            _notificationService = notificationRepository;
             _mapper = mapper;
         }
 
@@ -99,20 +99,7 @@ namespace Api.Services
 
             await _ticketRepository.AddCommentAsync(comment);
 
-            foreach (var user in ticket.Assignees)
-            {
-                if (user.Id != authorId)
-                {
-                    var notification = new Notification
-                    {
-                        UserId = user.Id,
-                        Message = $"Novo comentário no chamado '{ticket.Subject}': {content}",
-                        CreatedAt = DateTime.UtcNow,
-                        IsRead = false
-                    };
-                    await _notificationRepository.AddAsync(notification);
-                }
-            }
+            await _notificationService.Notify(ticket, author, content);
 
             return CommentResponseDTO.ValueOf(comment);
         }

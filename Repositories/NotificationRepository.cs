@@ -41,12 +41,6 @@ namespace Api.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Notification notification)
-        {
-            _context.Notifications.Update(notification);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task DeleteAsync(int id)
         {
             var notification = await _context.Notifications
