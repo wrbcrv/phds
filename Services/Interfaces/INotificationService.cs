@@ -1,7 +1,7 @@
 using Api.DTOs;
 using Api.Models;
 
-namespace Api.Services
+namespace Api.Services.Interfaces
 {
     public interface INotificationService
     {

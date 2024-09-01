@@ -6,6 +6,8 @@ using Api.Repositories;
 using Api.Services;
 using System.Text;
 using System.Text.Json.Serialization;
+using Api.Repositories.Interfaces;
+using Api.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

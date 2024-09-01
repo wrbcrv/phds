@@ -1,6 +1,6 @@
-using Api.DTOs;
 using Api.Models;
-using Api.Repositories;
+using Api.Repositories.Interfaces;
+using Api.Services.Interfaces;
 
 namespace Api.Services
 {

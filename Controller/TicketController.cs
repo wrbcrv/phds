@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Api.DTOs;
-using Api.Services;
+using Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Api.Models;
 using System.Security.Claims;

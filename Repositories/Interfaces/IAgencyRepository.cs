@@ -1,6 +1,6 @@
 using Api.Models;
 
-namespace Api.Repositories
+namespace Api.Repositories.Interfaces
 {
     public interface IAgencyRepository
     {

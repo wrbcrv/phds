@@ -1,8 +1,7 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Api.DTOs;
 using Api.Models;
-using Api.Repositories;
+using Api.Repositories.Interfaces;
+using Api.Services.Interfaces;
 using AutoMapper;
 
 namespace Api.Services
