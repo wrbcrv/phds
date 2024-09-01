@@ -61,6 +61,14 @@ export class TicketService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
+  addComment(ticketId: number | string, authorId: number | string, content: string): Observable<any> {
+    const comment = {
+      content: content
+    };
+
+    return this.http.post<any>(`${this.apiUrl}/${ticketId}/comments/${authorId}`, comment);
+  }
+
   getPriorityValues(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/priority/values`);
   }
