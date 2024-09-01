@@ -18,6 +18,7 @@ namespace Api.Repositories
             var users = await _context.Users
             .Include(u => u.Agency)
             .Include(u => u.AssignedTickets)
+            .Include(u => u.Notifications)
             .ToListAsync();
 
             foreach (var user in users)
@@ -33,6 +34,7 @@ namespace Api.Repositories
             var user = await _context.Users
                 .Include(u => u.Agency)
                 .Include(u => u.AssignedTickets)
+                .Include(u => u.Notifications)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user != null)
@@ -67,6 +69,7 @@ namespace Api.Repositories
             var users = await _context.Users
                 .Include(u => u.Agency)
                 .Include(u => u.AssignedTickets)
+                .Include(u => u.Notifications)
                 .Where(u => EF.Functions.Like(u.FullName.ToLower(), $"%{fullName.ToLower()}%"))
                 .ToListAsync();
 
@@ -83,6 +86,7 @@ namespace Api.Repositories
             var user = await _context.Users
                 .Include(u => u.Agency)
                 .Include(u => u.AssignedTickets)
+                .Include(u => u.Notifications)
                 .FirstOrDefaultAsync(u => u.Username == username);
 
             if (user != null)
@@ -98,6 +102,7 @@ namespace Api.Repositories
             var user = await _context.Users
                 .Include(u => u.Agency)
                 .Include(u => u.AssignedTickets)
+                .Include(u => u.Notifications)
                 .SingleOrDefaultAsync(u => u.Email == email);
 
             if (user != null && user.Agency != null)

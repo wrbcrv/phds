@@ -13,5 +13,6 @@ namespace Api.Models
         public ICollection<Ticket> CreatedTickets { get; set; } = new List<Ticket>();
         public ICollection<Ticket> AssignedTickets { get; set; } = new List<Ticket>();
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }

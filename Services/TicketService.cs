@@ -11,12 +11,14 @@ namespace Api.Services
     {
         private readonly ITicketRepository _ticketRepository;
         private readonly IUserRepository _userRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly IMapper _mapper;
 
-        public TicketService(ITicketRepository ticketRepository, IUserRepository userRepository, IMapper mapper)
+        public TicketService(ITicketRepository ticketRepository, IUserRepository userRepository, INotificationRepository notificationRepository, IMapper mapper)
         {
             _ticketRepository = ticketRepository;
             _userRepository = userRepository;
+            _notificationRepository = notificationRepository;
             _mapper = mapper;
         }
 
@@ -97,13 +99,28 @@ namespace Api.Services
 
             await _ticketRepository.AddCommentAsync(comment);
 
+            foreach (var user in ticket.Assignees)
+            {
+                if (user.Id != authorId)
+                {
+                    var notification = new Notification
+                    {
+                        UserId = user.Id,
+                        Message = $"Novo comentário no chamado '{ticket.Subject}': {content}",
+                        CreatedAt = DateTime.UtcNow,
+                        IsRead = false
+                    };
+                    await _notificationRepository.AddAsync(notification);
+                }
+            }
+
             return CommentResponseDTO.ValueOf(comment);
         }
 
         public async Task<CommentResponseDTO> UpdateCommentAsync(int commentId, string newContent, int currentUserId)
         {
             var comment = await _ticketRepository.GetCommentByIdAsync(commentId) ?? throw new KeyNotFoundException("Comentário não encontrado.");
-            
+
             if (comment.AuthorId != currentUserId)
             {
                 throw new UnauthorizedAccessException("Você não tem permissão para editar este comentário.");
