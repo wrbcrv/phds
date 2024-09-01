@@ -18,7 +18,7 @@ namespace Api.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAgencies()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -32,7 +32,7 @@ namespace Api.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAgency(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
@@ -51,12 +51,12 @@ namespace Api.Controller
 
         [HttpPost]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> CreateAgency(AgencyDTO agencyDTO)
+        public async Task<IActionResult> Create(AgencyDTO agencyDTO)
         {
             try
             {
                 var createdAgency = await _agencyService.CreateAsync(agencyDTO);
-                return CreatedAtAction(nameof(GetAgency), new { id = createdAgency.Id }, createdAgency);
+                return CreatedAtAction(nameof(GetById), new { id = createdAgency.Id }, createdAgency);
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace Api.Controller
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> UpdateAgency(int id, AgencyDTO agencyDTO)
+        public async Task<IActionResult> Update(int id, AgencyDTO agencyDTO)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace Api.Controller
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> DeleteAgency(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {

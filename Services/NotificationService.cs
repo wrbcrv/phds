@@ -1,3 +1,4 @@
+using Api.DTOs;
 using Api.Models;
 using Api.Repositories;
 
@@ -12,27 +13,12 @@ namespace Api.Services
             _notificationRepository = notificationRepository;
         }
 
-        public async Task<Notification> GetNotificationByIdAsync(int id)
-        {
-            return await _notificationRepository.GetByIdAsync(id);
-        }
-
-        public async Task<IEnumerable<Notification>> GetAllNotificationsAsync()
-        {
-            return await _notificationRepository.GetAllAsync();
-        }
-
-        public async Task<IEnumerable<Notification>> GetNotificationsByUserIdAsync(int userId)
-        {
-            return await _notificationRepository.GetByUserIdAsync(userId);
-        }
-
-        public async Task AddNotificationAsync(Notification notification)
+        public async Task AddAsync(Notification notification)
         {
             await _notificationRepository.AddAsync(notification);
         }
 
-        public async Task DeleteNotificationAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             await _notificationRepository.DeleteAsync(id);
         }
@@ -55,7 +41,7 @@ namespace Api.Services
             {
                 if (notifiedUserIds.Add(notification.UserId))
                 {
-                    await AddNotificationAsync(notification);
+                    await AddAsync(notification);
                 }
             }
 
@@ -73,7 +59,7 @@ namespace Api.Services
             {
                 if (notifiedUserIds.Add(notification.UserId))
                 {
-                    await AddNotificationAsync(notification);
+                    await AddAsync(notification);
                 }
             }
         }

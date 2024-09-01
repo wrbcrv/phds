@@ -11,14 +11,16 @@ namespace Api.Controller
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, INotificationService notificationService)
         {
             _userService = userService;
+            _notificationService = notificationService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -32,7 +34,7 @@ namespace Api.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
@@ -51,7 +53,7 @@ namespace Api.Controller
 
         [HttpPost]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> CreateUser(UserDTO userDTO)
+        public async Task<IActionResult> Create(UserDTO userDTO)
         {
             try
             {
@@ -66,7 +68,7 @@ namespace Api.Controller
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> UpdateUser(int id, UserDTO userDTO)
+        public async Task<IActionResult> Update(int id, UserDTO userDTO)
         {
             try
             {
@@ -81,7 +83,7 @@ namespace Api.Controller
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -95,7 +97,7 @@ namespace Api.Controller
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> SearchUsersByFullName(string name)
+        public async Task<IActionResult> SearchByFullName(string name)
         {
             try
             {
@@ -104,8 +106,23 @@ namespace Api.Controller
                 {
                     return NotFound("No users found with the specified name.");
                 }
-                
+
                 return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("notifications/{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeleteNotification(int id)
+        {
+            try
+            {
+                await _notificationService.DeleteAsync(id);
+                return NoContent();
             }
             catch (Exception ex)
             {

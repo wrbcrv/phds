@@ -113,7 +113,6 @@ namespace Api.Services
             return UserResponseDTO.ValueOf(user);
         }
 
-
         public async Task<UserResponseDTO> FindByUsernameAndPasswordAsync(string username, string password)
         {
             var user = await _userRepository.FindByUsernameAsync(username);
