@@ -32,5 +32,12 @@ namespace Api.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<Notification>> GetByUserIdAsync(int userId)
+        {
+            return await _context.Notifications
+                .Where(n => n.UserId == userId)
+                .ToListAsync();
+        }
     }
 }

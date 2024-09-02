@@ -11,7 +11,6 @@ namespace Api.DTOs
         public string Role { get; set; }
         public AgencyHierarchyDTO Agency { get; set; }
         public List<AssignedTicketResponseDTO> AssignedTickets { get; set; } = new List<AssignedTicketResponseDTO>();
-        public List<NotificationResponseDTO> Notifications { get; set; } = new List<NotificationResponseDTO>();
 
         public static UserResponseDTO ValueOf(User user)
         {
@@ -23,8 +22,7 @@ namespace Api.DTOs
                 Email = user.Email,
                 Role = user.Role.ToString(),
                 Agency = user.Agency != null ? AgencyHierarchyDTO.ValueOf(user.Agency) : null,
-                AssignedTickets = user.AssignedTickets?.Select(AssignedTicketResponseDTO.FromTicket).ToList(),
-                Notifications = user.Notifications.Select(NotificationResponseDTO.ValueOf).ToList()
+                AssignedTickets = user.AssignedTickets?.Select(AssignedTicketResponseDTO.FromTicket).ToList()
             };
         }
     }

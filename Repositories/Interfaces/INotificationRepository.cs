@@ -6,5 +6,6 @@ namespace Api.Repositories.Interfaces
     {
         Task AddAsync(Notification notification);
         Task DeleteAsync(int id);
+        Task<IEnumerable<Notification>> GetByUserIdAsync(int userId);
     }
 }

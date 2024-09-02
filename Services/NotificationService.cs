@@ -1,3 +1,4 @@
+using Api.DTOs;
 using Api.Models;
 using Api.Repositories.Interfaces;
 using Api.Services.Interfaces;
@@ -23,6 +24,12 @@ namespace Api.Services
             await _notificationRepository.DeleteAsync(id);
         }
 
+        public async Task<IEnumerable<NotificationResponseDTO>> GetByUserIdAsync(int userId)
+        {
+            var notifications = await _notificationRepository.GetByUserIdAsync(userId);
+            return notifications.Select(NotificationResponseDTO.ValueOf);
+        }
+
         public async Task Notify(Ticket ticket, User author, string commentContent)
         {
             var notifiedUserIds = new HashSet<int>();
@@ -32,7 +39,7 @@ namespace Api.Services
                 .Select(user => new Notification
                 {
                     UserId = user.Id,
-                    Message = $"Novo comentário no chamado #{ticket.Id} – '{ticket.Subject}': {commentContent}",
+                    Message = $"Novo comentário de {user.FullName} no chamado #{ticket.Id} – \"{ticket.Subject}\": {commentContent}",
                     CreatedAt = DateTime.UtcNow,
                     IsRead = false
                 });
@@ -50,7 +57,7 @@ namespace Api.Services
                 .Select(customer => new Notification
                 {
                     UserId = customer.Id,
-                    Message = $"Novo comentário no chamado #{ticket.Id} – '{ticket.Subject}': {commentContent}",
+                    Message = $"Novo comentário {customer.FullName} de no chamado #{ticket.Id} – \"{ticket.Subject}\": {commentContent}",
                     CreatedAt = DateTime.UtcNow,
                     IsRead = false
                 });

@@ -8,5 +8,6 @@ namespace Api.Services.Interfaces
         Task AddAsync(Notification notification);
         Task DeleteAsync(int id);
         Task Notify(Ticket ticket, User author, string commentContent);
+        Task<IEnumerable<NotificationResponseDTO>> GetByUserIdAsync(int userId);
     }
 }

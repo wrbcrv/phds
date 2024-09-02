@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Api.DTOs;
 using Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -123,6 +124,22 @@ namespace Api.Controller
             {
                 await _notificationService.DeleteAsync(id);
                 return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("notifications")]
+        public async Task<IActionResult> GetNotifications()
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var notifications = await _notificationService.GetByUserIdAsync(userId);
+                return Ok(notifications);
             }
             catch (Exception ex)
             {
