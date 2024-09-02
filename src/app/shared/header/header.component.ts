@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { DropdownService } from '../../services/dropdown.service';
 
 @Component({
   selector: 'phds-header',
@@ -10,21 +12,25 @@ import { AuthService } from '../../services/auth.service';
     CommonModule
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
   user: any;
   isHomeRoute: boolean = false;
-  isDropdownOpen: boolean = false;
+  notifications: any[] = [];
 
   constructor(
     private authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    private userService: UserService,
+    private dropdownService: DropdownService
+  ) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe(
       (user) => {
         this.user = user;
+        this.loadNotifications();
       }
     );
 
@@ -35,6 +41,17 @@ export class HeaderComponent implements OnInit {
     this.authService.getUserInfo().subscribe();
   }
 
+  loadNotifications(): void {
+    this.userService.getNotifications().subscribe(
+      (res) => {
+        this.notifications = res;
+      },
+      (err) => {
+        // Handle errors here
+      }
+    );
+  }
+
   logout(): void {
     this.authService.logout().subscribe(
       (res) => {
@@ -43,17 +60,43 @@ export class HeaderComponent implements OnInit {
     );
   }
 
-  toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
+  toggleUserDropdown(): void {
+    if (this.dropdownService.isOpen('userDropdown')) {
+      this.dropdownService.closeDropdown();
+    } else {
+      this.dropdownService.setOpenDropdown('userDropdown');
+    }
+  }
+
+  toggleNotificationsDropdown(): void {
+    if (this.dropdownService.isOpen('notificationsDropdown')) {
+      this.dropdownService.closeDropdown();
+    } else {
+      this.dropdownService.setOpenDropdown('notificationsDropdown');
+    }
   }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event): void {
     const target = event.target as HTMLElement;
-    const clickedInside = target.closest('.user-info');
-    if (!clickedInside) {
-      this.isDropdownOpen = false;
+    const clickedInsideUser = target.closest('.user-info');
+    const clickedInsideNotifications = target.closest('.relative.cursor-pointer');
+
+    if (!clickedInsideUser && this.dropdownService.isOpen('userDropdown')) {
+      this.dropdownService.closeDropdown();
     }
+
+    if (!clickedInsideNotifications && this.dropdownService.isOpen('notificationsDropdown')) {
+      this.dropdownService.closeDropdown();
+    }
+  }
+
+  isNotificationsDropdownOpen(): boolean {
+    return this.dropdownService.isOpen('notificationsDropdown');
+  }
+  
+  isUserDropdownOpen(): boolean {
+    return this.dropdownService.isOpen('userDropdown');
   }
 
   getInitials(fullName: string): string {

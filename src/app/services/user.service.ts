@@ -14,10 +14,26 @@ export class UserService {
   ) { }
 
   findAll(page: number, size: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?page=${page}&size=${size}`, { withCredentials: true });
+    return this.http.get<any[]>(`${this.apiUrl}?page=${page}&size=${size}`, {
+      withCredentials: true
+    });
   }
 
   findByFullName(name: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/search?name=${name}`, { withCredentials: true });
+    return this.http.get<any[]>(`${this.apiUrl}/search?name=${name}`, {
+      withCredentials: true
+    });
+  }
+
+  getNotifications(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/notifications`, {
+      withCredentials: true
+    });
+  }
+
+  deleteNotification(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/notifications/${id}`, {
+      withCredentials: true
+    });
   }
 }

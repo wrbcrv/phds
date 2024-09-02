@@ -1,27 +1,56 @@
 @if (!isHomeRoute) {
-  <header class="bg-gray-800 text-white p-4 flex justify-end items-center">
-    <div class="flex items-center gap-8">
-      <div class="relative cursor-pointer w-9 h-9 flex items-center justify-center hover:bg-gray-700 rounded-full">
-        <i class="fa-regular fa-bell text-xl"></i>
-        @if (user && user.notifications && user.notifications.length > 0) {
-          <span class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">{{ user.notifications.length }}</span>
+  <header class="bg-gray-800 text-white p-4 flex justify-between items-center md:justify-end select-none">
+    <div class="flex items-center justify-between w-full md:w-auto gap-4 md:gap-8">
+      <div class="relative cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-700" [ngClass]="{'bg-gray-700': isNotificationsDropdownOpen()}" (click)="toggleNotificationsDropdown()">
+        <i [ngClass]="{'fa-regular': !isNotificationsDropdownOpen(), 'fa-solid': isNotificationsDropdownOpen(), 'fa-bell': true}" class="text-xl"></i>
+        @if (notifications.length) {
+          <span class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">{{ notifications.length }}</span>
+        }
+        @if (isNotificationsDropdownOpen()) {
+          <div class="absolute top-12 right-0 bg-white text-gray-800 shadow-lg z-50 text-left rounded-xl overflow-hidden w-96 md:w-96 transform translate-x-0 md:translate-x-0">
+            <h1 class="p-5">Notificações</h1>
+            <div class="p-0 m-0 max-h-60 md:max-h-80 overflow-y-scroll">
+              @if (notifications.length > 0) {
+                <div>
+                  @for (notification of notifications; track $index) {
+                    <div class="flex gap-4 py-4 px-4 cursor-pointer hover:bg-gray-100">
+                      <div class="flex items-center justify-center min-w-8 h-8 bg-green-300 rounded-full">
+                        <i class="fa-regular fa-comments text-md text-green-500"></i>
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="text-sm mb-2 line-clamp-none">{{ notification.message }}</span>
+                        <span class="text-xs">{{ notification.createdAt }}</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
         }
       </div>
       <div class="user-info relative flex items-center">
         @if (user) {
-          <div class="flex justify-center items-center cursor-pointer gap-2" (click)="toggleDropdown()">
-            <div class="flex flex-col items-start">
-              <span class="text-sm font-bold">{{ getNameAndSurname(user.fullName) }}</span>
-              <span class="self-end text-sm text-gray-400">{{ user.role }}</span>
-            </div>
-            <div class="cursor-pointer w-12 h-12 bg-gray-600 text-white rounded-full flex justify-center items-center text-base font-bold" >{{ getInitials(user.fullName) }}</div>
-            @if (isDropdownOpen) {
-              <div class="absolute top-14 right-0 bg-white text-gray-800 shadow-lg z-50 w-48 text-left rounded-lg overflow-hidden">
-                <ul class="list-none p-0 m-0"><li class="py-2 px-4 cursor-pointer hover:bg-gray-100"><a>Configurações</a></li></ul>
-                <ul class="list-none p-0 m-0"><li class="py-2 px-4 cursor-pointer hover:bg-gray-100" (click)="logout()"><a>Logout</a></li></ul>
-              </div>
-            }
+        <div class="flex items-center cursor-pointer gap-2" (click)="toggleUserDropdown()">
+          <div class="hidden md:flex flex-col items-start">
+            <span class="text-sm font-bold">{{ getNameAndSurname(user.fullName) }}</span>
+            <span class="self-end text-sm text-gray-400">{{ user.role }}</span>
           </div>
+          <div
+            class="cursor-pointer w-9 h-9 md:w-12 md:h-12 bg-gray-600 text-white rounded-full flex justify-center items-center text-sm md:text-base font-bold">
+            {{ getInitials(user.fullName) }}</div>
+        </div>
+        @if (isUserDropdownOpen()) {
+        <div
+          class="absolute top-14 right-0 bg-white text-gray-800 shadow-lg z-50 w-48 md:w-64 h-auto text-left rounded-lg overflow-hidden">
+          <h1 class="p-4">Conta</h1>
+
+          <ul class="list-none p-0 m-0">
+            <li class="py-2 px-4 cursor-pointer hover:bg-gray-100"><a>Configurações</a></li>
+            <li class="py-2 px-4 cursor-pointer hover:bg-gray-100" (click)="logout()"><a>Logout</a></li>
+          </ul>
+        </div>
+        }
         }
       </div>
     </div>
