@@ -5,6 +5,7 @@ namespace Api.DTOs
     public class NotificationResponseDTO
     {
         public int Id { get; set; }
+        public int TicketId { get; set; }
         public string Message { get; set; }
         public string CreatedAt { get; set; }
         public bool IsRead { get; set; }
@@ -14,6 +15,7 @@ namespace Api.DTOs
             return new NotificationResponseDTO
             {
                 Id = notification.Id,
+                TicketId = notification.TicketId,
                 Message = notification.Message,
                 CreatedAt = notification.CreatedAt.ToString("dd/MM/yyyy HH:mm"),
                 IsRead = notification.IsRead

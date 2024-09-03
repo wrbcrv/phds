@@ -39,6 +39,7 @@ namespace Api.Services
                 .Select(user => new Notification
                 {
                     UserId = user.Id,
+                    TicketId = ticket.Id,
                     Message = $"Novo comentário de {user.FullName} no chamado #{ticket.Id} – \"{ticket.Subject}\": {commentContent}",
                     CreatedAt = DateTime.UtcNow,
                     IsRead = false
@@ -57,6 +58,7 @@ namespace Api.Services
                 .Select(customer => new Notification
                 {
                     UserId = customer.Id,
+                    TicketId = ticket.Id,
                     Message = $"Novo comentário {customer.FullName} de no chamado #{ticket.Id} – \"{ticket.Subject}\": {commentContent}",
                     CreatedAt = DateTime.UtcNow,
                     IsRead = false
