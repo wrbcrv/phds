@@ -13,7 +13,7 @@
               @if (notifications.length > 0) {
                 <div>
                   @for (notification of notifications; track $index) {
-                    <div class="flex gap-4 py-4 px-4 cursor-pointer hover:bg-gray-100">
+                    <a [routerLink]="['/ticket', notification.ticketId]" class="flex gap-4 py-4 px-4 cursor-pointer hover:bg-gray-100">
                       <div class="flex items-center justify-center min-w-8 h-8 bg-green-300 rounded-full">
                         <i class="fa-regular fa-comments text-md text-green-500"></i>
                       </div>
@@ -21,7 +21,7 @@
                         <span class="text-sm mb-2 line-clamp-none">{{ notification.message }}</span>
                         <span class="text-xs">{{ notification.createdAt }}</span>
                       </div>
-                    </div>
+                    </a>
                   }
                 </div>
               }
@@ -31,26 +31,23 @@
       </div>
       <div class="user-info relative flex items-center">
         @if (user) {
-        <div class="flex items-center cursor-pointer gap-2" (click)="toggleUserDropdown()">
-          <div class="hidden md:flex flex-col items-start">
-            <span class="text-sm font-bold">{{ getNameAndSurname(user.fullName) }}</span>
-            <span class="self-end text-sm text-gray-400">{{ user.role }}</span>
+          <div class="flex items-center cursor-pointer gap-2" (click)="toggleUserDropdown()">
+            <div class="hidden md:flex flex-col items-start">
+              <span class="text-sm font-bold">{{ getNameAndSurname(user.fullName) }}</span>
+              <span class="self-end text-sm text-gray-400">{{ user.role }}</span>
+            </div>
+            <div class="cursor-pointer w-9 h-9 md:w-12 md:h-12 bg-gray-600 text-white rounded-full flex justify-center items-center text-sm md:text-base font-bold">{{ getInitials(user.fullName) }}</div>
           </div>
-          <div
-            class="cursor-pointer w-9 h-9 md:w-12 md:h-12 bg-gray-600 text-white rounded-full flex justify-center items-center text-sm md:text-base font-bold">
-            {{ getInitials(user.fullName) }}</div>
-        </div>
-        @if (isUserDropdownOpen()) {
-        <div
-          class="absolute top-14 right-0 bg-white text-gray-800 shadow-lg z-50 w-48 md:w-64 h-auto text-left rounded-lg overflow-hidden">
-          <h1 class="p-4">Conta</h1>
-
-          <ul class="list-none p-0 m-0">
-            <li class="py-2 px-4 cursor-pointer hover:bg-gray-100"><a>Configurações</a></li>
-            <li class="py-2 px-4 cursor-pointer hover:bg-gray-100" (click)="logout()"><a>Logout</a></li>
-          </ul>
-        </div>
-        }
+          @if (isUserDropdownOpen()) {
+            <div
+              class="absolute top-14 right-0 bg-white text-gray-800 shadow-lg z-50 w-48 md:w-64 h-auto text-left rounded-lg overflow-hidden">
+              <h1 class="p-4">Conta</h1>
+              <div class="p-0 m-0">
+                <div class="py-2 px-4 cursor-pointer hover:bg-gray-100"><a>Configurações</a></div>
+                <div class="py-2 px-4 cursor-pointer hover:bg-gray-100" (click)="logout()"><a>Logout</a></div>
+              </div>
+            </div>
+          }
         }
       </div>
     </div>

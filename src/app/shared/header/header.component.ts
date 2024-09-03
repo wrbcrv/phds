@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { DropdownService } from '../../services/dropdown.service';
@@ -9,7 +9,8 @@ import { DropdownService } from '../../services/dropdown.service';
   selector: 'phds-header',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
@@ -47,7 +48,7 @@ export class HeaderComponent implements OnInit {
         this.notifications = res;
       },
       (err) => {
-        // Handle errors here
+        
       }
     );
   }
