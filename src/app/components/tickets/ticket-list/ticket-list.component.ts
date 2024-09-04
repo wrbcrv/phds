@@ -20,7 +20,7 @@ import { PaginationComponent } from '../../../shared/pagination/pagination.compo
     SelectComponent,
     MessagePreviewComponent,
     RouterModule,
-    PaginationComponent // Importa o novo componente de paginação
+    PaginationComponent
   ],
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']
@@ -115,5 +115,4 @@ export class TicketListComponent implements OnInit {
     }
     return names.reverse().join(' > ');
   }
-
 }

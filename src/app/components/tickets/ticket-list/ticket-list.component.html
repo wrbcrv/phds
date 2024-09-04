@@ -1,81 +1,81 @@
 <div class="mx-auto my-5 w-fit">
   <h2 class="mb-5 text-gray-800">Todos os Chamados ({{ tickets.length }})</h2>
   <div class="mb-4 flex justify-center items-center gap-4 text-sm">
-    <phds-select [placeholder]="'Status'" [options]="statusOptions" [selectedValue]="selectedStatus" (valueChange)="onStatusChange($event)"></phds-select>
-    <phds-select [placeholder]="'Prioridade'" [options]="priorityOptions" [selectedValue]="selectedPriority" (valueChange)="onPriorityChange($event)"></phds-select>
+    <phds-select [placeholder]="'Status'" [options]="statusOptions" [selectedValue]="selectedStatus" (valueChange)="onStatusChange($event)" />
+    <phds-select [placeholder]="'Prioridade'" [options]="priorityOptions" [selectedValue]="selectedPriority" (valueChange)="onPriorityChange($event)" />
   </div>
-  <table class="table-auto border-collapse w-[1664px] min-w-[1664px] overflow-hidden rounded-t-2xl">
-    <thead>
-      <tr class="h-10">
-        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">ID</th>
-        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Assunto</th>
-        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Criado em</th>
-        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Status</th>
-        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Prioridade</th>
-        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Localização</th>
-        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Cliente(s)</th>
-        <th class="px-5 py-2 bg-white text-xs font-bold text-gray-600 text-left">Responsável(s)</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (ticket of tickets; track $index) {
-        <tr class="border-b border-gray-300 text-gray-800 h-10 cursor-pointer hover:bg-gray-100 group">
-          <td class="px-5 py-2 bg-gray-100 text-sm">{{ ticket.id }}</td>
-          <td class="px-5 py-2 bg-gray-100 text-sm max-w-xs w-80 overflow-hidden">
-            <div class="flex items-center justify-between">
-              <a class="truncate text-blue-900 font-semibold" title="{{ ticket.subject }}" [routerLink]="['/ticket', ticket.id]">{{ ticket.subject }}</a>
-              <div title="Pré visualizar" (click)="preview(ticket)" class="ml-2 hidden group-hover:block">
-                <i class="fa-solid fa-bars-staggered"></i>
-              </div>
-            </div>
-          </td>
-          <td class="px-5 py-2 bg-gray-100 text-sm">{{ ticket.createdAt }}</td>
-          <td class="px-5 py-2 bg-gray-100 text-sm">
-            <span  class="inline-block w-2.5 h-2.5 rounded-full mr-1"
-              [ngClass]="{
-                'bg-blue-400': ticket.status === 'Open',
-                'bg-yellow-300': ticket.status === 'InProgress',
-                'bg-green-500': ticket.status === 'Resolved',
-                'bg-gray-400': ticket.status === 'Closed'
-              }">
-            </span>
-            <span>{{ ticket.status }}</span>
-          </td>
-          <td class="px-5 py-2 bg-gray-100 text-sm">
-            <span 
-              class="inline-block w-2.5 h-2.5 rounded-full mr-1"
-              [ngClass]="{
-                'bg-green-500': ticket.priority === 'Low',
-                'bg-orange-400': ticket.priority === 'Medium',
-                'bg-red-500': ticket.priority === 'High',
-                'bg-red-700': ticket.priority === 'Urgent'
-              }">
-            </span>
-            <span>{{ ticket.priority }}</span>
-          </td>
-          <td class="px-5 py-2 bg-gray-100 text-sm max-w-xs overflow-hidden text-ellipsis whitespace-nowrap" title="{{ getLocationHierarchy(ticket.location) }}">{{ getLocationHierarchy(ticket.location) }}</td>
-          <td class="px-5 py-2 bg-gray-100 text-sm">
-            <div class="flex items-center">
-              <span>{{ ticket.customers[0].fullName }}</span>
-              @if (ticket.customers.length > 1) {
-                <span class="ml-2 text-blue-900 rounded-full text-xs font-bold font-robotoMono">+{{ ticket.customers.length - 1 }}</span>
-              }
-            </div>
-          </td>
-          <td class="px-5 py-2 bg-gray-100 text-sm">
-            <div class="flex items-center">
-              <span>{{ ticket.assignees[0].fullName }}</span>
-              @if (ticket.assignees.length > 1) {
-                <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.assignees.length - 1 }}</span>
-              }
-            </div>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
-  <phds-pagination [page]="page" [size]="size" [totalItems]="totalItems" [pageSizeOptions]="pageSizeOptions" (pageChange)="goToPage($event)" (sizeChange)="onPageSizeChange($event)"></phds-pagination>
+  <div class="px-4 py-2 flex items-center gap-4">
+    <span class="text-xs font-bold text-gray-600 w-16 text-left">ID</span>
+    <span class="text-xs font-bold text-gray-600 w-80 text-left">Assunto</span>
+    <span class="text-xs font-bold text-gray-600 w-36 text-left">Criado em</span>
+    <span class="text-xs font-bold text-gray-600 w-16 text-left">Status</span>
+    <span class="text-xs font-bold text-gray-600 w-20 text-left">Prioridade</span>
+    <span class="text-xs font-bold text-gray-600 w-56 text-left">Localização</span>
+    <span class="text-xs font-bold text-gray-600 w-64 text-left">Cliente(s)</span>
+    <span class="text-xs font-bold text-gray-600 w-64 text-left">Responsável(is)</span>
+    <span class="text-xs font-bold text-gray-600 w-24 text-left">Ações</span>
+  </div>
+  <div class="space-y-2 mt-2">
+    @for (ticket of tickets; track $index) {
+      <div class="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:shadow-lg transition-shadow flex items-center gap-4">
+        <span class="text-sm w-16 whitespace-nowrap overflow-hidden text-ellipsis text-left">{{ ticket.id }}</span>
+
+        <div class="w-80 whitespace-nowrap overflow-hidden text-ellipsis text-left">
+          <a class="text-sm font-semibold text-blue-900 truncate" [routerLink]="['/ticket', ticket.id]">
+            {{ ticket.subject }}
+          </a>
+        </div>
+        <span class="text-sm w-36 whitespace-nowrap overflow-hidden text-ellipsis text-left">{{ ticket.createdAt }}</span>
+        <div class="flex items-center text-sm w-16 whitespace-nowrap overflow-hidden text-ellipsis text-left">
+          <span class="inline-block w-2 h-2 rounded-full mr-1"
+            [ngClass]="{
+              'bg-blue-400': ticket.status === 'Open',
+              'bg-yellow-300': ticket.status === 'InProgress',
+              'bg-green-500': ticket.status === 'Resolved',
+              'bg-gray-400': ticket.status === 'Closed'
+            }">
+          </span>
+          <span>{{ ticket.status }}</span>
+        </div>
+        <div class="flex items-center text-sm w-20 whitespace-nowrap overflow-hidden text-ellipsis text-left">
+          <span class="inline-block w-2 h-2 rounded-full mr-1"
+            [ngClass]="{
+              'bg-green-500': ticket.priority === 'Low',
+              'bg-orange-400': ticket.priority === 'Medium',
+              'bg-red-500': ticket.priority === 'High',
+              'bg-red-700': ticket.priority === 'Urgent'
+            }">
+          </span>
+          <span>{{ ticket.priority }}</span>
+        </div>
+        <span class="text-sm w-56 whitespace-nowrap overflow-hidden text-ellipsis text-left">
+          {{ getLocationHierarchy(ticket.location) }}
+        </span>
+        <div class="flex items-center w-64 whitespace-nowrap overflow-hidden text-ellipsis text-left">
+          <span class="text-sm">{{ ticket.customers[0].fullName }}</span>
+          @if (ticket.customers.length > 1) {
+            <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.customers.length - 1 }}</span>
+          }
+        </div>
+        <div class="flex items-center w-64 whitespace-nowrap overflow-hidden text-ellipsis text-left">
+          <span class="text-sm">{{ ticket.assignees[0].fullName }}</span>
+          @if (ticket.assignees.length > 1) {
+            <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.assignees.length - 1 }}</span>
+          }
+        </div>
+        <div class="flex gap-2">
+          <div (click)="preview(ticket)" class="w-8 h-8 flex justify-center items-center text-blue-900 hover:bg-blue-100 rounded-full text-sm text-right">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </div>
+          <div class="w-8 h-8 flex justify-center items-center text-blue-900 hover:bg-blue-100 rounded-full text-sm text-right">
+            <i class="fa-solid fa-pen"></i>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+  <phds-pagination [page]="page" [size]="size" [totalItems]="totalItems" [pageSizeOptions]="pageSizeOptions" (pageChange)="goToPage($event)" (sizeChange)="onPageSizeChange($event)" />
 </div>
 @if (isModalOpen) {
-  <app-message-preview [ticket]="selectedTicket" [userId]="currentUserId" (close)="closeModal()"></app-message-preview>
+  <app-message-preview [ticket]="selectedTicket" [userId]="currentUserId" (close)="closeModal()" />
 }
