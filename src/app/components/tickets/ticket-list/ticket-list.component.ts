@@ -9,6 +9,7 @@ import { MessagePreviewComponent } from '../message-preview/message-preview.comp
 import { PRIORITY_OPTIONS } from '../../../models/priority.options';
 import { STATUS_OPTIONS } from '../../../models/status.options';
 import { PAGE_SIZE_OPTIONS } from '../../../models/page-size.options';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-ticket-list',
@@ -19,6 +20,7 @@ import { PAGE_SIZE_OPTIONS } from '../../../models/page-size.options';
     SelectComponent,
     MessagePreviewComponent,
     RouterModule,
+    PaginationComponent // Importa o novo componente de paginação
   ],
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']
@@ -31,7 +33,7 @@ export class TicketListComponent implements OnInit {
   pageSizeOptions = PAGE_SIZE_OPTIONS;
   statusOptions = STATUS_OPTIONS;
   priorityOptions = PRIORITY_OPTIONS;
-  selectedStatus: string | null = null
+  selectedStatus: string | null = null;
   selectedPriority: string | null = null;
   selectedTicket: any;
   dropdownOpen: boolean = false;
@@ -86,20 +88,6 @@ export class TicketListComponent implements OnInit {
     this.loadTickets();
   }
 
-  prevPage(): void {
-    if (this.page > 1) {
-      this.page--;
-      this.loadTickets();
-    }
-  }
-
-  nextPage(): void {
-    if (this.page * this.size < this.totalItems) {
-      this.page++;
-      this.loadTickets();
-    }
-  }
-
   goToPage(page: number): void {
     this.page = page;
     this.loadTickets();
@@ -115,38 +103,6 @@ export class TicketListComponent implements OnInit {
     this.selectedTicket = null;
   }
 
-  get totalPages(): number {
-    return Math.ceil(this.totalItems / this.size);
-  }
-
-  get pages(): number[] {
-    const total = this.totalPages;
-    let start = Math.max(1, this.page - 1);
-    let end = Math.min(total, this.page + 1);
-
-    if (this.page === 1) {
-      end = Math.min(total, 3);
-    }
-
-    if (this.page === total) {
-      start = Math.max(1, total - 2);
-    }
-
-    const pages: number[] = [];
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    return pages;
-  }
-
-  get paginationText(): string {
-    const start = (this.page - 1) * this.size + 1;
-    const end = Math.min(this.page * this.size, this.totalItems);
-    return `${start} – ${end} de ${this.totalItems}`;
-  }
-
   getLocationName(location: any): string {
     return location ? location.name : '';
   }
@@ -159,4 +115,5 @@ export class TicketListComponent implements OnInit {
     }
     return names.reverse().join(' > ');
   }
+
 }

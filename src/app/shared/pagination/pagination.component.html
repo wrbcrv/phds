@@ -1,0 +1,16 @@
+<div class="flex justify-between items-center h-16 bg-white px-5 rounded-b-2xl text-sm">
+  <div class="flex items-center space-x-2">
+    <label for="pageSize">Itens por página: </label>
+    <phds-select [options]="pageSizeOptions" [selectedValue]="size" (valueChange)="onPageSizeChange($event)"></phds-select>
+  </div>
+  <div class="flex items-center space-x-2">
+    <div class="mr-5">{{ paginationText }}</div>
+    <div class="flex space-x-2">
+      <button class="flex items-center justify-center bg-blue-500 w-8 h-8 text-white rounded-full disabled:bg-gray-400" (click)="prevPage()" [disabled]="page === 1"><i class="fa-solid fa-chevron-left"></i></button>
+      @for (pageNum of pages; track $index) {
+        <button class="flex items-center justify-center bg-blue-500 w-8 h-8 text-white rounded-full disabled:bg-gray-400" (click)="goToPage(pageNum)" [disabled]="pageNum === page">{{ pageNum }}</button>
+      }
+      <button class="flex items-center justify-center bg-blue-500 w-8 h-8 text-white rounded-full disabled:bg-gray-400" (click)="nextPage()" [disabled]="page * size >= totalItems"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
