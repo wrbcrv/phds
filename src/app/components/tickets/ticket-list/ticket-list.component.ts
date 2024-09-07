@@ -115,4 +115,5 @@ export class TicketListComponent implements OnInit {
     }
     return names.reverse().join(' > ');
   }
+
 }
