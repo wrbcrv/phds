@@ -12,14 +12,14 @@ export const routes: Routes = [
     title: 'Entrar • PHDS'
   },
   {
-    path: 'ticket-form',
-    component: TicketFormComponent,
-    title: 'Novo chamado • PHDS'
-  },
-  {
-    path: 'ticket-list',
+    path: 'tickets',
     component: TicketListComponent,
     title: 'Chamados • PHDS'
+  },
+  {
+    path: 'ticket/create',
+    component: TicketFormComponent,
+    title: 'Novo chamado • PHDS'
   },
   {
     path: 'ticket/:id',

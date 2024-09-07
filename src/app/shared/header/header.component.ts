@@ -48,9 +48,17 @@ export class HeaderComponent implements OnInit {
         this.notifications = res;
       },
       (err) => {
-        
+
       }
     );
+  }
+
+  deleteNotification(id: number): void {
+    this.userService.deleteNotification(id).subscribe(
+      (res) => {
+        this.loadNotifications();
+      }
+    )
   }
 
   logout(): void {
@@ -95,7 +103,7 @@ export class HeaderComponent implements OnInit {
   isNotificationsDropdownOpen(): boolean {
     return this.dropdownService.isOpen('notificationsDropdown');
   }
-  
+
   isUserDropdownOpen(): boolean {
     return this.dropdownService.isOpen('userDropdown');
   }

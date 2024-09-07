@@ -8,22 +8,31 @@
         }
         @if (isNotificationsDropdownOpen()) {
           <div class="absolute top-12 right-0 bg-white text-gray-800 shadow-lg z-50 text-left rounded-xl overflow-hidden w-96 md:w-96 transform translate-x-0 md:translate-x-0">
-            <h1 class="p-5">Notificações</h1>
+            <div class="flex justify-between items-center p-5">
+              <h1>Notificações</h1>
+              <!-- <button class="text-sm bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Deletar Todas</button> -->
+            </div>
             <div class="p-0 m-0 max-h-60 md:max-h-80 overflow-y-scroll">
               @if (notifications.length > 0) {
                 <div>
                   @for (notification of notifications; track $index) {
-                    <a [routerLink]="['/ticket', notification.ticketId]" class="flex gap-4 py-4 px-4 cursor-pointer hover:bg-gray-100">
-                      <div class="flex items-center justify-center min-w-8 h-8 bg-green-300 rounded-full">
-                        <i class="fa-regular fa-comments text-md text-green-500"></i>
-                      </div>
-                      <div class="flex flex-col">
-                        <span class="text-sm mb-2 line-clamp-none">{{ notification.message }}</span>
-                        <span class="text-xs">{{ notification.createdAt }}</span>
-                      </div>
-                    </a>
+                    <div class="flex gap-2 justify-between items-center py-4 px-4 hover:bg-gray-100">
+                      <a [routerLink]="['/ticket', notification.ticketId]" class="flex gap-4 cursor-pointer">
+                        <div class="flex items-center justify-center min-w-8 h-8 bg-green-300 rounded-full">
+                          <i class="fa-regular fa-comments text-md text-green-500"></i>
+                        </div>
+                        <div class="flex flex-col">
+                          <span class="text-sm mb-2 line-clamp-6">{{ notification.message }}</span>
+                          <span class="text-xs">{{ notification.createdAt }}</span>
+                        </div>
+                      </a>
+                      <button (click)="deleteNotification(notification.id)" class="self-start text-sm text-black min-w-6 min-h-6 rounded-full hover:bg-gray-200"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
                   }
                 </div>
+              }
+              @else {
+                <div class="p-5 text-center">Não á nada aqui ainda.</div>
               }
             </div>
           </div>

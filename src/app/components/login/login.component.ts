@@ -28,7 +28,7 @@ export class LoginComponent {
   onSubmit(): void {
     this.authService.login(this.username, this.password).subscribe(
       (res) => {
-        this.router.navigateByUrl('/ticket-list')
+        this.router.navigateByUrl('/tickets')
       },
       (err) => {
         this.errorMessage = err.error; 
