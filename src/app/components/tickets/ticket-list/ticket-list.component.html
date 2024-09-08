@@ -1,81 +1,87 @@
-<div class="mx-auto my-5 w-fit">
-  <h2 class="mb-5 text-gray-800">Todos os Chamados ({{ tickets.length }})</h2>
-  <div class="mb-4 flex justify-center items-center gap-4 text-sm">
-    <phds-select [placeholder]="'Status'" [options]="statusOptions" [selectedValue]="selectedStatus" (valueChange)="onStatusChange($event)"></phds-select>
-    <phds-select [placeholder]="'Prioridade'" [options]="priorityOptions" [selectedValue]="selectedPriority" (valueChange)="onPriorityChange($event)"></phds-select>
+<div class="m-4">
+  <div class="mx-auto w-full max-w-[1664px]">
+    <h2 class="mb-5 text-gray-800 text-center">Todos os Chamados ({{ tickets.length }})</h2>
+    <div class="mb-4 flex justify-center items-center gap-4 text-sm">
+      <phds-select [placeholder]="'Status'" [options]="statusOptions" [selectedValue]="selectedStatus" (valueChange)="onStatusChange($event)"></phds-select>
+      <phds-select [placeholder]="'Prioridade'" [options]="priorityOptions" [selectedValue]="selectedPriority" (valueChange)="onPriorityChange($event)"></phds-select>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="table-auto border-collapse overflow-hidden w-full">
+        <thead>
+          <tr class="h-10">
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left flex"><input type="checkbox" (change)="toggleAll($event)"></th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">ID</th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left w-full">Assunto</th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Criado em</th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Status</th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Prioridade</th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Localização</th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Cliente(s)</th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Responsável(s)</th>
+            <th class="p-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (ticket of tickets; track $index) {
+            <tr class="border-b border-gray-300 text-gray-800 cursor-pointer hover:bg-gray-100 group">
+              <td class="p-4 bg-gray-100 text-sm"><input type="checkbox" [(ngModel)]="ticket.selected" (change)="onTicketSelect(ticket)"></td>
+              <td class="p-4 bg-gray-100 text-sm whitespace-nowrap">{{ ticket.id }}</td>
+              <td class="p-4 bg-gray-100 text-sm flex-grow overflow-hidden">
+                <a class="truncate text-blue-900 font-semibold w-full" title="{{ ticket.subject }}" [routerLink]="['/ticket', ticket.id]">{{ ticket.subject }}</a>
+              </td>
+              <td class="p-4 bg-gray-100 text-sm whitespace-nowrap">{{ ticket.createdAt }}</td>
+              <td class="p-4 bg-gray-100 text-sm whitespace-nowrap">
+                <span class="inline-block w-2 h-2 rounded-full mr-1"
+                  [ngClass]="{
+                    'bg-blue-400': ticket.status === 'Open',
+                    'bg-yellow-300': ticket.status === 'InProgress',
+                    'bg-green-500': ticket.status === 'Resolved',
+                    'bg-gray-400': ticket.status === 'Closed'
+                  }">
+                </span>
+                <span>{{ statusTranslationMap[ticket.status] }}</span>
+              </td>
+              <td class="p-4 bg-gray-100 text-sm whitespace-nowrap">
+                <span class="inline-block w-2 h-2 rounded-full mr-1"
+                  [ngClass]="{
+                    'bg-green-500': ticket.priority === 'Low',
+                    'bg-orange-400': ticket.priority === 'Medium',
+                    'bg-red-500': ticket.priority === 'High',
+                    'bg-red-700': ticket.priority === 'Urgent'
+                  }">
+                </span>
+                <span>{{ priorityTranslationMap[ticket.priority] }}</span>
+              </td>
+              <td class="p-4 bg-gray-100 text-sm whitespace-nowrap text-ellipsis overflow-hidden" title="{{ getLocationHierarchy(ticket.location) }}">{{ getLocationName(ticket.location) }}</td>
+              <td class="p-4 bg-gray-100 text-sm whitespace-nowrap">
+                <div class="flex items-center">
+                  <span>{{ ticket.customers[0].fullName }}</span>
+                  @if (ticket.customers.length > 1) {
+                    <span class="ml-2 text-blue-900 rounded-full text-xs font-bold font-robotoMono">+{{ ticket.customers.length - 1 }}</span>
+                  }
+                </div>
+              </td>
+              <td class="p-4 bg-gray-100 text-sm whitespace-nowrap">
+                <div class="flex items-center">
+                  <span>{{ ticket.assignees[0].fullName }}</span>
+                  @if (ticket.assignees.length > 1) {
+                    <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.assignees.length - 1 }}</span>
+                  }
+                </div>
+              </td>
+              <td class="p-4 bg-gray-100 text-sm whitespace-nowrap">
+                <div title="Pré visualizar" (click)="preview(ticket)" class="hover:text-blue-500 cursor-pointer">
+                  <i class="fa-solid fa-bars-staggered"></i>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <phds-pagination [page]="page" [size]="size" [totalItems]="totalItems" [pageSizeOptions]="pageSizeOptions" (pageChange)="goToPage($event)" (sizeChange)="onPageSizeChange($event)"></phds-pagination>
   </div>
-  <table class="table-auto border-collapse overflow-hidden">
-    <thead>
-      <tr class="h-10">
-        <th class="px-5 py-2.5 bg-white text-xs font-bold text-gray-600 text-left">ID</th>
-        <th class="px-5 py-2.5 bg-white text-xs font-bold text-gray-600 text-left">Assunto</th>
-        <th class="px-5 py-2.5 bg-white text-xs font-bold text-gray-600 text-left">Criado em</th>
-        <th class="px-5 py-2.5 bg-white text-xs font-bold text-gray-600 text-left">Status</th>
-        <th class="px-5 py-2.5 bg-white text-xs font-bold text-gray-600 text-left">Prioridade</th>
-        <th class="px-5 py-2.5 bg-white text-xs font-bold text-gray-600 text-left">Localização</th>
-        <th class="px-5 py-2.5 bg-white text-xs font-bold text-gray-600 text-left">Cliente(s)</th>
-        <th class="px-5 py-2.5 bg-white text-xs font-bold text-gray-600 text-left">Responsável(s)</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (ticket of tickets; track $index) {
-        <tr class="border-b border-gray-300 text-gray-800 h-10 cursor-pointer hover:bg-gray-100 group">
-          <td class="px-5 py-2.5 bg-gray-100 text-sm">{{ ticket.id }}</td>
-          <td class="px-5 py-2.5 bg-gray-100 text-sm max-w-xs w-80 overflow-hidden">
-            <div class="flex items-center justify-between">
-              <a class="truncate text-blue-900 font-semibold" title="{{ ticket.subject }}" [routerLink]="['/ticket', ticket.id]">{{ ticket.subject }}</a>
-              <div title="Pré visualizar" (click)="preview(ticket)" class="ml-2 hidden group-hover:block">
-                <i class="fa-solid fa-bars-staggered"></i>
-              </div>
-            </div>
-          </td>
-          <td class="px-5 py-2.5 bg-gray-100 text-sm">{{ ticket.createdAt }}</td>
-          <td class="px-5 py-2.5 bg-gray-100 text-sm">
-            <span  class="inline-block w-2 h-2 rounded-full mr-1"
-              [ngClass]="{
-                'bg-blue-400': ticket.status === 'Open',
-                'bg-yellow-300': ticket.status === 'InProgress',
-                'bg-green-500': ticket.status === 'Resolved',
-                'bg-gray-400': ticket.status === 'Closed'
-              }">
-            </span>
-            <span>{{ ticket.status }}</span>
-          </td>
-          <td class="px-5 py-2.5 bg-gray-100 text-sm">
-            <span 
-              class="inline-block w-2 h-2 rounded-full mr-1"
-              [ngClass]="{
-                'bg-green-500': ticket.priority === 'Low',
-                'bg-orange-400': ticket.priority === 'Medium',
-                'bg-red-500': ticket.priority === 'High',
-                'bg-red-700': ticket.priority === 'Urgent'
-              }">
-            </span>
-            <span>{{ ticket.priority }}</span>
-          </td>
-          <td class="px-5 py-2.5 bg-gray-100 text-sm max-w-xs overflow-hidden text-ellipsis whitespace-nowrap" title="{{ getLocationHierarchy(ticket.location) }}">{{ getLocationName(ticket.location) }}</td>
-          <td class="px-5 py-2.5 bg-gray-100 text-sm">
-            <div class="flex items-center">
-              <span>{{ ticket.customers[0].fullName }}</span>
-              @if (ticket.customers.length > 1) {
-                <span class="ml-2 text-blue-900 rounded-full text-xs font-bold font-robotoMono">+{{ ticket.customers.length - 1 }}</span>
-              }
-            </div>
-          </td>
-          <td class="px-5 py-2.5 bg-gray-100 text-sm">
-            <div class="flex items-center">
-              <span>{{ ticket.assignees[0].fullName }}</span>
-              @if (ticket.assignees.length > 1) {
-                <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.assignees.length - 1 }}</span>
-              }
-            </div>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
-  <phds-pagination [page]="page" [size]="size" [totalItems]="totalItems" [pageSizeOptions]="pageSizeOptions" (pageChange)="goToPage($event)" (sizeChange)="onPageSizeChange($event)"></phds-pagination>
+  @if (isModalOpen) {
+    <app-message-preview [ticket]="selectedTicket" [userId]="currentUserId" (close)="closeModal()"></app-message-preview>
+  }
 </div>
-@if (isModalOpen) {
-  <app-message-preview [ticket]="selectedTicket" [userId]="currentUserId" (close)="closeModal()"></app-message-preview>
-}

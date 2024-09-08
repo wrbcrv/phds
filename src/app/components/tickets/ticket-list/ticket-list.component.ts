@@ -10,6 +10,7 @@ import { PRIORITY_OPTIONS } from '../../../models/priority.options';
 import { STATUS_OPTIONS } from '../../../models/status.options';
 import { PAGE_SIZE_OPTIONS } from '../../../models/page-size.options';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
+import { STATUS_TRANSLATION_MAP, PRIORITY_TRANSLATION_MAP } from '../../../shared/translations/translations';
 
 @Component({
   selector: 'app-ticket-list',
@@ -33,12 +34,15 @@ export class TicketListComponent implements OnInit {
   pageSizeOptions = PAGE_SIZE_OPTIONS;
   statusOptions = STATUS_OPTIONS;
   priorityOptions = PRIORITY_OPTIONS;
+  statusTranslationMap = STATUS_TRANSLATION_MAP;
+  priorityTranslationMap = PRIORITY_TRANSLATION_MAP;
   selectedStatus: string | null = null;
   selectedPriority: string | null = null;
   selectedTicket: any;
   dropdownOpen: boolean = false;
   isModalOpen: boolean = false;
   currentUserId: number = 0;
+  allSelected: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -66,6 +70,8 @@ export class TicketListComponent implements OnInit {
       (res) => {
         this.tickets = res.items;
         this.totalItems = res.total;
+
+        this.tickets.forEach(ticket => ticket.selected = false);
       }
     );
   }
@@ -116,4 +122,18 @@ export class TicketListComponent implements OnInit {
     return names.reverse().join(' > ');
   }
 
+  toggleAll(event: Event): void {
+    this.allSelected = (event.target as HTMLInputElement).checked;
+    this.tickets.forEach(ticket => {
+      ticket.selected = this.allSelected;
+    });
+  }
+
+  onTicketSelect(ticket: any): void {
+    if (!ticket.selected) {
+      this.allSelected = false;
+    } else {
+      this.allSelected = this.tickets.every(t => t.selected);
+    }
+  }
 }
