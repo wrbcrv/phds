@@ -1,18 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { TicketService } from '../../../services/ticket.service';
-import { FormsModule } from '@angular/forms';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
+import { TippyDirective, TippyService } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-ticket-details',
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule
+    CommonModule,
+    TippyDirective
   ],
   templateUrl: './ticket-details.component.html',
   styleUrl: './ticket-details.component.scss'
@@ -54,12 +56,26 @@ export class TicketDetailsComponent implements OnInit {
     }
   }
 
+  getLastLocation(location: any): string {
+    if (!location) return '';
+    return `... ${location.name}`;
+  }
+
+  getFullLocation(location: any): string {
+    let locationNames = [];
+    while (location) {
+      locationNames.push(location.name);
+      location = location.parent;
+    }
+    return locationNames.reverse().join(' > ');
+  }
+
   getInitials(fullName: string): string {
     if (!fullName) return '';
-    
+
     const names = fullName.split(' ');
     const initials = names.map(name => name.charAt(0).toUpperCase()).join('');
-    
+
     return initials.length > 2 ? initials.charAt(0) + initials.charAt(initials.length - 1) : initials;
   }
 }

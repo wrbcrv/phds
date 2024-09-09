@@ -2,6 +2,10 @@
 @import '../node_modules/quill/dist/quill.snow.css';
 @import '../node_modules/quill/dist/quill.bubble.css';
 
+@import '../node_modules/tippy.js/dist/tippy.css';
+@import '../node_modules/tippy.js/themes/light.css';
+@import '../node_modules/tippy.js/animations/scale.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
