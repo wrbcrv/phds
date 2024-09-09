@@ -96,6 +96,8 @@ namespace Api.Services
                 Ticket = ticket
             };
 
+            ticket.UpdatedAt = DateTime.UtcNow;
+
             await _ticketRepository.AddCommentAsync(comment);
 
             await _notificationService.Notify(ticket, author, content);
