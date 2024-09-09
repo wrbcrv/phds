@@ -1,8 +1,8 @@
 <div class="flex items-center justify-center h-screen">
-  <div class="w-[768px] h-[768px] bg-white p-2 overflow-auto border rounded-3xl">
+  <div class="w-[768px] h-[768px] bg-white p-2 overflow-auto border rounded-3xl mr-2">
     <div class="flex flex-col h-full rounded-2xl overflow-hidden">
       <div class="flex-1 overflow-y-auto flex flex-col">
-        <div class="flex flex-col bg-gray-200 text-black p-4 mb-4 rounded-2xl">
+        <div class="flex flex-col bg-gray-200 text-black p-4 mb-2 rounded-2xl">
           <div class="text-xl font-bold mb-2">{{ ticket.subject }}</div>
           <div class="text-base mt-2" [innerHTML]="ticket.description"></div>
           <div class="self-end text-xs">{{ ticket.createdAt }}</div>
@@ -10,11 +10,11 @@
         @for (comment of ticket.comments; track $index) {
           <div class="flex group relative">
             @if (comment.author.id !== userId) {
-              <div class="flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full self-end mb-4 mr-2">
+              <div class="flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full self-end mb-2 mr-2 cursor-pointer" title="{{ comment.author.fullName }}">
                 <span class="font-bold text-black text-xs">{{ getInitials(comment.author.fullName) }}</span>
               </div>
             }
-            <div class="flex flex-col p-4 mb-4 rounded-2xl w-fit max-w-[70%] text-black" [ngClass]="{
+            <div class="flex flex-col p-4 mb-2 rounded-2xl w-fit max-w-[70%] text-black" [ngClass]="{
                       'bg-green-300 self-end ml-auto': comment.author.id === userId,
                       'bg-gray-300 self-start mr-auto': comment.author.id !== userId
                     }">
@@ -30,7 +30,7 @@
               </div>
             </div>
             @if (comment.author.id === userId) {
-              <div class="flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full self-end mb-4 ml-2">
+              <div class="flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full self-end mb-2 ml-2 cursor-pointer" title="{{ comment.author.fullName }}">
                 <span class="font-bold text-black text-xs">{{ getInitials(comment.author.fullName) }}</span>
               </div>
             }
@@ -46,6 +46,41 @@
           class="absolute inset-y-0 right-0 pr-6 flex items-center">
           <i class="fas fa-paper-plane"></i>
         </button>
+      </div>
+    </div>
+  </div>
+  <div class="w-[512px] h-[768px] bg-white p-2 border rounded-3xl">
+    <div class="flex flex-col space-y-2 p-4">
+      <div>
+        <h2 class="text-lg font-bold mb-2">Informações do Chamado</h2>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-sm font-bold">Status</p>
+        <p class="text-sm text-right">{{ statusTranslationMap[ticket.status] }}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-sm font-bold">Prioridade</p>
+        <p class="text-sm text-right">{{ priorityTranslationMap[ticket.priority] }}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-sm font-bold">Data de Criação</p>
+        <p class="text-sm text-right">{{ ticket.createdAt }}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-sm font-bold">Última Atualização</p>
+        <p class="text-sm text-right">{{ ticket.updatedAt }}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-sm font-bold">Cliente</p>
+        <p class="text-sm text-right">{{ ticket.customers[0].fullName }}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-sm font-bold">Atribuído a</p>
+        <p class="text-sm text-right">{{ ticket.assignees[0].fullName }}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-sm font-bold">Categoria</p>
+        <p class="text-sm text-right">{{ ticket.category ? ticket.category : 'undefined' }}</p>
       </div>
     </div>
   </div>

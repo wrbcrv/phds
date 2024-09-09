@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { TicketService } from '../../../services/ticket.service';
 import { FormsModule } from '@angular/forms';
+import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
 
 @Component({
   selector: 'app-ticket-details',
@@ -20,6 +21,8 @@ export class TicketDetailsComponent implements OnInit {
   ticket: any;
   userId: number | null = null;
   comment: string = '';
+  statusTranslationMap = STATUS_TRANSLATION_MAP;
+  priorityTranslationMap = PRIORITY_TRANSLATION_MAP;
 
   constructor(
     private authService: AuthService,
