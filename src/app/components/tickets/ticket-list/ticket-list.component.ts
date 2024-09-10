@@ -2,15 +2,17 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
-import { TicketService } from '../../../services/ticket.service';
-import { SelectComponent } from '../../../shared/select/select.component';
-import { MessagePreviewComponent } from '../message-preview/message-preview.component';
+import { TippyDirective } from '@ngneat/helipopper';
+import { PAGE_SIZE_OPTIONS } from '../../../models/page-size.options';
 import { PRIORITY_OPTIONS } from '../../../models/priority.options';
 import { STATUS_OPTIONS } from '../../../models/status.options';
-import { PAGE_SIZE_OPTIONS } from '../../../models/page-size.options';
+import { AuthService } from '../../../services/auth.service';
+import { TicketService } from '../../../services/ticket.service';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
-import { STATUS_TRANSLATION_MAP, PRIORITY_TRANSLATION_MAP } from '../../../shared/translations/translations';
+import { SelectComponent } from '../../../shared/select/select.component';
+import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
+import { MessagePreviewComponent } from '../message-preview/message-preview.component';
+import { LocationService } from '../../../services/location.service';
 
 @Component({
   selector: 'app-ticket-list',
@@ -21,7 +23,8 @@ import { STATUS_TRANSLATION_MAP, PRIORITY_TRANSLATION_MAP } from '../../../share
     SelectComponent,
     MessagePreviewComponent,
     RouterModule,
-    PaginationComponent
+    PaginationComponent,
+    TippyDirective
   ],
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']
@@ -46,7 +49,8 @@ export class TicketListComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private ticketService: TicketService) { }
+    private ticketService: TicketService,
+    private locationService: LocationService) { }
 
   ngOnInit(): void {
     this.authService.getUserInfo().subscribe(
@@ -109,17 +113,12 @@ export class TicketListComponent implements OnInit {
     this.selectedTicket = null;
   }
 
-  getLocationName(location: any): string {
-    return location ? location.name : '';
+  getLastLocation(location: any): string {
+    return this.locationService.getLastLocation(location);
   }
 
-  getLocationHierarchy(location: any): string {
-    let names = [];
-    while (location) {
-      names.push(location.name);
-      location = location.parent;
-    }
-    return names.reverse().join(' > ');
+  getFullLocation(location: any): string {
+    return this.locationService.getFullLocation(location);
   }
 
   toggleAll(event: Event): void {
