@@ -37,4 +37,19 @@ export class AuthService {
       tap(user => this.userSubject.next(user))
     );
   }
+
+  isAdmin(): boolean {
+    const user = this.userSubject.value;
+    return user?.role === 'Administrator';
+  }
+
+  isAgent(): boolean {
+    const user = this.userSubject.value;
+    return user?.role === 'Agent';
+  }
+
+  isClient(): boolean {
+    const user = this.userSubject.value;
+    return user?.role === 'Client';
+  }
 }

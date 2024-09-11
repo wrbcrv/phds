@@ -7,6 +7,7 @@ import { AuthService } from '../../../services/auth.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
 import { TippyDirective, TippyService } from '@ngneat/helipopper';
+import { LocationService } from '../../../services/location.service';
 
 @Component({
   selector: 'app-ticket-details',
@@ -30,7 +31,8 @@ export class TicketDetailsComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private title: Title,
-    private ticketService: TicketService
+    private ticketService: TicketService,
+    private locationService: LocationService
   ) { }
 
   ngOnInit(): void {
@@ -46,6 +48,14 @@ export class TicketDetailsComponent implements OnInit {
     )
   }
 
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  isAgent(): boolean {
+    return this.authService.isAgent();
+  }
+
   sendComment(): void {
     if (this.comment.trim() && this.userId) {
       this.ticketService.addComment(this.ticket.id, this.userId, this.comment)
@@ -57,17 +67,11 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   getLastLocation(location: any): string {
-    if (!location) return '';
-    return `... ${location.name}`;
+    return this.locationService.getLastLocation(location);
   }
 
   getFullLocation(location: any): string {
-    let locationNames = [];
-    while (location) {
-      locationNames.push(location.name);
-      location = location.parent;
-    }
-    return locationNames.reverse().join(' > ');
+    return this.locationService.getFullLocation(location);
   }
 
   getInitials(fullName: string): string {
