@@ -69,6 +69,22 @@ export class TicketService {
     return this.http.post<any>(`${this.apiUrl}/${ticketId}/comments/${authorId}`, comment);
   }
 
+  assignCustomers(ticketId: number, customerIds: number[]): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${ticketId}/customers`, customerIds);
+  }
+
+  assignAssignees(ticketId: number, assigneeIds: number[]): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${ticketId}/assignees`, assigneeIds);
+  }
+
+  removeAssignee(ticketId: number, assigneeId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${ticketId}/assignees/${assigneeId}`);
+  }
+
+  removeCustomer(ticketId: number, customerId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${ticketId}/customers/${customerId}`);
+  }
+
   getPriorityValues(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/priority/values`);
   }

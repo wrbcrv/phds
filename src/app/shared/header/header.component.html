@@ -1,7 +1,8 @@
 @if (!isHomeRoute) {
-  <header class="bg-gray-800 text-white p-4 flex justify-between items-center md:justify-end select-none">
+  <header class="text-black p-4 flex justify-between items-center md:justify-between select-none border-b">
+    <h1 class="font-suiGenesis text-2xl cursor-pointer">PHDS</h1>
     <div class="flex items-center justify-between w-full md:w-auto gap-4 md:gap-8">
-      <div class="relative cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-700" [ngClass]="{'bg-gray-700': isNotificationsDropdownOpen()}" (click)="toggleNotificationsDropdown()">
+      <div class="relative cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-200" [ngClass]="{'bg-gray-200': isNotificationsDropdownOpen()}" (click)="toggleNotificationsDropdown()">
         <i [ngClass]="{'fa-regular': !isNotificationsDropdownOpen(), 'fa-solid': isNotificationsDropdownOpen(), 'fa-bell': true}" class="text-xl"></i>
         @if (notifications.length) {
           <span class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">{{ notifications.length }}</span>
@@ -10,7 +11,6 @@
           <div class="absolute top-12 right-0 bg-white text-gray-800 shadow-lg z-50 text-left rounded-xl overflow-hidden w-96 md:w-96 transform translate-x-0 md:translate-x-0">
             <div class="flex justify-between items-center p-5">
               <h1>Notificações</h1>
-              <!-- <button class="text-sm bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Deletar Todas</button> -->
             </div>
             <div class="p-0 m-0 max-h-60 md:max-h-80 overflow-y-scroll">
               @if (notifications.length > 0) {
@@ -43,9 +43,9 @@
           <div class="flex items-center cursor-pointer gap-2" (click)="toggleUserDropdown()">
             <div class="hidden md:flex flex-col items-start">
               <span class="text-sm font-bold">{{ getNameAndSurname(user.fullName) }}</span>
-              <span class="self-end text-sm text-gray-400">{{ user.role }}</span>
+              <span class="self-end text-sm text-gray-500">{{ user.role }}</span>
             </div>
-            <div class="cursor-pointer w-9 h-9 md:w-12 md:h-12 bg-gray-600 text-white rounded-full flex justify-center items-center text-sm md:text-base font-bold">{{ getInitials(user.fullName) }}</div>
+            <div class="cursor-pointer w-9 h-9 md:w-12 md:h-12 bg-gray-500 text-white rounded-full flex justify-center items-center text-sm md:text-base font-bold">{{ getInitials(user.fullName) }}</div>
           </div>
           @if (isUserDropdownOpen()) {
             <div

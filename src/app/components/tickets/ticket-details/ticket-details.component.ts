@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
-import { TippyDirective, TippyService } from '@ngneat/helipopper';
+import { TippyDirective } from '@ngneat/helipopper';
 import { LocationService } from '../../../services/location.service';
 
 @Component({
@@ -64,6 +64,18 @@ export class TicketDetailsComponent implements OnInit {
           this.comment = '';
         });
     }
+  }
+
+  removeCustomer(ticketId: number, customerId: number): void {
+    this.ticketService.removeCustomer(ticketId, customerId).subscribe(() => {
+      this.ticket.customers = this.ticket.customers.filter((customer: any) => customer.id !== customerId);
+    });
+  }
+
+  removeAssignee(ticketId: number, assigneeId: number): void {
+    this.ticketService.removeAssignee(ticketId, assigneeId).subscribe(() => {
+      this.ticket.assignees = this.ticket.assignees.filter((assignee: any) => assignee.id !== assigneeId);
+    });
   }
 
   getLastLocation(location: any): string {
