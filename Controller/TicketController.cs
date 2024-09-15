@@ -110,6 +110,46 @@ namespace Api.Controller
             }
         }
 
+        [HttpPut("{ticketId}/customers")]
+        [Authorize(Roles = "Administrator, Agent")]
+        public async Task<IActionResult> AssignCustomers(int ticketId, [FromBody] List<int> customerIds)
+        {
+            try
+            {
+                var result = await _ticketService.AssignCustomersAsync(ticketId, customerIds);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPut("{ticketId}/assignees")]
+        [Authorize(Roles = "Administrator, Agent")]
+        public async Task<IActionResult> AssignAssignees(int ticketId, [FromBody] List<int> assigneeIds)
+        {
+            try
+            {
+                var result = await _ticketService.AssignAssigneesAsync(ticketId, assigneeIds);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpPost("{ticketId}/comments/{authorId}")]
         [Authorize(Roles = "Administrator, Agent, Client")]
         public async Task<ActionResult<CommentResponseDTO>> AddComment(int ticketId, int authorId, [FromBody] CommentDTO commentDTO)

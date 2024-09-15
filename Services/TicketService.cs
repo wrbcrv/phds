@@ -81,6 +81,33 @@ namespace Api.Services
             await _ticketRepository.DeleteAsync(id);
         }
 
+        public async Task<TicketResponseDTO> AssignCustomersAsync(int ticketId, List<int> customerIds)
+        {
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
+            
+            var customers = await _ticketRepository.GetUsersByIdsAsync(customerIds);
+
+            ticket.Customers = customers;
+
+            await _ticketRepository.UpdateAsync(ticket);
+
+            return _mapper.Map<TicketResponseDTO>(ticket);
+        }
+
+        public async Task<TicketResponseDTO> AssignAssigneesAsync(int ticketId, List<int> assigneeIds)
+        {
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
+
+            var assignees = await _ticketRepository.GetUsersByIdsAsync(assigneeIds);
+
+            ticket.Assignees = assignees;
+
+            await _ticketRepository.UpdateAsync(ticket);
+
+            return _mapper.Map<TicketResponseDTO>(ticket);
+        }
+
+
         public async Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId);
