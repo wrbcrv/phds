@@ -92,29 +92,49 @@
         <div class="flex flex-col space-y-2">
           <div>
             <p class="text-sm font-bold mb-2">Clientes</p>
-            @for (customers of ticket.customers; track $index) {
-              <div class="flex justify-between text-sm bg-blue-50 px-3 py-1 rounded-full cursor-pointer" 
-                [ngClass]="{'mb-2': $index < ticket.customers.length - 1 }">
-                <span>{{ customers.fullName }}</span>
-                <div class="flex gap-2">
-                  <span class="font-robotoMono" tp="Chamados atribuidos">{{ customers.assignedTickets.length }}</span>
-                  <button (click)="removeCustomer(ticket.id, customers.id)" class="text-blue-600 hover:text-blue-800"><i class="fa-solid fa-xmark"></i></button>
-                </div>
+            <div class="flex justify-between gap-2 text-sm">
+              <div class="flex flex-col w-full">
+                @for (customers of ticket.customers; track $index) {
+                  <div class="flex items-center gap-2">
+                    <div class="w-full flex justify-between bg-blue-50 px-3 py-1 rounded-full cursor-pointer"
+                      [ngClass]="{'mb-2': $index < ticket.customers.length - 1 }">
+                      <span>{{ customers.fullName }}</span>
+                      <div class="flex gap-1">
+                        <span class="font-robotoMono w-5 text-center" tp="Chamados atribuidos">{{ customers.assignedTickets.length }}</span>
+                        <button (click)="removeCustomer(ticket.id, customers.id)" class="w-5"><i class="fa-solid fa-xmark"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                }
+                @empty {
+                  <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span class="text-sm">Nenhum usuário atribuido</span></div>
+                }
               </div>
-            }
+              <button (click)="assignCurrentUserAsCustomer()" class="self-start py-1" tp="Atribuir a mim mesmo"><i class="fa-solid fa-user"></i></button>
+            </div>
           </div>
           <div>
             <p class="text-sm font-bold mb-2">Atribuído a</p>
-            @for (assignee of ticket.assignees; track $index) {
-              <div class="flex justify-between text-sm bg-blue-50 px-3 py-1 rounded-full cursor-pointer" 
-                 [ngClass]="{'mb-2': $index < ticket.assignees.length - 1 }">
-                 <span>{{ assignee.fullName }}</span>
-                 <div class="flex gap-2">
-                    <span class="font-robotoMono" tp="Chamados atribuidos">{{ assignee.assignedTickets.length }}</span>
-                    <button (click)="removeAssignee(ticket.id, assignee.id)" class="text-blue-600 hover:text-blue-800"><i class="fa-solid fa-xmark"></i></button>
-                 </div>
+            <div class="flex justify-between gap-2 text-sm">
+              <div class="flex flex-col w-full">
+                @for (assignee of ticket.assignees; track $index) {
+                  <div class="flex items-center gap-2">
+                    <div class="w-full flex justify-between bg-blue-50 px-3 py-1 rounded-full cursor-pointer"
+                      [ngClass]="{'mb-2': $index < ticket.assignees.length - 1 }">
+                      <span>{{ assignee.fullName }}</span>
+                      <div class="flex gap-1">
+                        <span class="font-robotoMono w-5 text-center" tp="Chamados atribuidos">{{ assignee.assignedTickets.length }}</span>
+                        <button (click)="removeAssignee(ticket.id, assignee.id)" class=" w-5"><i class="fa-solid fa-xmark"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                }
+                @empty {
+                  <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span>Nenhum usuário atribuido</span></div>
+                }
               </div>
-            }
+              <button (click)="assignCurrentUserAsAssignee()" class="self-start py-1" tp="Atribuir a mim mesmo"><i class="fa-solid fa-user"></i></button>
+            </div>
           </div>
         </div>
       </div>

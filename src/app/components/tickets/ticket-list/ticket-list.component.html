@@ -57,7 +57,7 @@
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap text-ellipsis overflow-hidden" [tp]="getFullLocation(ticket.location)">{{ getLastLocation(ticket.location) }}</td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">
                 <div class="flex items-center">
-                  <span>{{ ticket.customers[0].fullName }}</span>
+                  <span>{{ ticket.customers[0]?.fullName }}</span>
                   @if (ticket.customers.length > 1) {
                     <span class="ml-2 text-blue-900 rounded-full text-xs font-bold font-robotoMono">+{{ ticket.customers.length - 1 }}</span>
                   }
@@ -65,7 +65,7 @@
               </td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">
                 <div class="flex items-center">
-                  <span>{{ ticket.assignees[0].fullName }}</span>
+                  <span>{{ ticket.assignees[0]?.fullName }}</span>
                   @if (ticket.assignees.length > 1) {
                     <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.assignees.length - 1 }}</span>
                   }

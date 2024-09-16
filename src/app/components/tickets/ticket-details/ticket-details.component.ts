@@ -18,7 +18,7 @@ import { LocationService } from '../../../services/location.service';
     TippyDirective
   ],
   templateUrl: './ticket-details.component.html',
-  styleUrl: './ticket-details.component.scss'
+  styleUrls: ['./ticket-details.component.scss']
 })
 export class TicketDetailsComponent implements OnInit {
   ticket: any;
@@ -38,14 +38,71 @@ export class TicketDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.ticket = data['ticket'];
-      this.title.setTitle(`Chamado #${this.ticket.id} • PHDS`)
+      this.title.setTitle(`Chamado #${this.ticket.id} • PHDS`);
     });
 
     this.authService.getUserInfo().subscribe(
       (res) => {
         this.userId = res.id;
       }
-    )
+    );
+  }
+
+  loadTicket(): void {
+    if (this.ticket?.id) {
+      this.ticketService.findOne(this.ticket.id).subscribe({
+        next: (ticket) => {
+          this.ticket = ticket;
+        }
+      });
+    }
+  }
+
+  assignCurrentUserAsAssignee(): void {
+    if (this.ticket?.id) {
+      this.ticketService.assignCurrentUser(this.ticket.id, true).subscribe({
+        next: () => {
+          this.loadTicket();
+        }
+      });
+    }
+  }
+
+  assignCurrentUserAsCustomer(): void {
+    if (this.ticket?.id) {
+      this.ticketService.assignCurrentUser(this.ticket.id, false).subscribe({
+        next: () => {
+          this.loadTicket();
+        }
+      });
+    }
+  }
+
+  sendComment(): void {
+    if (this.comment.trim() && this.userId) {
+      this.ticketService.addComment(this.ticket.id, this.userId, this.comment).subscribe({
+        next: (res) => {
+          this.ticket.comments.push(res);
+          this.comment = '';
+        }
+      });
+    }
+  }
+
+  removeCustomer(ticketId: number, customerId: number): void {
+    this.ticketService.removeCustomer(ticketId, customerId).subscribe({
+      next: () => {
+        this.loadTicket();
+      }
+    });
+  }
+
+  removeAssignee(ticketId: number, assigneeId: number): void {
+    this.ticketService.removeAssignee(ticketId, assigneeId).subscribe({
+      next: () => {
+        this.loadTicket();
+      }
+    });
   }
 
   isAdmin(): boolean {
@@ -54,28 +111,6 @@ export class TicketDetailsComponent implements OnInit {
 
   isAgent(): boolean {
     return this.authService.isAgent();
-  }
-
-  sendComment(): void {
-    if (this.comment.trim() && this.userId) {
-      this.ticketService.addComment(this.ticket.id, this.userId, this.comment)
-        .subscribe(res => {
-          this.ticket.comments.push(res);
-          this.comment = '';
-        });
-    }
-  }
-
-  removeCustomer(ticketId: number, customerId: number): void {
-    this.ticketService.removeCustomer(ticketId, customerId).subscribe(() => {
-      this.ticket.customers = this.ticket.customers.filter((customer: any) => customer.id !== customerId);
-    });
-  }
-
-  removeAssignee(ticketId: number, assigneeId: number): void {
-    this.ticketService.removeAssignee(ticketId, assigneeId).subscribe(() => {
-      this.ticket.assignees = this.ticket.assignees.filter((assignee: any) => assignee.id !== assigneeId);
-    });
   }
 
   getLastLocation(location: any): string {

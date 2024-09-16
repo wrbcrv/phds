@@ -40,18 +40,6 @@ export class TicketService {
       if (filter.priority) {
         params = params.set('priority', filter.priority);
       }
-      if (filter.type) {
-        params = params.set('type', filter.type);
-      }
-      if (filter.createdAfter) {
-        params = params.set('createdAfter', filter.createdAfter);
-      }
-      if (filter.createdBefore) {
-        params = params.set('createdBefore', filter.createdBefore);
-      }
-      if (filter.subject) {
-        params = params.set('subject', filter.subject);
-      }
     }
 
     return this.http.get<{ items: any[], total: number }>(this.apiUrl, { params });
@@ -67,6 +55,12 @@ export class TicketService {
     };
 
     return this.http.post<any>(`${this.apiUrl}/${ticketId}/comments/${authorId}`, comment);
+  }
+
+  assignCurrentUser(ticketId: number, asAssignee: boolean = true): Observable<any> {
+    const params = new HttpParams().set('asAssignee', asAssignee.toString());
+
+    return this.http.put<any>(`${this.apiUrl}/${ticketId}/assign-current-user`, {}, { params });
   }
 
   assignCustomers(ticketId: number, customerIds: number[]): Observable<any> {
