@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { TippyDirective } from '@ngneat/helipopper';
 import { AuthService } from '../../../services/auth.service';
+import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
-import { TippyDirective } from '@ngneat/helipopper';
-import { LocationService } from '../../../services/location.service';
 
 @Component({
   selector: 'app-ticket-details',

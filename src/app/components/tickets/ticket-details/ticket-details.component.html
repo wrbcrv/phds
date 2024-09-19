@@ -100,7 +100,6 @@
                       [ngClass]="{'mb-2': $index < ticket.customers.length - 1 }">
                       <span>{{ customers.fullName }}</span>
                       <div class="flex gap-1">
-                        <span class="font-robotoMono w-5 text-center" tp="Chamados atribuidos">{{ customers.assignedTickets.length }}</span>
                         <button (click)="removeCustomer(ticket.id, customers.id)" class="w-5"><i class="fa-solid fa-xmark"></i></button>
                       </div>
                     </div>
@@ -110,7 +109,9 @@
                   <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span class="text-sm">Nenhum usuário atribuido</span></div>
                 }
               </div>
-              <button (click)="assignCurrentUserAsCustomer()" class="self-start py-1" tp="Atribuir a mim mesmo"><i class="fa-solid fa-user"></i></button>
+              @if (!ticket.customers || ticket.customers.length === 0) {
+                <button (click)="assignCurrentUserAsCustomer()" class="self-start py-1" tp="Atribuir a mim mesmo"><i class="fa-solid fa-user"></i></button>
+              }
             </div>
           </div>
           <div>
@@ -123,7 +124,6 @@
                       [ngClass]="{'mb-2': $index < ticket.assignees.length - 1 }">
                       <span>{{ assignee.fullName }}</span>
                       <div class="flex gap-1">
-                        <span class="font-robotoMono w-5 text-center" tp="Chamados atribuidos">{{ assignee.assignedTickets.length }}</span>
                         <button (click)="removeAssignee(ticket.id, assignee.id)" class=" w-5"><i class="fa-solid fa-xmark"></i></button>
                       </div>
                     </div>
@@ -133,7 +133,9 @@
                   <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span>Nenhum usuário atribuido</span></div>
                 }
               </div>
-              <button (click)="assignCurrentUserAsAssignee()" class="self-start py-1" tp="Atribuir a mim mesmo"><i class="fa-solid fa-user"></i></button>
+              @if (!ticket.assignees || ticket.assignees.length === 0) {
+                <button (click)="assignCurrentUserAsAssignee()" class="self-start py-1" tp="Atribuir a mim mesmo"><i class="fa-solid fa-user"></i></button>
+              }
             </div>
           </div>
         </div>
