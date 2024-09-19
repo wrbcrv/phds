@@ -110,6 +110,32 @@ namespace Api.Controller
             }
         }
 
+        [HttpPut("{ticketId}/assign-current-user")]
+        [Authorize(Roles = "Administrator, Agent")]
+        public async Task<IActionResult> AssignCurrentUser(int ticketId, [FromQuery] bool asAssignee = true)
+        {
+            try
+            {
+                var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var result = await _ticketService.AssignCurrentUserAsync(ticketId, currentUserId, asAssignee);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpPut("{ticketId}/customers")]
         [Authorize(Roles = "Administrator, Agent")]
         public async Task<IActionResult> AssignCustomers(int ticketId, [FromBody] List<int> customerIds)
@@ -143,6 +169,54 @@ namespace Api.Controller
                 }
 
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{ticketId}/assignees/{assigneeId}")]
+        [Authorize(Roles = "Administrator, Agent")]
+        public async Task<IActionResult> RemoveAssignee(int ticketId, int assigneeId)
+        {
+            try
+            {
+                var result = await _ticketService.RemoveAssigneeAsync(ticketId, assigneeId);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{ticketId}/customers/{customerId}")]
+        [Authorize(Roles = "Administrator, Agent")]
+        public async Task<IActionResult> RemoveCustomer(int ticketId, int customerId)
+        {
+            try
+            {
+                var result = await _ticketService.RemoveCustomerAsync(ticketId, customerId);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

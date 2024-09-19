@@ -81,10 +81,44 @@ namespace Api.Services
             await _ticketRepository.DeleteAsync(id);
         }
 
-        public async Task<TicketResponseDTO> AssignCustomersAsync(int ticketId, List<int> customerIds)
+        public async Task<TicketResponseDTO> AssignCurrentUserAsync(int ticketId, int userId, bool asAssignee)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
             
+            var user = await _userRepository.GetByIdAsync(userId) ?? throw new KeyNotFoundException("Usuário não encontrado.");
+            
+            if (asAssignee)
+            {
+                if (!ticket.Assignees.Contains(user))
+                {
+                    ticket.Assignees.Add(user);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Usuário já está atribuído como Assignee.");
+                }
+            }
+            else
+            {
+                if (!ticket.Customers.Contains(user))
+                {
+                    ticket.Customers.Add(user);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Usuário já está atribuído como Customer.");
+                }
+            }
+
+            await _ticketRepository.UpdateAsync(ticket);
+
+            return _mapper.Map<TicketResponseDTO>(ticket);
+        }
+
+        public async Task<TicketResponseDTO> AssignCustomersAsync(int ticketId, List<int> customerIds)
+        {
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
+
             var customers = await _ticketRepository.GetUsersByIdsAsync(customerIds);
 
             ticket.Customers = customers;
@@ -107,6 +141,31 @@ namespace Api.Services
             return _mapper.Map<TicketResponseDTO>(ticket);
         }
 
+        public async Task<TicketResponseDTO> RemoveAssigneeAsync(int ticketId, int assigneeId)
+        {
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
+
+            var assigneeToRemove = ticket.Assignees.FirstOrDefault(a => a.Id == assigneeId) ?? throw new KeyNotFoundException("Assignee não encontrado neste chamado.");
+
+            ticket.Assignees.Remove(assigneeToRemove);
+
+            await _ticketRepository.UpdateAsync(ticket);
+
+            return _mapper.Map<TicketResponseDTO>(ticket);
+        }
+
+        public async Task<TicketResponseDTO> RemoveCustomerAsync(int ticketId, int customerId)
+        {
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
+
+            var customerToRemove = ticket.Customers.FirstOrDefault(c => c.Id == customerId) ?? throw new KeyNotFoundException("Cliente não encontrado neste chamado.");
+
+            ticket.Customers.Remove(customerToRemove);
+
+            await _ticketRepository.UpdateAsync(ticket);
+
+            return _mapper.Map<TicketResponseDTO>(ticket);
+        }
 
         public async Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content)
         {
