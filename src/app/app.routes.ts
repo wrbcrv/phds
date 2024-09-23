@@ -10,19 +10,19 @@ export const routes: Routes = [
     path: '',
     component: LoginComponent,
     title: 'Entrar • PHDS',
-    data: { breadcrumb: 'Entrar' }
   },
   {
     path: 'tickets',
     component: TicketListComponent,
     title: 'Chamados • PHDS',
-    data: { breadcrumb: 'Chamados' }
+    data: {
+      title: 'Chamados Abertos'
+    }
   },
   {
     path: 'ticket/create',
     component: TicketFormComponent,
     title: 'Novo chamado • PHDS',
-    data: { breadcrumb: 'Novo Chamado' }
   },
   {
     path: 'ticket/:id',
@@ -31,7 +31,8 @@ export const routes: Routes = [
     resolve: {
       ticket: TicketResolver
     },
-    data: { breadcrumb: 'Detalhes do Chamado' }
+    data: {
+      title: 'Detalhes do Chamado'
+    }
   }
-  
 ];

@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { UserService } from '../../services/user.service';
 import { DropdownService } from '../../services/dropdown.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'phds-header',

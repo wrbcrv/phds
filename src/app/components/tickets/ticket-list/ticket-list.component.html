@@ -20,7 +20,6 @@
             <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Localização</th>
             <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Cliente(s)</th>
             <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Responsável(s)</th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -69,11 +68,6 @@
                   @if (ticket.assignees.length > 1) {
                     <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.assignees.length - 1 }}</span>
                   }
-                </div>
-              </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">
-                <div tp="Pré visualizar" (click)="preview(ticket)" class="hover:text-blue-500 cursor-pointer">
-                  <i class="fa-solid fa-bars-staggered"></i>
                 </div>
               </td>
             </tr>
