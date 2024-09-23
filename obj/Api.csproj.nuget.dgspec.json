@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\werbt\\OneDrive\\Documents\\GitHub\\Api\\Api.csproj": {}
+    "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\werbt\\OneDrive\\Documents\\GitHub\\Api\\Api.csproj": {
+    "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\werbt\\OneDrive\\Documents\\GitHub\\Api\\Api.csproj",
+        "projectUniqueName": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\Api.csproj",
         "projectName": "Api",
-        "projectPath": "C:\\Users\\werbt\\OneDrive\\Documents\\GitHub\\Api\\Api.csproj",
-        "packagesPath": "C:\\Users\\werbt\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\werbt\\OneDrive\\Documents\\GitHub\\Api\\obj\\",
+        "projectPath": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\Api.csproj",
+        "packagesPath": "C:\\Users\\GIGABYTE\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\werbt\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\GIGABYTE\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -105,7 +105,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

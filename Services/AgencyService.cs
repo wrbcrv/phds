@@ -47,7 +47,10 @@ namespace Api.Services
             };
 
             await _agencyRepository.AddAsync(agency);
-            return _mapper.Map<AgencyResponseDTO>(agency);
+
+            var agencyResponseDTO = AgencyResponseDTO.ValueOf(agency);
+
+            return agencyResponseDTO;
         }
 
         public async Task<AgencyResponseDTO> UpdateAsync(int id, AgencyDTO agencyDTO)
