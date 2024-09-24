@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnInit {
   items = [
     {
       label: 'Home',
@@ -37,8 +37,15 @@ export class SidenavComponent {
   ];
 
   active: any = null;
+  isHomeRoute: boolean = false;
 
   constructor(private router: Router) { }
+
+  ngOnInit(): void {
+    this.router.events.subscribe(() => {
+      this.isHomeRoute = this.router.url === '/';
+    });
+  }
 
   handleClick(item: any) {
     if (item.sub) {

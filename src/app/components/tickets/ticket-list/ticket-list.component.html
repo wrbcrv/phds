@@ -7,7 +7,7 @@
         <phds-select [placeholder]="'Prioridade'" [options]="priorityOptions" [selectedValue]="selectedPriority" (valueChange)="onPriorityChange($event)"></phds-select>
       </div>
     </div>
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto border rounded-3xl">
       <table class="table-auto border-collapse overflow-hidden w-full rounded-t-xl">
         <thead>
           <tr class="h-12">
@@ -74,8 +74,8 @@
           }
         </tbody>
       </table>
+      <phds-pagination [page]="page" [size]="size" [totalItems]="totalItems" [pageSizeOptions]="pageSizeOptions" (pageChange)="goToPage($event)" (sizeChange)="onPageSizeChange($event)"></phds-pagination>
     </div>
-    <phds-pagination [page]="page" [size]="size" [totalItems]="totalItems" [pageSizeOptions]="pageSizeOptions" (pageChange)="goToPage($event)" (sizeChange)="onPageSizeChange($event)"></phds-pagination>
   </div>
   @if (isModalOpen) {
     <app-message-preview [ticket]="selectedTicket" [userId]="currentUserId" (close)="closeModal()"></app-message-preview>

@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       fontFamily: {
         suiGenesis: ['"Sui Genesis"', 'sans-serif'],
-        robotoMono: ['"Roboto Mono"']
+        robotoMono: ['"Roboto Mono"'],
+        inter: ['"Inter"', 'sans-serif']
       }
     },
   },

@@ -42,11 +42,11 @@
         @if (user) {
           <div (click)="toggleUserDropdown()" class="cursor-pointer w-9 h-9 md:w-12 md:h-12 bg-gray-500 text-white rounded-full flex justify-center items-center text-sm md:text-base font-bold">{{ getInitials(user.fullName) }}</div>
           @if (isUserDropdownOpen()) {
-            <div class="absolute top-14 right-0 bg-white text-gray-800 shadow-lg z-50 w-48 md:w-64 h-auto text-left rounded-xl overflow-hidden">
+            <div class="absolute top-14 right-0 bg-white text-gray-800 shadow-lg z-50 w-80 md:w-80 h-auto text-left rounded-xl overflow-hidden">
               <div class="p-4 text-center">
-                <div class="text-md">{{ getNameAndSurname(user.fullName) }}</div>
-                <div class="text-sm">{{ user.email }}</div>
-                <div class="text-sm">{{ user.role }}</div>
+                <div class="text-md font-bold">{{ getNameAndSurname(user.fullName) }}</div>
+                <div class="text-sm text-gray-600">{{ user.email }}</div>
+                <div class="text-sm text-gray-600">{{ user.role }}</div>
               </div>
               <div class="p-0 m-0">
                 <div class="py-2 px-4 cursor-pointer hover:bg-gray-100"><a>Configurações</a></div>
