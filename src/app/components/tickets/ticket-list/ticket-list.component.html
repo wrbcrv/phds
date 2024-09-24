@@ -1,5 +1,5 @@
 <div class="m-4">
-  <div class="mx-auto w-full max-w-[1664px]">
+  <div class="mx-auto w-full">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-gray-800 text-left">Todos os Chamados ({{ tickets.length }})</h2>
       <div class="flex justify-center items-center gap-4 text-sm">
@@ -11,15 +11,15 @@
       <table class="table-auto border-collapse overflow-hidden w-full rounded-t-xl">
         <thead>
           <tr class="h-12">
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left"><input type="checkbox" (change)="toggleAll($event)"></th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">ID</th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left w-full">Assunto</th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Criado em</th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Status</th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Prioridade</th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Localização</th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Cliente(s)</th>
-            <th class="px-4 bg-white text-xs font-bold text-gray-600 text-left whitespace-nowrap">Responsável(s)</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left"><input type="checkbox" (change)="toggleAll($event)"></th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">ID</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left w-full">Assunto</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Criado em</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Status</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Prioridade</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Localização</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Cliente(s)</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Responsável(s)</th>
           </tr>
         </thead>
         <tbody>

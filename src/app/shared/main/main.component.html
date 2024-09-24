@@ -1,7 +1,9 @@
 <div class="flex h-screen">
   <app-sidenav class="transition-all duration-300" />
-  <div class="flex grow flex-col transition-all duration-300" [ngClass]="{'': isSidenavActive(), '': !isSidenavActive()}">
+  <div class="flex grow flex-col transition-all duration-300">
     <phds-header />
-    <router-outlet />
+    <div class="h-screen bg-white rounded-3xl mr-4 mb-4">
+      <router-outlet />
+    </div>
   </div>
 </div>
