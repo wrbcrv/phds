@@ -6,11 +6,11 @@
   <div class="flex items-center space-x-4">
     <div class="">{{ paginationText }}</div>
     <div class="flex space-x-2">
-      <button class="flex items-center justify-center bg-blue-500 w-6 h-6 text-white text-sm rounded-full disabled:bg-gray-400" (click)="prevPage()" [disabled]="page === 1"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="flex items-center justify-center bg-blue-500 w-6 h-6 text-white text-xs rounded-full disabled:bg-gray-400" (click)="prevPage()" [disabled]="page === 1"><i class="fa-solid fa-chevron-left"></i></button>
       @for (pageNum of pages; track $index) {
-        <button class="flex items-center justify-center bg-blue-500 w-6 h-6 text-white text-sm rounded-full disabled:bg-gray-400" (click)="goToPage(pageNum)" [disabled]="pageNum === page">{{ pageNum }}</button>
+        <button class="flex items-center justify-center bg-blue-500 w-6 h-6 text-white text-xs rounded-full disabled:bg-gray-400" (click)="goToPage(pageNum)" [disabled]="pageNum === page">{{ pageNum }}</button>
       }
-      <button class="flex items-center justify-center bg-blue-500 w-6 h-6 text-white text-sm rounded-full disabled:bg-gray-400" (click)="nextPage()" [disabled]="page * size >= totalItems"><i class="fa-solid fa-chevron-right"></i></button>
+      <button class="flex items-center justify-center bg-blue-500 w-6 h-6 text-white text-xs rounded-full disabled:bg-gray-400" (click)="nextPage()" [disabled]="page * size >= totalItems"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
   </div>
 </div>

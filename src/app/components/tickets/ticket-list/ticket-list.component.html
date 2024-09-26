@@ -1,37 +1,47 @@
-<div class="m-4">
-  <div class="mx-auto w-full">
+<div class="m-4 mt-0 ml-0">
+  <div class="mx-auto w-full bg-white rounded-3xl p-4">
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-gray-800 text-left">Todos os Chamados ({{ tickets.length }})</h2>
+      <h2 class="text-gray-800 text-left font-bold">Todos os Chamados ({{ tickets.length }})</h2>
       <div class="flex justify-center items-center gap-4 text-sm">
-        <phds-select [placeholder]="'Status'" [options]="statusOptions" [selectedValue]="selectedStatus" (valueChange)="onStatusChange($event)"></phds-select>
-        <phds-select [placeholder]="'Prioridade'" [options]="priorityOptions" [selectedValue]="selectedPriority" (valueChange)="onPriorityChange($event)"></phds-select>
+        <phds-select 
+          [placeholder]="'Status'" 
+          [options]="statusOptions" 
+          [selectedValue]="selectedStatus" 
+          (valueChange)="onStatusChange($event)" 
+        />
+        <phds-select 
+          [placeholder]="'Prioridade'" 
+          [options]="priorityOptions" 
+          [selectedValue]="selectedPriority" 
+          (valueChange)="onPriorityChange($event)"
+        />
       </div>
     </div>
-    <div class="overflow-x-auto border rounded-3xl">
+    <div class="overflow-x-auto border border-b-0 rounded-2xl rounded-b-none">
       <table class="table-auto border-collapse overflow-hidden w-full rounded-t-xl">
         <thead>
-          <tr class="h-12">
-            <th class="px-4 text-xs font-bold text-gray-600 text-left"><input type="checkbox" (change)="toggleAll($event)"></th>
+          <tr class="h-10">
+            <th class="px-4 text-xs font-bold text-gray-600 text-left"><input type="checkbox" class="align-middle" (change)="toggleAll($event)"></th>
             <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">ID</th>
             <th class="px-4 text-xs font-bold text-gray-600 text-left w-full">Assunto</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Criado em</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Status</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Prioridade</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Localização</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Cliente(s)</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Responsável(s)</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden sm:table-cell">Criado em</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden md:table-cell">Status</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden lg:table-cell">Prioridade</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Localização</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Cliente(s)</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Responsável(s)</th>
           </tr>
         </thead>
         <tbody>
           @for (ticket of tickets; track $index) {
-            <tr class="h-12 border-b border-gray-300 text-gray-800 cursor-pointer hover:bg-gray-100 group">
-              <td class="px-4 bg-gray-100 text-sm"><input type="checkbox" [(ngModel)]="ticket.selected" (change)="onTicketSelect(ticket)"></td>
+            <tr class="h-10 border-b border-t text-gray-800 cursor-pointer hover:bg-gray-100 group">
+              <td class="px-4 bg-gray-100 text-sm"><input type="checkbox" class="align-middle" [(ngModel)]="ticket.selected" (change)="onTicketSelect(ticket)"></td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">{{ ticket.id }}</td>
               <td class="px-4 bg-gray-100 text-sm flex-grow overflow-hidden">
                 <a class="truncate text-blue-900 font-semibold w-full" [tp]="ticket.subject" [routerLink]="['/ticket', ticket.id]">{{ ticket.subject }}</a>
               </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">{{ ticket.createdAt }}</td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden sm:table-cell">{{ ticket.createdAt }}</td>
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden md:table-cell">
                 <span class="inline-block w-2 h-2 rounded-full mr-1"
                   [ngClass]="{
                     'bg-blue-400': ticket.status === 'Open',
@@ -42,7 +52,7 @@
                 </span>
                 <span>{{ statusTranslationMap[ticket.status] }}</span>
               </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden lg:table-cell">
                 <span class="inline-block w-2 h-2 rounded-full mr-1"
                   [ngClass]="{
                     'bg-green-500': ticket.priority === 'Low',
@@ -53,8 +63,8 @@
                 </span>
                 <span>{{ priorityTranslationMap[ticket.priority] }}</span>
               </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap text-ellipsis overflow-hidden" [tp]="getFullLocation(ticket.location)">{{ getLastLocation(ticket.location) }}</td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell text-ellipsis overflow-hidden" [tp]="getFullLocation(ticket.location)">{{ getLastLocation(ticket.location) }}</td>
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell">
                 <div class="flex items-center">
                   <span>{{ ticket.customers[0]?.fullName }}</span>
                   @if (ticket.customers.length > 1) {
@@ -62,7 +72,7 @@
                   }
                 </div>
               </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell">
                 <div class="flex items-center">
                   <span>{{ ticket.assignees[0]?.fullName }}</span>
                   @if (ticket.assignees.length > 1) {
@@ -74,10 +84,23 @@
           }
         </tbody>
       </table>
-      <phds-pagination [page]="page" [size]="size" [totalItems]="totalItems" [pageSizeOptions]="pageSizeOptions" (pageChange)="goToPage($event)" (sizeChange)="onPageSizeChange($event)"></phds-pagination>
+    </div>
+    <div class="border border-t-0 rounded-2xl rounded-t-none overflow-hidden">
+      <phds-pagination
+        [page]="page"
+        [size]="size"
+        [totalItems]="totalItems"
+        [pageSizeOptions]="pageSizeOptions"
+        (pageChange)="goToPage($event)"
+        (sizeChange)="onPageSizeChange($event)"
+      />
     </div>
   </div>
   @if (isModalOpen) {
-    <app-message-preview [ticket]="selectedTicket" [userId]="currentUserId" (close)="closeModal()"></app-message-preview>
+    <app-message-preview 
+      [ticket]="selectedTicket" 
+      [userId]="currentUserId" 
+      (close)="closeModal()"
+    />
   }
 </div>
