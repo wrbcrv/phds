@@ -1,8 +1,7 @@
 <div class="m-4 mt-0 ml-0">
   <div class="mx-auto w-full bg-white rounded-3xl p-4">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-gray-800 text-left font-bold">Todos os Chamados ({{ tickets.length }})</h2>
-      <div class="flex justify-center items-center gap-4 text-sm">
+    <div class="flex justify-end items-center mb-4">
+      <div class="flex items-center gap-4 text-sm">
         <phds-select 
           [placeholder]="'Status'" 
           [options]="statusOptions" 
@@ -96,11 +95,4 @@
       />
     </div>
   </div>
-  @if (isModalOpen) {
-    <app-message-preview 
-      [ticket]="selectedTicket" 
-      [userId]="currentUserId" 
-      (close)="closeModal()"
-    />
-  }
 </div>
