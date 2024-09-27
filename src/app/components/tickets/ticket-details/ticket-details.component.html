@@ -14,14 +14,8 @@
                 <span class="font-bold text-black text-xs">{{ getInitials(comment.author.fullName) }}</span>
               </div>
             }
-            <div class="flex flex-col p-4 mb-2 rounded-2xl w-fit max-w-[70%] text-black" [ngClass]="{
-                      'bg-green-300 self-end ml-auto': comment.author.id === userId,
-                      'bg-gray-200 self-start mr-auto': comment.author.id !== userId
-                    }">
-              <span class="mb-2" [ngClass]="{
-                  'self-end': comment.author.id === userId, 
-                  'self-start': comment.author.id !== userId
-                }">{{ comment.content }}</span>
+            <div class="flex flex-col p-4 mb-2 rounded-2xl w-fit max-w-[70%] text-black" [ngClass]="{'bg-green-300 self-end ml-auto': comment.author.id === userId, 'bg-gray-200 self-start mr-auto': comment.author.id !== userId}">
+              <span class="mb-2" [ngClass]="{'self-end': comment.author.id === userId, 'self-start': comment.author.id !== userId}">{{ comment.content }}</span>
               <div class="flex justify-end text-xs">
                 <span>{{ comment.createdAt }}</span>
                 @if (comment.isUpdated) {
@@ -30,68 +24,64 @@
               </div>
             </div>
             @if (comment.author.id === userId) {
-              <div class="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full self-end mb-2 ml-2 cursor-pointer" [tp]="comment.author.fullName">
+              <div
+                class="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full self-end mb-2 ml-2 cursor-pointer"
+                [tp]="comment.author.fullName">
                 <span class="font-bold text-black text-xs">{{ getInitials(comment.author.fullName) }}</span>
               </div>
             }
           </div>
-        }        
+        }
       </div>
       <div class="relative mt-2">
-        <input [(ngModel)]="comment"
-          class="flex-1 w-full p-4 pr-10 bg-gray-200 text-black rounded-2xl focus:outline-none" type="text"
-          placeholder="Responder" />
-        <button (click)="sendComment()" [disabled]="!comment.trim()"
-          [ngClass]="{'text-black': comment.trim(), 'text-gray-500': !comment.trim()}"
-          class="absolute inset-y-0 right-0 pr-6 flex items-center">
-          <i class="fa-solid fa-arrow-up text-lg"></i>
+        <input [(ngModel)]="comment" class="flex-1 w-full p-4 pr-10 bg-gray-200 text-black rounded-2xl focus:outline-none" type="text" placeholder="Responder" />
+        <button (click)="sendComment()" [disabled]="!comment.trim()" [ngClass]="{'text-black': comment.trim(), 'text-gray-500': !comment.trim()}" class="absolute inset-y-0 right-0 pr-6 flex items-center"><i class="fa-solid fa-arrow-up text-lg"></i>
         </button>
       </div>
     </div>
   </div>
   <div class="w-[512px] h-[768px] bg-white p-2 border rounded-3xl">
-    <div class="flex flex-col space-y-2 p-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center">
-          <i class="fa-solid fa-circle-info mb-2 mr-2"></i>
-          <h2 class="text-lg font-bold mb-2">Informações do Chamado</h2>
-        </div>
+    <div class="flex flex-col p-4">
+      <div class="flex items-center justify-between mb-4">
+        <div class="text-lg font-bold">Informações do Chamado</div>
         @if (isAdmin() || isAgent()) {
-          <i tp="Editar" class="fa-regular fa-pen-to-square text-xl mb-2 cursor-pointer"></i>
+          <i tp="Editar" class="fa-regular fa-pen-to-square text-xl cursor-pointer"></i>
         }
       </div>
-      <div class="flex justify-between items-center">
-        <p class="text-sm font-bold">Status</p>
-        <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
-      </div>
-      <div class="flex justify-between items-center">
-        <p class="text-sm font-bold">Prioridade</p>
-        <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
-      </div>
-      <div class="flex justify-between items-center">
-        <p class="text-sm font-bold">Localização</p>
-        <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer" [tp]="getFullLocation(ticket.location)">{{ getLastLocation(ticket.location) }}</p>
-      </div>
-      <div class="flex justify-between items-center">
-        <p class="text-sm font-bold">Data de Criação</p>
-        <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
-      </div>
-      <div class="flex justify-between items-center">
-        <p class="text-sm font-bold">Última Atualização</p>
-        <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
-      </div>
-      <div class="flex justify-between items-center">
-        <p class="text-sm font-bold">Categoria</p>
-        <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
+      <div class="space-y-2">
+        <div class="flex justify-between items-center">
+          <p class="text-sm font-bold">Status</p>
+          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{
+            statusTranslationMap[ticket.status] }}</p>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="text-sm font-bold">Prioridade</p>
+          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{
+            priorityTranslationMap[ticket.priority] }}</p>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="text-sm font-bold">Localização</p>
+          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer"
+            [tp]="getFullLocation(ticket.location)">{{ getLastLocation(ticket.location) }}</p>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="text-sm font-bold">Data de Criação</p>
+          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="text-sm font-bold">Última Atualização</p>
+          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="text-sm font-bold">Categoria</p>
+          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
+        </div>
       </div>
       <div>
-        <div class="flex items-center">
-          <i class="fa-solid fa-users mt-2 mb-4 mr-2"></i>
-          <h2 class="text-lg font-bold mt-2 mb-4">Envolvidos</h2>
-        </div>
+        <div class="text-lg font-bold mt-4 mb-4">Envolvidos</div>
         <div class="flex flex-col space-y-2">
-          <div>
-            <p class="text-sm font-bold mb-2">Clientes</p>
+          <div class="space-y-2">
+            <p class="text-sm font-bold">Clientes</p>
             <div class="flex justify-between gap-2 text-sm">
               <div class="flex flex-col w-full">
                 @for (customers of ticket.customers; track $index) {
@@ -114,8 +104,8 @@
               }
             </div>
           </div>
-          <div>
-            <p class="text-sm font-bold mb-2">Atribuído a</p>
+          <div class="space-y-2">
+            <p class="text-sm font-bold">Atribuído a</p>
             <div class="flex justify-between gap-2 text-sm">
               <div class="flex flex-col w-full">
                 @for (assignee of ticket.assignees; track $index) {
