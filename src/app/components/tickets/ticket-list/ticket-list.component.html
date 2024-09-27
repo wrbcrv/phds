@@ -23,12 +23,13 @@
             <th class="px-4 text-xs font-bold text-gray-600 text-left"><input type="checkbox" class="align-middle" (change)="toggleAll($event)"></th>
             <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">ID</th>
             <th class="px-4 text-xs font-bold text-gray-600 text-left w-full">Assunto</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden sm:table-cell">Criado em</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden md:table-cell">Criado em</th>
             <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden md:table-cell">Status</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden lg:table-cell">Prioridade</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Prioridade</th>
             <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Localização</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Cliente(s)</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Responsável(s)</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden 2xl:table-cell">Cliente(s)</th>
+            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden 2xl:table-cell">Responsável(s)</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -39,7 +40,7 @@
               <td class="px-4 bg-gray-100 text-sm flex-grow overflow-hidden">
                 <a class="truncate text-blue-900 font-semibold w-full" [tp]="ticket.subject" [routerLink]="['/ticket', ticket.id]">{{ ticket.subject }}</a>
               </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden sm:table-cell">{{ ticket.createdAt }}</td>
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden md:table-cell">{{ ticket.createdAt }}</td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden md:table-cell">
                 <span class="inline-block w-2 h-2 rounded-full mr-1"
                   [ngClass]="{
@@ -51,7 +52,7 @@
                 </span>
                 <span>{{ statusTranslationMap[ticket.status] }}</span>
               </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden lg:table-cell">
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell">
                 <span class="inline-block w-2 h-2 rounded-full mr-1"
                   [ngClass]="{
                     'bg-green-500': ticket.priority === 'Low',
@@ -63,7 +64,7 @@
                 <span>{{ priorityTranslationMap[ticket.priority] }}</span>
               </td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell text-ellipsis overflow-hidden" [tp]="getFullLocation(ticket.location)">{{ getLastLocation(ticket.location) }}</td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell">
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden 2xl:table-cell">
                 <div class="flex items-center">
                   <span>{{ ticket.customers[0]?.fullName }}</span>
                   @if (ticket.customers.length > 1) {
@@ -71,7 +72,7 @@
                   }
                 </div>
               </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell">
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden 2xl:table-cell">
                 <div class="flex items-center">
                   <span>{{ ticket.assignees[0]?.fullName }}</span>
                   @if (ticket.assignees.length > 1) {
