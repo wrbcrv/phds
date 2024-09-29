@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
+import {AutosizeModule} from 'ngx-autosize';
 
 @Component({
   selector: 'app-ticket-details',
@@ -15,7 +16,8 @@ import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../share
   imports: [
     FormsModule,
     CommonModule,
-    TippyDirective
+    TippyDirective,
+    AutosizeModule
   ],
   templateUrl: './ticket-details.component.html',
   styleUrls: ['./ticket-details.component.scss']

@@ -34,9 +34,8 @@
         }
       </div>
       <div class="relative mt-2">
-        <input [(ngModel)]="comment" class="flex-1 w-full p-4 pr-10 bg-gray-200 text-black rounded-2xl focus:outline-none" type="text" placeholder="Responder" />
-        <button (click)="sendComment()" [disabled]="!comment.trim()" [ngClass]="{'text-black': comment.trim(), 'text-gray-500': !comment.trim()}" class="absolute inset-y-0 right-0 pr-6 flex items-center"><i class="fa-solid fa-arrow-up text-lg"></i>
-        </button>
+        <textarea [(ngModel)]="comment" autosize [minRows]="1" [maxRows]="5" class="flex-1 w-full p-4 pr-10 bg-gray-200 text-black rounded-2xl focus:outline-none resize-none" placeholder="Responder"></textarea>
+        <button (click)="sendComment()" [disabled]="!comment.trim()" [ngClass]="{'text-black': comment.trim(), 'text-gray-500': !comment.trim()}" class="absolute inset-y-0 right-0 h-14 pr-6 flex items-center"><i class="fa-solid fa-arrow-up text-lg"></i></button>
       </div>
     </div>
   </div>

@@ -16,7 +16,7 @@ export class SidenavComponent implements OnInit {
     {
       label: 'Home',
       icon: '<i class="fa-solid fa-house"></i>',
-      url: '/',
+      url: '',
       sub: null
     },
     {
