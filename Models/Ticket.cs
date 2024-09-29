@@ -13,6 +13,7 @@ namespace Api.Models
         public Priority Priority { get; set; }
         public int? AgencyId { get; set; }
         public Agency Location { get; set; }
+        public Category Category { get; set; }
         public ICollection<User> Customers { get; set; } = new List<User>();
         public ICollection<User> Assignees { get; set; } = new List<User>();
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
