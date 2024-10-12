@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TippyDirective } from '@ngneat/helipopper';
+import { AutosizeModule } from 'ngx-autosize';
 import { AuthService } from '../../../services/auth.service';
 import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
-import {AutosizeModule} from 'ngx-autosize';
 
 @Component({
-  selector: 'app-ticket-details',
+  selector: 'phds-ticket-details',
   standalone: true,
   imports: [
     FormsModule,
@@ -26,15 +26,27 @@ export class TicketDetailsComponent implements OnInit {
   ticket: any;
   userId: number | null = null;
   comment: string = '';
+  isEditModalOpen: boolean = false;
   statusTranslationMap = STATUS_TRANSLATION_MAP;
   priorityTranslationMap = PRIORITY_TRANSLATION_MAP;
+
+  isStatusDropdownOpen: boolean = false;
+  isPriorityDropdownOpen: boolean = false;
+  selectedStatus: string | null = null;
+  selectedPriority: string | null = null;
+  availableStatus: string[] = [];
+  availablePriorities: string[] = [];
+
+  editedSubject: string = '';
+  editedDescription: string = '';
 
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
     private title: Title,
     private ticketService: TicketService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private elementRef: ElementRef
   ) { }
 
   ngOnInit(): void {
@@ -43,11 +55,13 @@ export class TicketDetailsComponent implements OnInit {
       this.title.setTitle(`Chamado #${this.ticket.id} • PHDS`);
     });
 
-    this.authService.getUserInfo().subscribe(
-      (res) => {
+    this.authService.getUserInfo().subscribe({
+      next: (res) => {
         this.userId = res.id;
       }
-    );
+    });
+
+    this.elementRef.nativeElement.classList.add('h-full', 'mb-2', 'mr-2');
   }
 
   loadTicket(): void {
@@ -125,10 +139,8 @@ export class TicketDetailsComponent implements OnInit {
 
   getInitials(fullName: string): string {
     if (!fullName) return '';
-
     const names = fullName.split(' ');
     const initials = names.map(name => name.charAt(0).toUpperCase()).join('');
-
     return initials.length > 2 ? initials.charAt(0) + initials.charAt(initials.length - 1) : initials;
   }
 }

@@ -2,17 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-
-export interface TicketRequest {
-  subject: string;
-  description: string;
-  type: string;
-  status: string;
-  priority: string;
-  locationId: number;
-  customerIds: number[];
-  assigneeIds: number[];
-}
+import { TicketReq } from '../models/ticket-req.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +14,12 @@ export class TicketService {
     private http: HttpClient
   ) { }
 
-  create(ticket: TicketRequest): Observable<any> {
+  create(ticket: TicketReq): Observable<any> {
     return this.http.post<any>(this.apiUrl, ticket);
+  }
+
+  update(id: number, ticket: TicketReq): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, ticket);
   }
 
   findAll(page: number, size: number, filter?: any): Observable<{ items: any[], total: number }> {

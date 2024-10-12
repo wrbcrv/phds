@@ -1,11 +1,12 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AgencyService } from '../../../services/agency.service';
-import { TicketRequest, TicketService } from '../../../services/ticket.service';
+import { TicketReq } from '../../../models/ticket-req.model';
 import { UserService } from '../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
+import { TicketService } from '../../../services/ticket.service';
 
 @Component({
   selector: 'phds-open-ticket',
@@ -19,7 +20,7 @@ import { QuillModule } from 'ngx-quill';
   styleUrls: ['./ticket-form.component.scss']
 })
 export class TicketFormComponent implements OnInit {
-  ticket: TicketRequest = {
+  ticket: TicketReq = {
     subject: '',
     description: '',
     type: '',

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TippyDirective } from '@ngneat/helipopper';
@@ -48,7 +48,9 @@ export class TicketListComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private ticketService: TicketService,
-    private locationService: LocationService) { }
+    private locationService: LocationService,
+    private elementRef: ElementRef
+  ) { }
 
   ngOnInit(): void {
     this.authService.getUserInfo().subscribe(
@@ -60,6 +62,8 @@ export class TicketListComponent implements OnInit {
         console.error(err);
       }
     );
+
+    this.elementRef.nativeElement.classList.add('h-full', 'mb-2', 'mr-2', 'bg-white', 'rounded-3xl');
   }
 
   loadTickets(): void {
