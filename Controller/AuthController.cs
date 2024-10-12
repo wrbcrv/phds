@@ -1,10 +1,6 @@
 using Api.DTOs;
 using Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 
 namespace Api.Controller
 {
@@ -13,11 +9,13 @@ namespace Api.Controller
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IJwtService _jwtService;
         private readonly IConfiguration _configuration;
 
-        public AuthController(IUserService userService, IConfiguration configuration)
+        public AuthController(IUserService userService, IJwtService jwtService, IConfiguration configuration)
         {
             _userService = userService;
+            _jwtService = jwtService;
             _configuration = configuration;
         }
 
@@ -32,7 +30,7 @@ namespace Api.Controller
                     return Unauthorized("Usuário ou senha incorretos.");
                 }
 
-                var token = GenerateJwt(user);
+                var token = _jwtService.GenerateJwt(user);
 
                 var expiresInHours = int.Parse(_configuration["Jwt:ExpiresInHours"]);
                 var expiresAt = DateTimeOffset.UtcNow.AddHours(expiresInHours);
@@ -59,7 +57,6 @@ namespace Api.Controller
             try
             {
                 Response.Cookies.Delete("Token");
-
                 return Ok(new { message = "Logout realizado com sucesso" });
             }
             catch (Exception ex)
@@ -80,31 +77,7 @@ namespace Api.Controller
                     return Unauthorized("Token de autenticação não encontrado.");
                 }
 
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
-                var tokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
-                    ValidAudience = _configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ClockSkew = TimeSpan.Zero
-                };
-
-                ClaimsPrincipal claimsPrincipal;
-                SecurityToken validatedToken;
-
-                try
-                {
-                    claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out validatedToken);
-                }
-                catch (Exception ex)
-                {
-                    return Unauthorized($"Token inválido: {ex.Message}");
-                }
+                var claimsPrincipal = _jwtService.ValidateToken(token);
 
                 if (claimsPrincipal?.Identity == null || !claimsPrincipal.Identity.IsAuthenticated)
                 {
@@ -127,37 +100,10 @@ namespace Api.Controller
 
                 return Ok(user);
             }
-            catch (SecurityTokenException)
-            {
-                return Unauthorized("Token inválido ou expirado.");
-            }
             catch (Exception ex)
             {
-
                 return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
             }
-        }
-
-        private string GenerateJwt(UserResponseDTO user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddHours(int.Parse(_configuration["Jwt:ExpiresInHours"])),
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
         }
     }
 }
