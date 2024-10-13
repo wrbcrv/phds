@@ -60,8 +60,6 @@ export class TicketDetailsComponent implements OnInit {
         this.userId = res.id;
       }
     });
-
-    this.elementRef.nativeElement.classList.add('h-full', 'mb-2', 'mr-2');
   }
 
   loadTicket(): void {

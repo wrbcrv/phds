@@ -62,8 +62,6 @@ export class TicketListComponent implements OnInit {
         console.error(err);
       }
     );
-
-    this.elementRef.nativeElement.classList.add('h-full', 'mb-2', 'mr-2', 'bg-white', 'rounded-3xl');
   }
 
   loadTickets(): void {

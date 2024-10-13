@@ -14,10 +14,7 @@ export const routes: Routes = [
   {
     path: 'tickets',
     component: TicketListComponent,
-    title: 'Chamados • PHDS',
-    data: {
-      title: 'Chamados Abertos'
-    }
+    title: 'Chamados • PHDS'
   },
   {
     path: 'ticket/create',
@@ -28,11 +25,6 @@ export const routes: Routes = [
     path: 'ticket/:id',
     component: TicketDetailsComponent,
     title: 'Detalhes do chamado • PHDS',
-    resolve: {
-      ticket: TicketResolver
-    },
-    data: {
-      title: 'Detalhes do Chamado'
-    }
+    resolve: { ticket: TicketResolver }
   }
 ];
