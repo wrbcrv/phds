@@ -10,14 +10,9 @@ namespace Api.Controller
     [ApiController]
     [Route("api/tickets")]
     [Authorize]
-    public class TicketController : ControllerBase
+    public class TicketController(ITicketService ticketService) : ControllerBase
     {
-        private readonly ITicketService _ticketService;
-
-        public TicketController(ITicketService ticketService)
-        {
-            _ticketService = ticketService;
-        }
+        private readonly ITicketService _ticketService = ticketService;
 
         [HttpGet]
         [Authorize(Roles = "Administrator, Agent, Client")]

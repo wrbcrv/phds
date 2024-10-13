@@ -5,14 +5,9 @@ using Api.Repositories.Interfaces;
 
 namespace Api.Repositories
 {
-    public class NotificationRepository : INotificationRepository
+    public class NotificationRepository(AppDbContext context) : INotificationRepository
     {
-        private readonly AppDbContext _context;
-
-        public NotificationRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task AddAsync(Notification notification)
         {

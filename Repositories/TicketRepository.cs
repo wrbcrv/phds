@@ -6,14 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Repositories
 {
-    public class TicketRepository : ITicketRepository
+    public class TicketRepository(AppDbContext context) : ITicketRepository
     {
-        private readonly AppDbContext _context;
-
-        public TicketRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<Ticket> GetByIdAsync(int id)
         {

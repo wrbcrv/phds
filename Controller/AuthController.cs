@@ -6,18 +6,11 @@ namespace Api.Controller
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthController : ControllerBase
+    public class AuthController(IUserService userService, IJwtService jwtService, IConfiguration configuration) : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly IJwtService _jwtService;
-        private readonly IConfiguration _configuration;
-
-        public AuthController(IUserService userService, IJwtService jwtService, IConfiguration configuration)
-        {
-            _userService = userService;
-            _jwtService = jwtService;
-            _configuration = configuration;
-        }
+        private readonly IUserService _userService = userService;
+        private readonly IJwtService _jwtService = jwtService;
+        private readonly IConfiguration _configuration = configuration;
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)

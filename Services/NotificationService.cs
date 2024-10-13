@@ -5,14 +5,9 @@ using Api.Services.Interfaces;
 
 namespace Api.Services
 {
-    public class NotificationService : INotificationService
+    public class NotificationService(INotificationRepository notificationRepository) : INotificationService
     {
-        private readonly INotificationRepository _notificationRepository;
-
-        public NotificationService(INotificationRepository notificationRepository)
-        {
-            _notificationRepository = notificationRepository;
-        }
+        private readonly INotificationRepository _notificationRepository = notificationRepository;
 
         public async Task AddAsync(Notification notification)
         {

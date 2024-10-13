@@ -9,16 +9,10 @@ namespace Api.Controller
     [ApiController]
     [Route("api/users")]
     [Authorize]
-    public class UsersController : ControllerBase
+    public class UsersController(IUserService userService, INotificationService notificationService) : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly INotificationService _notificationService;
-
-        public UsersController(IUserService userService, INotificationService notificationService)
-        {
-            _userService = userService;
-            _notificationService = notificationService;
-        }
+        private readonly IUserService _userService = userService;
+        private readonly INotificationService _notificationService = notificationService;
 
         [HttpGet]
         public async Task<IActionResult> GetAll()

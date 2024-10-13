@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Repositories
 {
-    public class AgencyRepository : IAgencyRepository
+    public class AgencyRepository(AppDbContext context) : IAgencyRepository
     {
-        private readonly AppDbContext _context;
-
-        public AgencyRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<IEnumerable<Agency>> GetAllAsync()
         {

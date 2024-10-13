@@ -8,14 +8,9 @@ namespace Api.Controller
     [ApiController]
     [Route("api/agencies")]
     [Authorize]
-    public class AgencyController : ControllerBase
+    public class AgencyController(IAgencyService agencyService) : ControllerBase
     {
-        private readonly IAgencyService _agencyService;
-
-        public AgencyController(IAgencyService agencyService)
-        {
-            _agencyService = agencyService;
-        }
+        private readonly IAgencyService _agencyService = agencyService;
 
         [HttpGet]
         public async Task<IActionResult> GetAll()

@@ -6,16 +6,10 @@ using AutoMapper;
 
 namespace Api.Services
 {
-    public class AgencyService : IAgencyService
+    public class AgencyService(IAgencyRepository agencyRepository, IMapper mapper) : IAgencyService
     {
-        private readonly IAgencyRepository _agencyRepository;
-        private readonly IMapper _mapper;
-
-        public AgencyService(IAgencyRepository agencyRepository, IMapper mapper)
-        {
-            _agencyRepository = agencyRepository;
-            _mapper = mapper;
-        }
+        private readonly IAgencyRepository _agencyRepository = agencyRepository;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<PagedResponseDTO<AgencyResponseDTO>> GetAllAsync()
         {

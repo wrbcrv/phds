@@ -6,20 +6,12 @@ using AutoMapper;
 
 namespace Api.Services
 {
-    public class TicketService : ITicketService
+    public class TicketService(ITicketRepository ticketRepository, IUserRepository userRepository, INotificationService notificationRepository, IMapper mapper) : ITicketService
     {
-        private readonly ITicketRepository _ticketRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly INotificationService _notificationService;
-        private readonly IMapper _mapper;
-
-        public TicketService(ITicketRepository ticketRepository, IUserRepository userRepository, INotificationService notificationRepository, IMapper mapper)
-        {
-            _ticketRepository = ticketRepository;
-            _userRepository = userRepository;
-            _notificationService = notificationRepository;
-            _mapper = mapper;
-        }
+        private readonly ITicketRepository _ticketRepository = ticketRepository;
+        private readonly IUserRepository _userRepository = userRepository;
+        private readonly INotificationService _notificationService = notificationRepository;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<PagedResponseDTO<TicketResponseDTO>> GetAllAsync(int page, int size, TicketFilter filter = null)
         {
