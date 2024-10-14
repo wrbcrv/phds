@@ -1,5 +1,5 @@
-<div class="flex justify-center h-full">
-  <div class="bg-white p-2 overflow-auto rounded-3xl mr-2">
+<div class="flex justify-center h-full bg-gray-100">
+  <div class="bg-white p-2 overflow-auto rounded-3xl mr-2 w-full h-[90vh]">
     <div class="flex flex-col h-full rounded-2xl overflow-hidden">
       <div class="flex-1 overflow-y-auto flex flex-col">
         <div class="flex flex-col bg-gray-100 text-black p-4 mb-2 rounded-2xl">
@@ -24,18 +24,18 @@
               </div>
             </div>
             @if (comment.author.id === userId) {
-              <div
-                class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full self-end mb-2 ml-2 cursor-pointer"
-                [tp]="comment.author.fullName">
+              <div class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full self-end mb-2 ml-2 cursor-pointer" [tp]="comment.author.fullName">
                 <span class="font-bold text-black text-xs">{{ getInitials(comment.author.fullName) }}</span>
               </div>
             }
           </div>
         }
       </div>
-      <div class="relative mt-2">
+      <div class="relative mt-2 h-14">
         <textarea [(ngModel)]="comment" autosize [minRows]="1" [maxRows]="5" class="flex-1 w-full p-4 pr-10 bg-gray-100 text-black rounded-2xl focus:outline-none resize-none" placeholder="Responder"></textarea>
-        <button (click)="sendComment()" [disabled]="!comment.trim()" [ngClass]="{'text-black': comment.trim(), 'text-gray-500': !comment.trim()}" class="absolute inset-y-0 right-0 h-14 pr-6 flex items-center"><i class="fa-solid fa-arrow-up text-lg"></i></button>
+        <button (click)="sendComment()" [disabled]="!comment.trim()" [ngClass]="{'text-black': comment.trim(), 'text-gray-400': !comment.trim()}" class="absolute inset-y-0 right-0 h-14 pr-6 flex items-center">
+          <i class="fa-solid fa-arrow-up text-lg"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
       <div class="flex items-center justify-between mb-4">
         <div class="text-lg font-bold">Informações do Chamado</div>
         @if (isAdmin() || isAgent()) {
-          <i tp="Editar" class="fa-regular fa-pen-to-square text-xl cursor-pointer"></i>
+          <i class="fa-solid fa-ellipsis text-xl cursor-pointer"></i>
         }
       </div>
       <div class="space-y-2">
@@ -62,8 +62,9 @@
         </div>
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Localização</p>
-          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer"
-            [tp]="getFullLocation(ticket.location)">{{ getLastLocation(ticket.location) }}</p>
+          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer" (click)="openModal()">
+            {{ getLastLocation(ticket.location) }}
+          </p>
         </div>
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Data de Criação</p>
@@ -87,8 +88,7 @@
               <div class="flex flex-col w-full">
                 @for (customers of ticket.customers; track $index) {
                   <div class="flex items-center gap-2">
-                    <div class="w-full flex justify-between bg-blue-50 px-3 py-1 rounded-full cursor-pointer"
-                      [ngClass]="{'mb-2': $index < ticket.customers.length - 1 }">
+                    <div class="w-full flex justify-between bg-blue-50 px-3 py-1 rounded-full cursor-pointer" [ngClass]="{'mb-2': $index < ticket.customers.length - 1 }">
                       <span>{{ customers.fullName }}</span>
                       <div class="flex gap-1">
                         <button (click)="removeCustomer(ticket.id, customers.id)" class="w-5"><i class="fa-solid fa-xmark"></i></button>
@@ -97,7 +97,7 @@
                   </div>
                 }
                 @empty {
-                  <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span class="text-sm">Nenhum usuário atribuido</span></div>
+                  <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span class="text-sm">Nenhum usuário atribuído</span></div>
                 }
               </div>
               @if (!ticket.customers || ticket.customers.length === 0) {
@@ -111,17 +111,16 @@
               <div class="flex flex-col w-full">
                 @for (assignee of ticket.assignees; track $index) {
                   <div class="flex items-center gap-2">
-                    <div class="w-full flex justify-between bg-blue-50 px-3 py-1 rounded-full cursor-pointer"
-                      [ngClass]="{'mb-2': $index < ticket.assignees.length - 1 }">
+                    <div class="w-full flex justify-between bg-blue-50 px-3 py-1 rounded-full cursor-pointer" [ngClass]="{'mb-2': $index < ticket.assignees.length - 1 }">
                       <span>{{ assignee.fullName }}</span>
                       <div class="flex gap-1">
-                        <button (click)="removeAssignee(ticket.id, assignee.id)" class=" w-5"><i class="fa-solid fa-xmark"></i></button>
+                        <button (click)="removeAssignee(ticket.id, assignee.id)" class="w-5"><i class="fa-solid fa-xmark"></i></button>
                       </div>
                     </div>
                   </div>
                 }
                 @empty {
-                  <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span>Nenhum usuário atribuido</span></div>
+                  <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span>Nenhum usuário atribuído</span></div>
                 }
               </div>
               @if (!ticket.assignees || ticket.assignees.length === 0) {
@@ -134,3 +133,16 @@
     </div>
   </div>
 </div>
+@if (showLocationModal) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div class="bg-white p-6 rounded-3xl relative">
+      <h2 class="text-lg font-bold mb-4">Localização</h2>
+      <button (click)="closeModal()" class="absolute w-8 h-8 top-2 right-2 text-md"><i class="fa-solid fa-close"></i></button>
+      <div class="space-y-2">
+        @for (location of locationHierarchy; track $index) {
+          <pre class="whitespace-pre ml-4 font-robotoMono">{{ location }}</pre>
+        }
+      </div>
+    </div>
+  </div>
+}

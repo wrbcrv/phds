@@ -40,6 +40,10 @@ export class TicketDetailsComponent implements OnInit {
   editedSubject: string = '';
   editedDescription: string = '';
 
+  // Novas propriedades para o modal de hierarquia de localização
+  showLocationModal: boolean = false;
+  locationHierarchy: string[] = [];
+
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -133,6 +137,26 @@ export class TicketDetailsComponent implements OnInit {
 
   getFullLocation(location: any): string {
     return this.locationService.getFullLocation(location);
+  }
+
+  openModal(): void {
+    if (this.ticket && this.ticket.location) {
+      this.locationHierarchy = this.getFullLocation(this.ticket.location).split(' > ');
+      this.locationHierarchy = this.formatHierarchy(this.locationHierarchy);
+      this.showLocationModal = true;
+    }
+  }
+
+  formatHierarchy(hierarchy: string[]): string[] {
+    return hierarchy.map((level, index) => {
+      const indent = '    '.repeat(index); 
+      const prefix = index === hierarchy.length - 1 ? '└── ' : '├── ';
+      return `${indent}${prefix}${level}`;
+    });
+  }
+
+  closeModal(): void {
+    this.showLocationModal = false;
   }
 
   getInitials(fullName: string): string {
