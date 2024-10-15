@@ -51,6 +51,10 @@ export class TicketService {
     return this.http.post<any>(`${this.apiUrl}/${ticketId}/comments/${authorId}`, comment);
   }
 
+  deleteComment(ticketId: number | string, commentId: number | string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${ticketId}/comments/${commentId}`);
+  }
+
   assignCurrentUser(ticketId: number, asAssignee: boolean = true): Observable<any> {
     const params = new HttpParams().set('asAssignee', asAssignee.toString());
 
@@ -71,17 +75,5 @@ export class TicketService {
 
   removeCustomer(ticketId: number, customerId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${ticketId}/customers/${customerId}`);
-  }
-
-  getPriorityValues(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/priority/values`);
-  }
-
-  getStatusValues(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/status/values`);
-  }
-
-  getTypeValues(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/type/values`);
   }
 }

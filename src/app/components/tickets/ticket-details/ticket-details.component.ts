@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -23,34 +23,30 @@ import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../share
   styleUrls: ['./ticket-details.component.scss']
 })
 export class TicketDetailsComponent implements OnInit {
+  activeMenuIndex: number | null = null;
+  availablePriorities: string[] = [];
+  availableStatus: string[] = [];
+  comment: string = '';
+  editedDescription: string = '';
+  editedSubject: string = '';
+  isEditModalOpen: boolean = false;
+  isPriorityDropdownOpen: boolean = false;
+  isStatusDropdownOpen: boolean = false;
+  locationHierarchy: string[] = [];
+  priorityTranslationMap = PRIORITY_TRANSLATION_MAP;
+  selectedPriority: string | null = null;
+  selectedStatus: string | null = null;
+  showLocationModal: boolean = false;
+  statusTranslationMap = STATUS_TRANSLATION_MAP;
   ticket: any;
   userId: number | null = null;
-  comment: string = '';
-  isEditModalOpen: boolean = false;
-  statusTranslationMap = STATUS_TRANSLATION_MAP;
-  priorityTranslationMap = PRIORITY_TRANSLATION_MAP;
-
-  isStatusDropdownOpen: boolean = false;
-  isPriorityDropdownOpen: boolean = false;
-  selectedStatus: string | null = null;
-  selectedPriority: string | null = null;
-  availableStatus: string[] = [];
-  availablePriorities: string[] = [];
-
-  editedSubject: string = '';
-  editedDescription: string = '';
-
-  // Novas propriedades para o modal de hierarquia de localização
-  showLocationModal: boolean = false;
-  locationHierarchy: string[] = [];
 
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
     private title: Title,
     private ticketService: TicketService,
-    private locationService: LocationService,
-    private elementRef: ElementRef
+    private locationService: LocationService
   ) { }
 
   ngOnInit(): void {
@@ -107,6 +103,14 @@ export class TicketDetailsComponent implements OnInit {
     }
   }
 
+  deleteComment(ticketId: number, commentId: number): void {
+    this.ticketService.deleteComment(ticketId, commentId).subscribe({
+      next: () => {
+        this.loadTicket();
+      }
+    })
+  }
+
   removeCustomer(ticketId: number, customerId: number): void {
     this.ticketService.removeCustomer(ticketId, customerId).subscribe({
       next: () => {
@@ -147,16 +151,23 @@ export class TicketDetailsComponent implements OnInit {
     }
   }
 
+  closeModal(): void {
+    this.showLocationModal = false;
+  }
+
+  toggleMenu(index: number): void {
+    if (this.activeMenuIndex === index)
+      this.activeMenuIndex = null;
+    else
+      this.activeMenuIndex = index;
+  }
+
   formatHierarchy(hierarchy: string[]): string[] {
     return hierarchy.map((level, index) => {
-      const indent = '    '.repeat(index); 
+      const indent = '    '.repeat(index);
       const prefix = index === hierarchy.length - 1 ? '└── ' : '├── ';
       return `${indent}${prefix}${level}`;
     });
-  }
-
-  closeModal(): void {
-    this.showLocationModal = false;
   }
 
   getInitials(fullName: string): string {

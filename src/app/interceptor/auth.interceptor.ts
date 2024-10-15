@@ -11,7 +11,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEv
     withCredentials: true
   })).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 || 403) {
+      if (error.status === 401) {
         router.navigate(['/']);
       }
       return throwError(() => error);
