@@ -16,6 +16,6 @@ namespace Api.Services.Interfaces
         Task<TicketResponseDTO> RemoveCustomerAsync(int ticketId, int customerId);
         Task<TicketResponseDTO> RemoveAssigneeAsync(int ticketId, int assigneeId);
         Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content);
-        Task<CommentResponseDTO> UpdateCommentAsync(int commentId, string newContent, int currentUserId);
+        Task<CommentResponseDTO> UpdateCommentAsync(int ticketId, int commentId, string newContent, int currentUserId);
     }
 }

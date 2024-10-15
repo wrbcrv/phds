@@ -76,9 +76,9 @@ namespace Api.Services
         public async Task<TicketResponseDTO> AssignCurrentUserAsync(int ticketId, int userId, bool asAssignee)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-            
+
             var user = await _userRepository.GetByIdAsync(userId) ?? throw new KeyNotFoundException("Usuário não encontrado.");
-            
+
             if (asAssignee)
             {
                 if (!ticket.Assignees.Contains(user))
@@ -183,9 +183,16 @@ namespace Api.Services
             return CommentResponseDTO.ValueOf(comment);
         }
 
-        public async Task<CommentResponseDTO> UpdateCommentAsync(int commentId, string newContent, int currentUserId)
+        public async Task<CommentResponseDTO> UpdateCommentAsync(int ticketId, int commentId, string newContent, int currentUserId)
         {
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Ticket não encontrado.");
+            
             var comment = await _ticketRepository.GetCommentByIdAsync(commentId) ?? throw new KeyNotFoundException("Comentário não encontrado.");
+
+            if (comment.TicketId != ticket.Id)
+            {
+                throw new InvalidOperationException("Comentário não pertence ao ticket informado.");
+            }
 
             if (comment.AuthorId != currentUserId)
             {
@@ -196,9 +203,12 @@ namespace Api.Services
             comment.UpdatedAt = DateTime.UtcNow;
             comment.IsUpdated = true;
 
+            ticket.UpdatedAt = DateTime.UtcNow;
+
             await _ticketRepository.UpdateCommentAsync(comment);
 
             return CommentResponseDTO.ValueOf(comment);
         }
+
     }
 }

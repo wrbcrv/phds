@@ -240,15 +240,15 @@ namespace Api.Controller
             }
         }
 
-        [HttpPut("comments/{commentId}")]
+        [HttpPut("tickets/{ticketId}/comments/{commentId}")]
         [Authorize(Roles = "Administrator, Agent, Client")]
-        public async Task<IActionResult> UpdateComment(int commentId, [FromBody] CommentDTO commentDTO)
+        public async Task<IActionResult> UpdateComment(int ticketId, int commentId, [FromBody] CommentDTO commentDTO)
         {
             try
             {
                 var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                var result = await _ticketService.UpdateCommentAsync(commentId, commentDTO.Content, currentUserId);
+                var result = await _ticketService.UpdateCommentAsync(ticketId, commentId, commentDTO.Content, currentUserId);
 
                 if (result == null)
                 {
