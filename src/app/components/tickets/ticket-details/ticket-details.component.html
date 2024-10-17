@@ -3,7 +3,7 @@
     <div class="flex flex-col h-full rounded-2xl overflow-hidden">
       <div class="flex-1 overflow-y-auto flex flex-col">
         <div class="h-0">
-          <div class="flex flex-col bg-gray-100 text-black p-4 mb-2 rounded-2xl">
+          <div class="flex flex-col bg-blue-100 text-black p-4 mb-2 rounded-2xl">
             <div class="text-xl font-bold mb-2">{{ ticket.subject }}</div>
             <div class="text-base mt-2 mb-2 whitespace-pre-line" [innerHTML]="ticket.description"></div>
             <div class="self-end text-xs">{{ ticket.createdAt }}</div>
@@ -11,14 +11,14 @@
           @for (comment of ticket.comments; track $index) {
             <div class="flex group relative">
               @if (comment.author.id !== userId) {
-                <div class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full self-end mb-2 mr-2 cursor-pointer" [tp]="comment.author.fullName">
+                <div class="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full self-end mb-2 mr-2 cursor-pointer" [tp]="comment.author.fullName">
                   <span class="font-bold text-black text-xs">{{ getInitials(comment.author.fullName) }}</span>
                 </div>
               }
               <div class="w-full flex items-center gap-2 group">
                 @if (comment.author.id === userId) {
-                  <div class="relative ml-auto">
-                    <div (click)="toggleMenu($index)" class="cursor-pointer"><i class="fa-solid fa-chevron-circle-up text-md"></i></div>
+                  <div class="relative ml-auto select-none">
+                    <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300" [ngClass]="{'opacity-100': activeMenuIndex === $index}"><i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i></div>
                     @if (activeMenuIndex === $index) {
                       <div class="absolute top-[-83px] right-0 cursor-pointer text-sm w-40 z-10">
                         <ul class="space-y-1">
@@ -26,7 +26,7 @@
                             <i class="fa-solid fa-pen mr-3"></i>
                             <span>Editar</span>
                           </li>
-                          <li (click)="deleteComment(ticket.id, comment.id)" class="px-4 py-2 flex items-center text-red-500 bg-white border rounded-2xl">
+                          <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white border rounded-2xl">
                             <i class="fa-solid fa-trash mr-3"></i>
                             <span>Deletar</span>
                           </li>
@@ -35,18 +35,18 @@
                     }
                   </div>
                 }
-                <div class="flex flex-col p-4 mb-2 rounded-2xl w-fit max-w-[50%] text-black" [ngClass]="{'bg-green-300 self-end': comment.author.id === userId, 'bg-gray-100 self-start': comment.author.id !== userId}">
+                <div class="flex flex-col p-4 mb-2 rounded-2xl w-fit max-w-[50%] text-black" [ngClass]="{'bg-green-300 self-end': comment.author.id === userId, 'bg-blue-100 self-start': comment.author.id !== userId}">
                   <span class="mb-2 whitespace-pre-wrap" [ngClass]="{'self-end': comment.author.id === userId, 'self-start': comment.author.id !== userId}">{{ comment.content }}</span>
                   <div class="flex justify-end text-xs">
-                    <span>{{ comment.createdAt }}</span>
                     @if (comment.isUpdated) {
-                      <span class="italic ml-2">(Editado)</span>
+                      <span class="mr-1">Editado</span>
                     }
+                    <span>{{ comment.createdAt }}</span>
                   </div>
                 </div>
                 @if (comment.author.id !== userId) {
-                  <div class="relative mr-auto">
-                    <div (click)="toggleMenu($index)" class="cursor-pointer"><i class="fa-solid fa-chevron-circle-up text-md"></i></div>
+                  <div class="relative mr-auto select-none">
+                    <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300" [ngClass]="{'opacity-100': activeMenuIndex === $index}"><i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i></div>
                     @if (activeMenuIndex === $index) {
                       <div class="absolute top-[-45px] left-0 cursor-pointer text-smborder w-40 z-10">
                         <ul>
@@ -61,12 +61,12 @@
                 }
               </div>
               @if (comment.author.id === userId) {
-                <div class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full self-end mb-2 ml-2 cursor-pointer" [tp]="comment.author.fullName">
+                <div class="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full self-end mb-2 ml-2 cursor-pointer" [tp]="comment.author.fullName">
                   <span class="font-bold text-black text-xs">{{ getInitials(comment.author.fullName) }}</span>
                 </div>
               }
             </div>
-          }          
+          }
         </div>
       </div>
       <div class="relative mt-2 h-14">
@@ -83,33 +83,33 @@
       <div class="space-y-2">
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Chamado</p>
-          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
+          <p class="text-sm text-right bg-blue-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
         </div>
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Status</p>
-          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
+          <p class="text-sm text-right bg-blue-100 px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
         </div>
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Prioridade</p>
-          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
+          <p class="text-sm text-right bg-blue-100 px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
         </div>
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Localização</p>
-          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer" (click)="openModal()">
+          <p class="text-sm text-right bg-blue-100 px-3 py-1 rounded-full cursor-pointer" (click)="openModal()">
             {{ getLastLocation(ticket.location) }}
           </p>
         </div>
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Data de Criação</p>
-          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
+          <p class="text-sm text-right bg-blue-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
         </div>
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Última Atualização</p>
-          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
+          <p class="text-sm text-right bg-blue-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
         </div>
         <div class="flex justify-between items-center">
           <p class="text-sm font-bold">Categoria</p>
-          <p class="text-sm text-right bg-blue-50 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
+          <p class="text-sm text-right bg-blue-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
         </div>
       </div>
       <div>
@@ -121,7 +121,7 @@
               <div class="flex flex-col w-full">
                 @for (customers of ticket.customers; track $index) {
                   <div class="flex items-center gap-2">
-                    <div class="w-full flex justify-between bg-blue-50 px-3 py-1 rounded-full cursor-pointer" [ngClass]="{'mb-2': $index < ticket.customers.length - 1 }">
+                    <div class="w-full flex justify-between bg-blue-100 px-3 py-1 rounded-full cursor-pointer" [ngClass]="{'mb-2': $index < ticket.customers.length - 1 }">
                       <span>{{ customers.fullName }}</span>
                       <div class="flex gap-1">
                         <button (click)="removeCustomer(ticket.id, customers.id)" class="w-5"><i class="fa-solid fa-xmark"></i></button>
@@ -130,7 +130,7 @@
                   </div>
                 }
                 @empty {
-                  <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span class="text-sm">Nenhum usuário atribuído</span></div>
+                  <div class="bg-blue-100 px-3 py-1 rounded-full w-full"><span class="text-sm">Nenhum usuário atribuído</span></div>
                 }
               </div>
               @if (!ticket.customers || ticket.customers.length === 0) {
@@ -144,7 +144,7 @@
               <div class="flex flex-col w-full">
                 @for (assignee of ticket.assignees; track $index) {
                   <div class="flex items-center gap-2">
-                    <div class="w-full flex justify-between bg-blue-50 px-3 py-1 rounded-full cursor-pointer" [ngClass]="{'mb-2': $index < ticket.assignees.length - 1 }">
+                    <div class="w-full flex justify-between bg-blue-100 px-3 py-1 rounded-full cursor-pointer" [ngClass]="{'mb-2': $index < ticket.assignees.length - 1 }">
                       <span>{{ assignee.fullName }}</span>
                       <div class="flex gap-1">
                         <button (click)="removeAssignee(ticket.id, assignee.id)" class="w-5"><i class="fa-solid fa-xmark"></i></button>
@@ -153,7 +153,7 @@
                   </div>
                 }
                 @empty {
-                  <div class="bg-blue-50 px-3 py-1 rounded-full w-full"><span>Nenhum usuário atribuído</span></div>
+                  <div class="bg-blue-100 px-3 py-1 rounded-full w-full"><span>Nenhum usuário atribuído</span></div>
                 }
               </div>
               @if (!ticket.assignees || ticket.assignees.length === 0) {
@@ -169,7 +169,6 @@
 @if (showLocationModal) {
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
     <div class="bg-white p-6 rounded-3xl relative">
-      <h2 class="text-lg font-bold mb-4">Localização</h2>
       <button (click)="closeModal()" class="absolute w-8 h-8 top-2 right-2 text-md"><i class="fa-solid fa-close"></i></button>
       <div class="space-y-2">
         @for (location of locationHierarchy; track $index) {
