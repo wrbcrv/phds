@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TippyDirective } from '@ngneat/helipopper';
 import { PAGE_SIZE_OPTIONS } from '../../../models/page-size.options';
 import { PRIORITY_OPTIONS } from '../../../models/priority.options';
 import { STATUS_OPTIONS } from '../../../models/status.options';
@@ -21,8 +20,7 @@ import { LocationService } from '../../../services/location.service';
     FormsModule,
     SelectComponent,
     RouterModule,
-    PaginationComponent,
-    TippyDirective
+    PaginationComponent
   ],
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']

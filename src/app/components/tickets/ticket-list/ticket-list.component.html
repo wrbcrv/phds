@@ -37,7 +37,7 @@
               <td class="px-4 bg-gray-100 text-sm"><input type="checkbox" class="align-middle" [(ngModel)]="ticket.selected" (change)="onTicketSelect(ticket)"></td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">{{ ticket.id }}</td>
               <td class="px-4 bg-gray-100 text-sm flex-grow overflow-hidden">
-                <a class="truncate text-blue-900 font-semibold w-full" [tp]="ticket.subject" [routerLink]="['/ticket', ticket.id]">{{ ticket.subject }}</a>
+                <a class="truncate text-blue-900 font-semibold w-full" [routerLink]="['/ticket', ticket.id]">{{ ticket.subject }}</a>
               </td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden md:table-cell">{{ ticket.createdAt }}</td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden md:table-cell">
@@ -62,7 +62,7 @@
                 </span>
                 <span>{{ priorityTranslationMap[ticket.priority] }}</span>
               </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell text-ellipsis overflow-hidden" [tp]="getFullLocation(ticket.location)">{{ getLastLocation(ticket.location) }}</td>
+              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell text-ellipsis overflow-hidden">{{ getLastLocation(ticket.location) }}</td>
               <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden 2xl:table-cell">
                 <div class="flex items-center">
                   <span>{{ ticket.customers[0]?.fullName }}</span>

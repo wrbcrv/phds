@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { TippyDirective } from '@ngneat/helipopper';
 import { AutosizeModule } from 'ngx-autosize';
 import { AuthService } from '../../../services/auth.service';
 import { LocationService } from '../../../services/location.service';
@@ -16,7 +15,6 @@ import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../share
   imports: [
     FormsModule,
     CommonModule,
-    TippyDirective,
     AutosizeModule
   ],
   templateUrl: './ticket-details.component.html',
@@ -41,6 +39,8 @@ export class TicketDetailsComponent implements OnInit {
   ticket: any;
   userId: number | null = null;
 
+  @ViewChild('lastComment', { static: false }) lastComment!: ElementRef;
+
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -60,9 +60,9 @@ export class TicketDetailsComponent implements OnInit {
         this.userId = res.id;
       }
     });
-  }
+  } 
 
-  loadTicket(): void {
+  loadData(): void {
     if (this.ticket?.id) {
       this.ticketService.findOne(this.ticket.id).subscribe({
         next: (ticket) => {
@@ -76,7 +76,7 @@ export class TicketDetailsComponent implements OnInit {
     if (this.ticket?.id) {
       this.ticketService.assignCurrentUser(this.ticket.id, true).subscribe({
         next: () => {
-          this.loadTicket();
+          this.loadData();
         }
       });
     }
@@ -86,7 +86,7 @@ export class TicketDetailsComponent implements OnInit {
     if (this.ticket?.id) {
       this.ticketService.assignCurrentUser(this.ticket.id, false).subscribe({
         next: () => {
-          this.loadTicket();
+          this.loadData();
         }
       });
     }
@@ -106,15 +106,15 @@ export class TicketDetailsComponent implements OnInit {
   deleteComment(ticketId: number, commentId: number): void {
     this.ticketService.deleteComment(ticketId, commentId).subscribe({
       next: () => {
-        this.loadTicket();
+        this.loadData();
       }
-    })
+    });
   }
 
   removeCustomer(ticketId: number, customerId: number): void {
     this.ticketService.removeCustomer(ticketId, customerId).subscribe({
       next: () => {
-        this.loadTicket();
+        this.loadData();
       }
     });
   }
@@ -122,7 +122,7 @@ export class TicketDetailsComponent implements OnInit {
   removeAssignee(ticketId: number, assigneeId: number): void {
     this.ticketService.removeAssignee(ticketId, assigneeId).subscribe({
       next: () => {
-        this.loadTicket();
+        this.loadData();
       }
     });
   }
@@ -156,10 +156,7 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   toggleMenu(index: number): void {
-    if (this.activeMenuIndex === index)
-      this.activeMenuIndex = null;
-    else
-      this.activeMenuIndex = index;
+    this.activeMenuIndex = this.activeMenuIndex === index ? null : index;
   }
 
   formatHierarchy(hierarchy: string[]): string[] {
@@ -175,5 +172,25 @@ export class TicketDetailsComponent implements OnInit {
     const names = fullName.split(' ');
     const initials = names.map(name => name.charAt(0).toUpperCase()).join('');
     return initials.length > 2 ? initials.charAt(0) + initials.charAt(initials.length - 1) : initials;
+  }
+
+  getGradient(fullName: string): string {
+    const gradients = [
+      'bg-gradient-to-t from-indigo-400 to-pink-300',
+      'bg-gradient-to-t from-green-300 to-yellow-200',
+      'bg-gradient-to-t from-blue-400 to-blue-200',
+      'bg-gradient-to-t from-cyan-400 to-teal-200',
+      'bg-gradient-to-t from-yellow-400 to-pink-200',
+      'bg-gradient-to-t from-lime-400 to-green-200',
+      'bg-gradient-to-t from-purple-400 to-purple-200',
+      'bg-gradient-to-t from-pink-300 to-yellow-200'
+    ];
+    
+    let hash = 0;
+    for (let i = 0; i < fullName.length; i++)
+      hash = fullName.charCodeAt(i) + ((hash << 5) - hash);
+
+    const index = Math.abs(hash % gradients.length);
+    return gradients[index];
   }
 }

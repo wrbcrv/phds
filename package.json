@@ -18,7 +18,6 @@
     "@angular/platform-browser": "^18.1.0",
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
-    "@ngneat/helipopper": "^9.2.1",
     "client": "file:",
     "ngx-autosize": "^2.0.4",
     "ngx-quill": "^26.0.5",
