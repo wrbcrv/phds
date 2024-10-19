@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "llrbuzIYQAIzOVzCT1dMYbgtako286gVg/Pj7offB04=",
+  "Hash": "kPuK4ajsujRGTMS7v6kXCRhK1rloLeUCPNlgoCVbMu8=",
   "Source": "Api",
   "BasePath": "_content/Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "Api\\wwwroot",
+      "Source": "Api",
+      "ContentRoot": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\",
+      "BasePath": "_content/Api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\757479bf-c8ae-4fd9-8c47-ad953185e399_image.png",
+      "SourceId": "Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\",
+      "BasePath": "_content/Api",
+      "RelativePath": "uploads/comments/757479bf-c8ae-4fd9-8c47-ad953185e399_image.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\comments\\757479bf-c8ae-4fd9-8c47-ad953185e399_image.png"
+    }
+  ]
 }

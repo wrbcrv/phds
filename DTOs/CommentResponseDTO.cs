@@ -11,6 +11,7 @@ namespace Api.DTOs
         public string Content { get; set; }
         public UserSummaryResponseDTO Author { get; set; }
         public bool CanDelete { get; set; }
+        public List<FileDTO> Files { get; set; }
 
         public static CommentResponseDTO ValueOf(Comment comment)
         {
@@ -25,7 +26,12 @@ namespace Api.DTOs
                 IsUpdated = comment.IsUpdated,
                 Content = comment.Content,
                 Author = comment.Author != null ? UserSummaryResponseDTO.ValueOf(comment.Author) : null,
-                CanDelete = timeSinceCommentCreated <= removalTimeLimit
+                CanDelete = timeSinceCommentCreated <= removalTimeLimit,
+                Files = comment.Files?.Select(f => new FileDTO
+                {
+                    FilePath = f.FilePath,
+                    FileName = f.FileName
+                }).ToList()
             };
         }
     }

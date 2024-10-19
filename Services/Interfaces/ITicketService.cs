@@ -15,7 +15,7 @@ namespace Api.Services.Interfaces
         Task<TicketResponseDTO> AssignAssigneesAsync(int ticketId, List<int> assigneeIds);
         Task<TicketResponseDTO> RemoveCustomerAsync(int ticketId, int customerId);
         Task<TicketResponseDTO> RemoveAssigneeAsync(int ticketId, int assigneeId);
-        Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content);
+        Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content, IList<IFormFile> files = null);
         Task<CommentResponseDTO> UpdateCommentAsync(int ticketId, int commentId, string newContent);
         Task DeleteCommentAsync(int ticketId, int commentId);
     }

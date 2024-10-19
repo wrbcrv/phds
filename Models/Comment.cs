@@ -12,5 +12,6 @@ namespace Api.Models
         public User Author { get; set; }
         public int TicketId { get; set; }
         public Ticket Ticket { get; set; }
+         public ICollection<CommentFile> Files { get; set; } = [];
     }
 }

@@ -221,11 +221,16 @@ namespace Api.Controller
 
         [HttpPost("{ticketId}/comments/{authorId}")]
         [Authorize(Roles = "Administrator, Agent, Client")]
-        public async Task<ActionResult<CommentResponseDTO>> AddComment(int ticketId, int authorId, [FromBody] CommentDTO commentDTO)
+        public async Task<ActionResult<CommentResponseDTO>> AddComment(int ticketId, int authorId, [FromForm] string content, [FromForm] List<IFormFile> files = null)
         {
             try
             {
-                var result = await _ticketService.AddCommentAsync(ticketId, authorId, commentDTO.Content);
+                if (string.IsNullOrEmpty(content) && (files == null || !files.Any()))
+                {
+                    return BadRequest("O comentário deve ter algum conteúdo ou arquivo.");
+                }
+
+                var result = await _ticketService.AddCommentAsync(ticketId, authorId, content, files);
 
                 if (result == null)
                 {

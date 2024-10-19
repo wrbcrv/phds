@@ -6,12 +6,20 @@ using AutoMapper;
 
 namespace Api.Services
 {
-    public class TicketService(ITicketRepository ticketRepository, IUserRepository userRepository, INotificationService notificationRepository, IMapper mapper) : ITicketService
+    public class TicketService
+    (
+        ITicketRepository ticketRepository,
+        IUserRepository userRepository,
+        INotificationService notificationRepository,
+        IMapper mapper,
+        IFileUploadService fileUploadService
+    ) : ITicketService
     {
         private readonly ITicketRepository _ticketRepository = ticketRepository;
         private readonly IUserRepository _userRepository = userRepository;
         private readonly INotificationService _notificationService = notificationRepository;
         private readonly IMapper _mapper = mapper;
+        private readonly IFileUploadService _fileUploadService = fileUploadService;
 
         public async Task<PagedResponseDTO<TicketResponseDTO>> GetAllAsync(int page, int size, TicketFilter filter = null)
         {
@@ -132,7 +140,7 @@ namespace Api.Services
             return TicketResponseDTO.ValueOf(ticket);
         }
 
-        public async Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content)
+        public async Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content, IList<IFormFile> files = null)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId);
             if (ticket == null) return null;
@@ -144,13 +152,31 @@ namespace Api.Services
             {
                 Content = content,
                 Author = author,
-                Ticket = ticket
+                Ticket = ticket,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
             ticket.UpdatedAt = DateTime.UtcNow;
 
+            if (files != null && files.Any())
+            {
+                foreach (var file in files)
+                {
+                    var filePath = await _fileUploadService.UploadFileAsync(file, "uploads/comments");
+                    var commentFile = new CommentFile
+                    {
+                        FilePath = filePath,
+                        FileName = file.FileName,
+                        Comment = comment
+                    };
+                    comment.Files.Add(commentFile);
+                }
+            }
+
             await _ticketRepository.AddCommentAsync(comment);
             await _notificationService.Notify(ticket, author, content);
+
             return CommentResponseDTO.ValueOf(comment);
         }
 
