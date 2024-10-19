@@ -1,5 +1,3 @@
-using System;
-using Api.DTOs;
 using Api.Models;
 
 namespace Api.DTOs
@@ -11,10 +9,14 @@ namespace Api.DTOs
         public string UpdatedAt { get; set; }
         public bool IsUpdated { get; set; }
         public string Content { get; set; }
-        public UserResponseDTO Author { get; set; }
+        public UserSummaryResponseDTO Author { get; set; }
+        public bool CanDelete { get; set; }
 
         public static CommentResponseDTO ValueOf(Comment comment)
         {
+            TimeSpan removalTimeLimit = TimeSpan.FromMinutes(5);
+            var timeSinceCommentCreated = DateTime.UtcNow - comment.CreatedAt;
+
             return new CommentResponseDTO
             {
                 Id = comment.Id,
@@ -22,7 +24,8 @@ namespace Api.DTOs
                 UpdatedAt = comment.UpdatedAt.ToString("dd/MM/yyyy HH:mm"),
                 IsUpdated = comment.IsUpdated,
                 Content = comment.Content,
-                Author = comment.Author != null ? UserResponseDTO.ValueOf(comment.Author) : null
+                Author = comment.Author != null ? UserSummaryResponseDTO.ValueOf(comment.Author) : null,
+                CanDelete = timeSinceCommentCreated <= removalTimeLimit
             };
         }
     }

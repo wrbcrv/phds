@@ -248,7 +248,7 @@ namespace Api.Controller
             {
                 var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                var result = await _ticketService.UpdateCommentAsync(ticketId, commentId, commentDTO.Content, currentUserId);
+                var result = await _ticketService.UpdateCommentAsync(ticketId, commentId, commentDTO.Content);
 
                 if (result == null)
                 {
@@ -260,6 +260,36 @@ namespace Api.Controller
             catch (UnauthorizedAccessException ex)
             {
                 return StatusCode(403, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{ticketId}/comments/{commentId}")]
+        [Authorize(Roles = "Administrator, Agent, Client")]
+        public async Task<IActionResult> DeleteComment(int ticketId, int commentId)
+        {
+            try
+            {
+                var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                await _ticketService.DeleteCommentAsync(ticketId, commentId);
+
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

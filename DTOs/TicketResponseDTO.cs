@@ -19,9 +19,9 @@ namespace Api.DTOs
         public string Priority { get; set; }
         public AgencyHierarchyDTO Location { get; set; }
         public string Category { get; set; }
-        public List<UserResponseDTO> Customers { get; set; } = new List<UserResponseDTO>();
-        public List<UserResponseDTO> Assignees { get; set; } = new List<UserResponseDTO>();
-        public List<CommentResponseDTO> Comments { get; set; } = new List<CommentResponseDTO>();
+        public List<UserSummaryResponseDTO> Customers { get; set; } = [];
+        public List<UserSummaryResponseDTO> Assignees { get; set; } = [];
+        public List<CommentResponseDTO> Comments { get; set; } = [];
 
         public static TicketResponseDTO ValueOf(Ticket ticket)
         {
@@ -37,9 +37,9 @@ namespace Api.DTOs
                 Priority = ticket.Priority.ToString(),
                 Location = ticket.Location != null ? AgencyHierarchyDTO.ValueOf(ticket.Location) : null,
                 Category = ticket.Category.ToString(),
-                Customers = ticket.Customers != null ? ticket.Customers.Select(UserResponseDTO.ValueOf).ToList() : new List<UserResponseDTO>(),
-                Assignees = ticket.Assignees != null ? ticket.Assignees.Select(UserResponseDTO.ValueOf).ToList() : new List<UserResponseDTO>(),
-                Comments = ticket.Comments != null ? ticket.Comments.Select(CommentResponseDTO.ValueOf).ToList() : new List<CommentResponseDTO>()
+                Customers = ticket.Customers != null ? ticket.Customers.Select(UserSummaryResponseDTO.ValueOf).ToList() : [],
+                Assignees = ticket.Assignees != null ? ticket.Assignees.Select(UserSummaryResponseDTO.ValueOf).ToList() : [],
+                Comments = ticket.Comments != null ? ticket.Comments.Select(CommentResponseDTO.ValueOf).ToList() : []
             };
         }
     }

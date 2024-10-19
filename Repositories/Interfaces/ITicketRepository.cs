@@ -15,6 +15,7 @@ namespace Api.Repositories.Interfaces
         Task<Comment> GetCommentByIdAsync(int commentId);
         Task AddCommentAsync(Comment comment);
         Task UpdateCommentAsync(Comment comment);
+        Task DeleteCommentAsync(int commentId);
 
     }
 }

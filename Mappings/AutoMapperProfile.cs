@@ -21,8 +21,8 @@ namespace Api.Mappings
 
             CreateMap<Ticket, TicketResponseDTO>()
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location != null ? AgencyHierarchyDTO.ValueOf(src.Location) : null))
-                .ForMember(dest => dest.Customers, opt => opt.MapFrom(src => src.Customers != null ? src.Customers.Select(UserResponseDTO.ValueOf).ToList() : new List<UserResponseDTO>()))
-                .ForMember(dest => dest.Assignees, opt => opt.MapFrom(src => src.Assignees != null ? src.Assignees.Select(UserResponseDTO.ValueOf).ToList() : new List<UserResponseDTO>()))
+                .ForMember(dest => dest.Customers, opt => opt.MapFrom(src => src.Customers != null ? src.Customers.Select(UserSummaryResponseDTO.ValueOf).ToList() : new List<UserSummaryResponseDTO>()))
+                .ForMember(dest => dest.Assignees, opt => opt.MapFrom(src => src.Assignees != null ? src.Assignees.Select(UserSummaryResponseDTO.ValueOf).ToList() : new List<UserSummaryResponseDTO>()))
                 .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments != null ? src.Comments.Select(CommentResponseDTO.ValueOf).ToList() : new List<CommentResponseDTO>()));
             CreateMap<TicketDTO, Ticket>();
 

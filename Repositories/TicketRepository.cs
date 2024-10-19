@@ -150,7 +150,7 @@ namespace Api.Repositories
                 .Include(c => c.Ticket)
                 .FirstOrDefaultAsync(c => c.Id == commentId);
         }
-        
+
         public async Task AddCommentAsync(Comment comment)
         {
             _context.Comments.Add(comment);
@@ -160,6 +160,12 @@ namespace Api.Repositories
         public async Task UpdateCommentAsync(Comment comment)
         {
             _context.Comments.Update(comment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteCommentAsync(int commentId)
+        {
+            _context.Comments.Remove(await _context.Comments.FindAsync(commentId));
             await _context.SaveChangesAsync();
         }
 

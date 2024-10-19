@@ -16,12 +16,10 @@ namespace Api.Services
         public async Task<PagedResponseDTO<TicketResponseDTO>> GetAllAsync(int page, int size, TicketFilter filter = null)
         {
             var tickets = await _ticketRepository.GetAllAsync(page, size, filter);
-
-            var ticketDtos = tickets.Items.Select(t => _mapper.Map<TicketResponseDTO>(t)).ToList();
-
+            var dtos = tickets.Items.Select(t => _mapper.Map<TicketResponseDTO>(t)).ToList();
             return new PagedResponseDTO<TicketResponseDTO>
             {
-                Items = ticketDtos,
+                Items = dtos,
                 Total = tickets.Total
             };
         }
@@ -29,7 +27,7 @@ namespace Api.Services
         public async Task<TicketResponseDTO> GetByIdAsync(int id)
         {
             var ticket = await _ticketRepository.GetByIdAsync(id);
-            return ticket != null ? _mapper.Map<TicketResponseDTO>(ticket) : null;
+            return TicketResponseDTO.ValueOf(ticket);
         }
 
         public async Task<TicketResponseDTO> CreateAsync(TicketDTO ticketDTO)
@@ -38,21 +36,14 @@ namespace Api.Services
             var customers = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.CustomerIds);
             var assignees = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.AssigneeIds);
 
-            var ticket = new Ticket
-            {
-                Subject = ticketDTO.Subject,
-                Description = ticketDTO.Description,
-                Type = ticketDTO.Type,
-                Status = ticketDTO.Status,
-                Priority = ticketDTO.Priority,
-                Location = location,
-                Customers = customers,
-                Assignees = assignees
-            };
+            var ticket = _mapper.Map<Ticket>(ticketDTO);
+
+            ticket.Location = location;
+            ticket.Customers = customers;
+            ticket.Assignees = assignees;
 
             await _ticketRepository.AddAsync(ticket);
-
-            return _mapper.Map<TicketResponseDTO>(ticket);
+            return TicketResponseDTO.ValueOf(ticket);
         }
 
         public async Task<TicketResponseDTO> UpdateAsync(int id, TicketDTO ticketDTO)
@@ -65,7 +56,7 @@ namespace Api.Services
 
             _mapper.Map(ticketDTO, ticket);
             await _ticketRepository.UpdateAsync(ticket);
-            return _mapper.Map<TicketResponseDTO>(ticket);
+            return TicketResponseDTO.ValueOf(ticket);
         }
 
         public async Task DeleteAsync(int id)
@@ -76,7 +67,6 @@ namespace Api.Services
         public async Task<TicketResponseDTO> AssignCurrentUserAsync(int ticketId, int userId, bool asAssignee)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-
             var user = await _userRepository.GetByIdAsync(userId) ?? throw new KeyNotFoundException("Usuário não encontrado.");
 
             if (asAssignee)
@@ -103,60 +93,43 @@ namespace Api.Services
             }
 
             await _ticketRepository.UpdateAsync(ticket);
-
-            return _mapper.Map<TicketResponseDTO>(ticket);
+            return TicketResponseDTO.ValueOf(ticket);
         }
 
         public async Task<TicketResponseDTO> AssignCustomersAsync(int ticketId, List<int> customerIds)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-
             var customers = await _ticketRepository.GetUsersByIdsAsync(customerIds);
-
             ticket.Customers = customers;
-
             await _ticketRepository.UpdateAsync(ticket);
-
-            return _mapper.Map<TicketResponseDTO>(ticket);
+            return TicketResponseDTO.ValueOf(ticket);
         }
 
         public async Task<TicketResponseDTO> AssignAssigneesAsync(int ticketId, List<int> assigneeIds)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-
             var assignees = await _ticketRepository.GetUsersByIdsAsync(assigneeIds);
-
             ticket.Assignees = assignees;
-
             await _ticketRepository.UpdateAsync(ticket);
-
-            return _mapper.Map<TicketResponseDTO>(ticket);
+            return TicketResponseDTO.ValueOf(ticket);
         }
 
         public async Task<TicketResponseDTO> RemoveAssigneeAsync(int ticketId, int assigneeId)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-
             var assigneeToRemove = ticket.Assignees.FirstOrDefault(a => a.Id == assigneeId) ?? throw new KeyNotFoundException("Assignee não encontrado neste chamado.");
-
             ticket.Assignees.Remove(assigneeToRemove);
-
             await _ticketRepository.UpdateAsync(ticket);
-
-            return _mapper.Map<TicketResponseDTO>(ticket);
+            return TicketResponseDTO.ValueOf(ticket);
         }
 
         public async Task<TicketResponseDTO> RemoveCustomerAsync(int ticketId, int customerId)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-
             var customerToRemove = ticket.Customers.FirstOrDefault(c => c.Id == customerId) ?? throw new KeyNotFoundException("Cliente não encontrado neste chamado.");
-
             ticket.Customers.Remove(customerToRemove);
-
             await _ticketRepository.UpdateAsync(ticket);
-
-            return _mapper.Map<TicketResponseDTO>(ticket);
+            return TicketResponseDTO.ValueOf(ticket);
         }
 
         public async Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content)
@@ -177,26 +150,18 @@ namespace Api.Services
             ticket.UpdatedAt = DateTime.UtcNow;
 
             await _ticketRepository.AddCommentAsync(comment);
-
             await _notificationService.Notify(ticket, author, content);
-
             return CommentResponseDTO.ValueOf(comment);
         }
 
-        public async Task<CommentResponseDTO> UpdateCommentAsync(int ticketId, int commentId, string newContent, int currentUserId)
+        public async Task<CommentResponseDTO> UpdateCommentAsync(int ticketId, int commentId, string newContent)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Ticket não encontrado.");
-            
             var comment = await _ticketRepository.GetCommentByIdAsync(commentId) ?? throw new KeyNotFoundException("Comentário não encontrado.");
 
             if (comment.TicketId != ticket.Id)
             {
                 throw new InvalidOperationException("Comentário não pertence ao ticket informado.");
-            }
-
-            if (comment.AuthorId != currentUserId)
-            {
-                throw new UnauthorizedAccessException("Você não tem permissão para editar este comentário.");
             }
 
             comment.Content = newContent;
@@ -206,9 +171,29 @@ namespace Api.Services
             ticket.UpdatedAt = DateTime.UtcNow;
 
             await _ticketRepository.UpdateCommentAsync(comment);
-
             return CommentResponseDTO.ValueOf(comment);
         }
 
+        public async Task DeleteCommentAsync(int ticketId, int commentId)
+        {
+            TimeSpan removalTimeLimit = TimeSpan.FromMinutes(5);
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Ticket não encontrado.");
+            var comment = await _ticketRepository.GetCommentByIdAsync(commentId) ?? throw new KeyNotFoundException("Comentário não encontrado.");
+
+            if (comment.TicketId != ticket.Id)
+            {
+                throw new InvalidOperationException("Comentário não pertence ao ticket informado.");
+            }
+
+            var timeSinceCommentCreated = DateTime.UtcNow - comment.CreatedAt;
+            if (timeSinceCommentCreated > removalTimeLimit)
+            {
+                throw new InvalidOperationException("O tempo permitido para remover este comentário expirou.");
+            }
+
+            ticket.UpdatedAt = DateTime.UtcNow;
+
+            await _ticketRepository.DeleteCommentAsync(commentId);
+        }
     }
 }
