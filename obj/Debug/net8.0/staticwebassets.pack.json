@@ -1,8 +1,12 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\757479bf-c8ae-4fd9-8c47-ad953185e399_image.png",
-      "PackagePath": "staticwebassets\\uploads\\comments\\757479bf-c8ae-4fd9-8c47-ad953185e399_image.png"
+      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\aec46d20-3d22-4075-a658-129c62f46990_image.png",
+      "PackagePath": "staticwebassets\\uploads\\comments\\aec46d20-3d22-4075-a658-129c62f46990_image.png"
+    },
+    {
+      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\e37e1dd1-9baa-403e-bf64-52e1cf7b228a_image.png",
+      "PackagePath": "staticwebassets\\uploads\\comments\\e37e1dd1-9baa-403e-bf64-52e1cf7b228a_image.png"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Api.Microsoft.AspNetCore.StaticWebAssets.props",

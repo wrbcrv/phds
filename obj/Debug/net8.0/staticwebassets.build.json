@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "kPuK4ajsujRGTMS7v6kXCRhK1rloLeUCPNlgoCVbMu8=",
+  "Hash": "ez1xpKUA76BovWzHSNW5jORExKO53axX7l7mjMUmFIk=",
   "Source": "Api",
   "BasePath": "_content/Api",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\757479bf-c8ae-4fd9-8c47-ad953185e399_image.png",
+      "Identity": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\aec46d20-3d22-4075-a658-129c62f46990_image.png",
       "SourceId": "Api",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\",
       "BasePath": "_content/Api",
-      "RelativePath": "uploads/comments/757479bf-c8ae-4fd9-8c47-ad953185e399_image.png",
+      "RelativePath": "uploads/comments/aec46d20-3d22-4075-a658-129c62f46990_image.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -33,7 +33,26 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\uploads\\comments\\757479bf-c8ae-4fd9-8c47-ad953185e399_image.png"
+      "OriginalItemSpec": "wwwroot\\uploads\\comments\\aec46d20-3d22-4075-a658-129c62f46990_image.png"
+    },
+    {
+      "Identity": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\e37e1dd1-9baa-403e-bf64-52e1cf7b228a_image.png",
+      "SourceId": "Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\",
+      "BasePath": "_content/Api",
+      "RelativePath": "uploads/comments/e37e1dd1-9baa-403e-bf64-52e1cf7b228a_image.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\comments\\e37e1dd1-9baa-403e-bf64-52e1cf7b228a_image.png"
     }
   ]
 }

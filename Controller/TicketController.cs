@@ -301,5 +301,19 @@ namespace Api.Controller
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("{ticketId}/comments/{commentId}/files/download")]
+        public async Task<IActionResult> DownloadCommentFile(int ticketId, int commentId)
+        {
+            try
+            {
+                var fileResult = await _ticketService.DownloadCommentFileAsync(ticketId, commentId);
+                return fileResult;
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

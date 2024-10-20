@@ -1,4 +1,5 @@
 using Api.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Services
 {
@@ -26,6 +27,23 @@ namespace Api.Services
             return Path.Combine(folderPath, fileName);
         }
 
+        public async Task<FileResult> DownloadFileAsync(string filePath)
+        {
+            var fullPath = Path.Combine(_env.WebRootPath, filePath);
+
+            if (!File.Exists(fullPath))
+            {
+                throw new FileNotFoundException("Arquivo não encontrado.", filePath);
+            }
+
+            var fileStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
+            var fileName = Path.GetFileName(fullPath);
+            return new FileStreamResult(fileStream, "application/octet-stream")
+            {
+                FileDownloadName = fileName
+            };
+        }
+
         public async Task<bool> DeleteFileAsync(string filePath)
         {
             var fullPath = Path.Combine(_env.WebRootPath, filePath);
@@ -37,6 +55,6 @@ namespace Api.Services
             }
 
             return false;
-        }
+        }        
     }
 }

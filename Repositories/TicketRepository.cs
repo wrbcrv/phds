@@ -17,7 +17,9 @@ namespace Api.Repositories
                 .Include(t => t.Customers)
                 .Include(t => t.Assignees)
                 .Include(t => t.Comments)
-                .ThenInclude(c => c.Author)
+                    .ThenInclude(c => c.Author)
+                .Include(t => t.Comments) 
+                    .ThenInclude(c => c.Files)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
             if (ticket != null)
@@ -38,13 +40,7 @@ namespace Api.Repositories
 
         public async Task<PagedResponseDTO<Ticket>> GetAllAsync(int page, int size, TicketFilter filter)
         {
-            IQueryable<Ticket> query = _context.Tickets
-                .Include(t => t.Location)
-                .Include(t => t.Customers)
-                .Include(t => t.Assignees)
-                .Include(t => t.Comments)
-                .ThenInclude(c => c.Author)
-                .OrderByDescending(t => t.CreatedAt);
+            IQueryable<Ticket> query = _context.Tickets.Include(t => t.Location).Include(t => t.Customers).Include(t => t.Assignees).Include(t => t.Comments).ThenInclude(c => c.Author).OrderByDescending(t => t.CreatedAt);
 
             if (filter != null)
             {
@@ -145,10 +141,7 @@ namespace Api.Repositories
 
         public async Task<Comment> GetCommentByIdAsync(int commentId)
         {
-            return await _context.Comments
-                .Include(c => c.Author)
-                .Include(c => c.Ticket)
-                .FirstOrDefaultAsync(c => c.Id == commentId);
+            return await _context.Comments.Include(c => c.Author).Include(c => c.Ticket).Include(c => c.Files).FirstOrDefaultAsync(c => c.Id == commentId);
         }
 
         public async Task AddCommentAsync(Comment comment)
@@ -174,9 +167,7 @@ namespace Api.Repositories
             if (agency == null || agency.ParentId == null)
                 return;
 
-            agency.Parent = await _context.Agencies
-                .Include(a => a.Parent)
-                .FirstOrDefaultAsync(a => a.Id == agency.ParentId);
+            agency.Parent = await _context.Agencies.Include(a => a.Parent).FirstOrDefaultAsync(a => a.Id == agency.ParentId);
 
             await LoadAgencyHierarchyAsync(agency.Parent);
         }

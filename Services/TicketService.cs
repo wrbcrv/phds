@@ -3,6 +3,7 @@ using Api.Models;
 using Api.Repositories.Interfaces;
 using Api.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Services
 {
@@ -220,6 +221,29 @@ namespace Api.Services
             ticket.UpdatedAt = DateTime.UtcNow;
 
             await _ticketRepository.DeleteCommentAsync(commentId);
+        }
+
+        public async Task<FileResult> DownloadCommentFileAsync(int ticketId, int commentId)
+        {
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId);
+            if (ticket == null)
+            {
+                throw new KeyNotFoundException("Ticket não encontrado.");
+            }
+
+            var comment = await _ticketRepository.GetCommentByIdAsync(commentId);
+            if (comment == null || comment.TicketId != ticketId)
+            {
+                throw new KeyNotFoundException("Comentário não encontrado ou não pertence ao ticket informado.");
+            }
+
+            var commentFile = comment.Files.FirstOrDefault();
+            if (commentFile == null)
+            {
+                throw new InvalidOperationException("Nenhum arquivo associado ao comentário.");
+            }
+
+            return await _fileUploadService.DownloadFileAsync(commentFile.FilePath);
         }
     }
 }
