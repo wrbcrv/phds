@@ -8,7 +8,7 @@ import { TicketReq } from '../models/ticket-req.model';
   providedIn: 'root'
 })
 export class TicketService {
-  private apiUrl: string = `${environment.apiUrl}/tickets`
+  private apiUrl: string = `${environment.apiUrl}/tickets`;
 
   constructor(
     private http: HttpClient
@@ -43,26 +43,6 @@ export class TicketService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  addComment(ticketId: number | string, authorId: number | string, content: string, files?: File[]): Observable<any> {
-    const formData: FormData = new FormData();
-
-    if (content) {
-      formData.append('content', content);
-    }
-
-    if (files && files.length > 0) {
-      files.forEach((file, index) => {
-        formData.append('files', file);
-      });
-    }
-
-    return this.http.post<any>(`${this.apiUrl}/${ticketId}/comments/${authorId}`, formData);
-  }
-
-  deleteComment(ticketId: number | string, commentId: number | string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${ticketId}/comments/${commentId}`);
-  }
-
   assignCurrentUser(ticketId: number, asAssignee: boolean = true): Observable<any> {
     const params = new HttpParams().set('asAssignee', asAssignee.toString());
 
@@ -83,22 +63,5 @@ export class TicketService {
 
   removeCustomer(ticketId: number, customerId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${ticketId}/customers/${customerId}`);
-  }
-
-  downloadCommentFile(ticketId: number, commentId: number): Observable<Blob> {
-    return this.http.get<Blob>(`${this.apiUrl}/${ticketId}/comments/${commentId}/files/download`, {
-      responseType: 'blob' as 'json'
-    });
-  }
-
-  downloadFile(blob: Blob, fileName: string) {
-    const a = document.createElement('a');
-    const objectUrl = URL.createObjectURL(blob);
-    a.href = objectUrl;
-    a.download = fileName; 
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(objectUrl);
   }
 }

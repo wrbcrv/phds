@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
+import { CommentService } from '../../../services/comment.service';
 
 @Component({
   selector: 'phds-ticket-details',
@@ -44,10 +45,11 @@ export class TicketDetailsComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private route: ActivatedRoute,
-    private title: Title,
-    private ticketService: TicketService,
+    private commentService: CommentService,
     private locationService: LocationService,
+    private route: ActivatedRoute,
+    private ticketService: TicketService,
+    private title: Title
   ) { }
 
   ngOnInit(): void {
@@ -89,7 +91,7 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   deleteComment(ticketId: number, commentId: number): void {
-    this.ticketService.deleteComment(ticketId, commentId).subscribe({
+    this.commentService.deleteComment(ticketId, commentId).subscribe({
       next: () => {
         this.loadData();
       }
@@ -100,7 +102,7 @@ export class TicketDetailsComponent implements OnInit {
     if (this.ticket?.comments) {
       this.ticket.comments.forEach((comment: any) => {
         if (comment.id) {
-          this.ticketService.downloadCommentFile(this.ticket.id, comment.id).subscribe({
+          this.commentService.downloadCommentFile(this.ticket.id, comment.id).subscribe({
             next: (blob) => {
               const objectUrl = URL.createObjectURL(blob);
               this.imageUrls[comment.id] = objectUrl;
@@ -180,7 +182,7 @@ export class TicketDetailsComponent implements OnInit {
         this.filePreviews.push(URL.createObjectURL(file));
       }
     });
-  
+
     event.target.value = '';
   }
 
@@ -217,7 +219,7 @@ export class TicketDetailsComponent implements OnInit {
 
   sendComment(): void {
     if (this.comment.trim() && this.userId) {
-      this.ticketService.addComment(this.ticket.id, this.userId, this.comment, this.selectedFiles).subscribe({
+      this.commentService.addComment(this.ticket.id, this.userId, this.comment, this.selectedFiles).subscribe({
         next: (res) => {
           this.ticket.comments.push(res);
           this.comment = '';
