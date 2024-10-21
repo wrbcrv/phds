@@ -1,12 +1,24 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\aec46d20-3d22-4075-a658-129c62f46990_image.png",
-      "PackagePath": "staticwebassets\\uploads\\comments\\aec46d20-3d22-4075-a658-129c62f46990_image.png"
+      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\0d0476b8-a10e-4d4e-abc9-f3bf191c20ae_ajkbsmpbw67f_52ggwpk6c8.jpg",
+      "PackagePath": "staticwebassets\\uploads\\comments\\0d0476b8-a10e-4d4e-abc9-f3bf191c20ae_ajkbsmpbw67f_52ggwpk6c8.jpg"
     },
     {
-      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\e37e1dd1-9baa-403e-bf64-52e1cf7b228a_image.png",
-      "PackagePath": "staticwebassets\\uploads\\comments\\e37e1dd1-9baa-403e-bf64-52e1cf7b228a_image.png"
+      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\173c60b6-b9a1-4528-ab53-f22dfe62863f_1354082.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\comments\\173c60b6-b9a1-4528-ab53-f22dfe62863f_1354082.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\4cd740f0-d220-413d-8a2b-e80f1c2a67cc_1354082.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\comments\\4cd740f0-d220-413d-8a2b-e80f1c2a67cc_1354082.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\6fff42dd-3b16-449f-b8f7-d41d1ad40bf5_image.png",
+      "PackagePath": "staticwebassets\\uploads\\comments\\6fff42dd-3b16-449f-b8f7-d41d1ad40bf5_image.png"
+    },
+    {
+      "Id": "C:\\Users\\GIGABYTE\\Documents\\GitHub\\api\\wwwroot\\uploads\\comments\\b6961d76-6a77-4d19-872e-8c61278455f3_1354082.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\comments\\b6961d76-6a77-4d19-872e-8c61278455f3_1354082.jpeg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Api.Microsoft.AspNetCore.StaticWebAssets.props",

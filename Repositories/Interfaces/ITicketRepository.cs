@@ -12,10 +12,5 @@ namespace Api.Repositories.Interfaces
         Task DeleteAsync(int id);
         Task<Agency> GetAgencyByIdAsync(int id);
         Task<List<User>> GetUsersByIdsAsync(IEnumerable<int> ids);
-        Task<Comment> GetCommentByIdAsync(int commentId);
-        Task AddCommentAsync(Comment comment);
-        Task UpdateCommentAsync(Comment comment);
-        Task DeleteCommentAsync(int commentId);
-
     }
 }

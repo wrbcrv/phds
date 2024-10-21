@@ -18,7 +18,7 @@ namespace Api.Repositories
                 .Include(t => t.Assignees)
                 .Include(t => t.Comments)
                     .ThenInclude(c => c.Author)
-                .Include(t => t.Comments) 
+                .Include(t => t.Comments)
                     .ThenInclude(c => c.Files)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
@@ -40,7 +40,15 @@ namespace Api.Repositories
 
         public async Task<PagedResponseDTO<Ticket>> GetAllAsync(int page, int size, TicketFilter filter)
         {
-            IQueryable<Ticket> query = _context.Tickets.Include(t => t.Location).Include(t => t.Customers).Include(t => t.Assignees).Include(t => t.Comments).ThenInclude(c => c.Author).OrderByDescending(t => t.CreatedAt);
+            IQueryable<Ticket> query = _context.Tickets
+                .Include(t => t.Location)
+                .Include(t => t.Customers)
+                .Include(t => t.Assignees)
+                .Include(t => t.Comments)
+                    .ThenInclude(c => c.Author)
+                .Include(t => t.Comments)
+                    .ThenInclude(c => c.Files)
+                .OrderByDescending(t => t.CreatedAt);
 
             if (filter != null)
             {
@@ -137,29 +145,6 @@ namespace Api.Repositories
         public async Task<List<User>> GetUsersByIdsAsync(IEnumerable<int> ids)
         {
             return await _context.Users.Where(u => ids.Contains(u.Id)).ToListAsync();
-        }
-
-        public async Task<Comment> GetCommentByIdAsync(int commentId)
-        {
-            return await _context.Comments.Include(c => c.Author).Include(c => c.Ticket).Include(c => c.Files).FirstOrDefaultAsync(c => c.Id == commentId);
-        }
-
-        public async Task AddCommentAsync(Comment comment)
-        {
-            _context.Comments.Add(comment);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateCommentAsync(Comment comment)
-        {
-            _context.Comments.Update(comment);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteCommentAsync(int commentId)
-        {
-            _context.Comments.Remove(await _context.Comments.FindAsync(commentId));
-            await _context.SaveChangesAsync();
         }
 
         private async Task LoadAgencyHierarchyAsync(Agency agency)
