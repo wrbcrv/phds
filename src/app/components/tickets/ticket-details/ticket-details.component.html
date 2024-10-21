@@ -11,54 +11,104 @@
           @for (comment of ticket.comments; track $index) {
             <div class="flex group relative">
               @if (comment.author.id !== userId) {
-                <div class="flex items-center justify-center w-8 h-8 rounded-full self-end mb-2 mr-2 cursor-pointer" [ngClass]="getGradient(comment.author.fullName)">
+                <div class="flex items-center justify-center min-w-8 h-8 rounded-full self-end mb-2 mr-2 cursor-pointer" [ngClass]="getGradient(comment.author.fullName)">
                   <span class="font-bold text-white text-xs">{{ getInitials(comment.author.fullName) }}</span>
                 </div>
               }
               <div class="w-full flex items-center group">
                 @if (comment.author.id === userId) {
                   <div class="relative ml-auto select-none">
-                    <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100" [ngClass]="{'opacity-100': activeMenuIndex === $index}">
-                      <i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i>
-                    </div>
-                    @if (activeMenuIndex === $index) {
-                      <div class="absolute top-[-83px] right-0 cursor-pointer text-sm w-40 z-10">
-                        <ul class="space-y-1">
-                          <li class="px-4 py-2 flex items-center bg-white border rounded-2xl">
+                    @if (!imageUrls[comment.id]) {
+                      <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100" [ngClass]="{'opacity-100': activeMenuIndex === $index}"><i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i></div>
+                    }
+                    @if (activeMenuIndex === $index && !imageUrls[comment.id]) {
+                      <div class="absolute top-[-5.625rem] right-0 bg-white shadow-sm rounded-2xl cursor-pointer text-sm w-44 z-10">
+                        <ul class="space-y-1 border p-1 rounded-2xl">
+                          <li class="px-4 py-2 flex items-center">
                             <i class="fa-solid fa-pen mr-3"></i>
                             <span>Editar</span>
                           </li>
-                          <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white border rounded-2xl">
+                          <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white">
                             <i class="fa-solid fa-trash mr-3"></i>
-                            <span>Deletar</span>
+                            <span>Cancelar envio</span>
                           </li>
                         </ul>
                       </div>
                     }
                   </div>
                 }
-                <div class="flex flex-col p-4 mb-2 rounded-2xl w-fit max-w-[50%] text-black" [ngClass]="{'bg-blue-100 self-end ml-2': comment.author.id === userId, 'bg-gray-100 self-start mr-2': comment.author.id !== userId}">
-                  @if (imageUrls[comment.id]) {
-                    <img [src]="imageUrls[comment.id]" alt="Imagem do comentário" class="max-w-96 rounded-2xl mb-2"/>
-                  } 
-                  <span class="mb-2 whitespace-pre-wrap" [ngClass]="{'self-end': comment.author.id === userId, 'self-start': comment.author.id !== userId}">{{ comment.content }}</span>
-                  <div class="flex justify-end text-xs">
-                    @if (comment.isUpdated) {
-                      <span>Editado</span>
-                      &nbsp;
-                    }
-                    <span>{{ comment.createdAt }}</span>
+                @if (imageUrls[comment.id]) {
+                  <div class="flex flex-col">
+                    <img [src]="imageUrls[comment.id]" alt="Imagem do comentário" [ngClass]="{'rounded-br-md': comment.author.id === userId, 'rounded-bl-md': comment.author.id !== userId}" class="max-w-96 rounded-2xl mb-2"/>
+                    <div class="flex flex-row items-center" [ngClass]="{'justify-end': comment.author.id === userId, 'justify-start': comment.author.id !== userId}"> 
+                      @if (comment.author.id === userId) {
+                        <div class="relative select-none">
+                          <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100" [ngClass]="{'opacity-100': activeMenuIndex === $index}"><i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i></div>
+                          @if (activeMenuIndex === $index) {
+                            <div class="absolute top-[-5.625rem] right-0 bg-white shadow-sm rounded-2xl cursor-pointer text-sm w-44 z-10">
+                              <ul class="space-y-1 border p-1 rounded-2xl">
+                                <li class="px-4 py-2 flex items-center">
+                                  <i class="fa-solid fa-pen mr-3"></i>
+                                  <span>Editar</span>
+                                </li>
+                                <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white">
+                                  <i class="fa-solid fa-trash mr-3"></i>
+                                  <span>Cancelar envio</span>
+                                </li>
+                              </ul>
+                            </div>
+                          }
+                        </div>
+                      }
+                      <div class="flex flex-col p-4 mb-2 rounded-2xl max-w-[50%] text-black" [ngClass]="{'bg-blue-100 self-end rounded-tr-md ml-2': comment.author.id === userId, 'bg-gray-100 self-start rounded-tl-md mr-2': comment.author.id !== userId}">
+                        <span class="mb-2 whitespace-pre-wrap" [ngClass]="{'self-end': comment.author.id === userId, 'self-start': comment.author.id !== userId}">{{ comment.content }}</span>
+                        <div class="flex justify-end text-xs">
+                          @if (comment.isUpdated) {
+                            <span>Editado</span>
+                            &nbsp;
+                          }
+                          <span>{{ comment.createdAt }}</span>
+                        </div>
+                      </div>
+                      @if (comment.author.id !== userId){
+                        <div class="relative">
+                          <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100" [ngClass]="{'opacity-100': activeMenuIndex === $index}"><i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i></div>
+                          @if (activeMenuIndex === $index) {
+                            <div class="absolute top-[-3.375rem] left-0 bg-white shadow-sm rounded-2xl cursor-pointer text-smborder w-40 z-10">
+                              <ul class="border p-1 rounded-2xl">
+                                <li class="px-4 py-2 flex items-center">
+                                  <i class="fa-regular fa-flag mr-3"></i>
+                                  <span>Reportar</span>
+                                </li>
+                              </ul>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
                   </div>
-                </div>
+                }
+                @else {
+                  <div class="flex flex-col p-4 mb-2 rounded-2xl w-fit max-w-[50%] text-black" [ngClass]="{'bg-blue-100 self-end ml-2': comment.author.id === userId, 'bg-gray-100 self-start mr-2': comment.author.id !== userId}">
+                    <span class="mb-2 whitespace-pre-wrap" [ngClass]="{'self-end': comment.author.id === userId, 'self-start': comment.author.id !== userId}">{{ comment.content }}</span>
+                    <div class="flex justify-end text-xs">
+                      @if (comment.isUpdated) {
+                        <span>Editado</span>
+                        &nbsp;
+                      }
+                      <span>{{ comment.createdAt }}</span>
+                    </div>
+                  </div>
+                }
                 @if (comment.author.id !== userId) {
                   <div class="relative mr-auto select-none">
-                    <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100" [ngClass]="{'opacity-100': activeMenuIndex === $index}">
-                      <i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i>
-                    </div>
-                    @if (activeMenuIndex === $index) {
-                      <div class="absolute top-[-45px] left-0 cursor-pointer text-smborder w-40 z-10">
-                        <ul>
-                          <li class="px-4 py-2 bg-white flex items-center border rounded-2xl">
+                    @if (!imageUrls[comment.id]) {
+                      <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100" [ngClass]="{'opacity-100': activeMenuIndex === $index}"><i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i></div>
+                    }
+                    @if (activeMenuIndex === $index && !imageUrls[comment.id]) {
+                      <div class="absolute top-[-3.375rem] left-0 bg-white shadow-sm rounded-2xl cursor-pointer text-smborder w-40 z-10">
+                        <ul class="border p-1 rounded-2xl">
+                          <li class="px-4 py-2 flex items-center">
                             <i class="fa-regular fa-flag mr-3"></i>
                             <span>Reportar</span>
                           </li>
@@ -70,38 +120,41 @@
               </div>
             </div>
           }
-          
         </div>
       </div>
       <div class="mt-2 flex flex-wrap">
-        <div *ngFor="let preview of filePreviews; let i = index" class="relative">
-          <img [src]="preview" alt="Preview" class="h-20 w-20 mb-2 mr-2 object-cover rounded-2xl" />
-          <button (click)="removeFile(i)" class="absolute top-2 right-4 flex justify-center items-center h-4 w-4 text-white rounded-full text-xs p-1"><i class="fa-solid fa-close"></i></button>
-        </div>
+        @for (preview of filePreviews; track $index) {
+          <div class="relative">
+            <img [src]="preview" alt="Preview" class="h-20 w-20 mb-2 mr-2 object-cover rounded-2xl" />
+            <button (click)="removeFile($index)" class="absolute top-2 right-4 flex justify-center items-center h-4 w-4 text-white rounded-full text-xs p-1">
+              <i class="fa-solid fa-close"></i>
+            </button>
+          </div>
+        }
       </div>
       <div class="relative h-14 flex">
         <div class="relative flex-1 w-full">
-            <textarea 
-                [(ngModel)]="comment" 
-                autosize 
-                [minRows]="1" 
-                [maxRows]="5" 
-                class="w-full p-4 bg-gray-100 text-black rounded-2xl focus:outline-none resize-none" 
-                placeholder="Responder">
-            </textarea>
-            <input type="file" (change)="onFileSelected($event)" multiple class="hidden" id="file-input" />
-            <label 
-                for="file-input" 
-                class="cursor-pointer absolute top-1/2 right-4 transform -translate-y-1/2">
-                <i class="fa-solid fa-paperclip text-lg"></i>
-            </label>
+          <textarea 
+            [(ngModel)]="comment" 
+            autosize 
+            [minRows]="1" 
+            [maxRows]="5" 
+            class="w-full p-4 bg-gray-100 text-black rounded-2xl focus:outline-none resize-none" 
+            placeholder="Responder">
+          </textarea>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" multiple class="hidden" id="file-input" />
+          <label 
+            for="file-input" 
+            class="cursor-pointer absolute top-1/2 right-4 transform -translate-y-1/2">
+            <i class="fa-regular fa-file-image text-lg"></i> 
+          </label>
         </div>
         <button 
-            (click)="sendComment()" 
-            [disabled]="!comment.trim()" 
-            [ngClass]="{'text-black': comment.trim(), 'text-gray-400': !comment.trim()}" 
-            class="w-14 h-14 ml-2 px-4 flex items-center justify-center bg-gray-100 rounded-2xl">
-            <i class="fa-solid fa-arrow-up text-lg"></i>
+          (click)="sendComment()" 
+          [disabled]="!comment.trim()" 
+          [ngClass]="{'text-black': comment.trim(), 'text-gray-400': !comment.trim()}" 
+          class="w-14 h-14 ml-2 px-4 flex items-center justify-center bg-gray-100 rounded-2xl">
+          <i class="fa-solid fa-arrow-up text-lg"></i>
         </button>
       </div>
     </div>

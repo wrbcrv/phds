@@ -180,7 +180,7 @@ export class TicketDetailsComponent implements OnInit {
         this.filePreviews.push(URL.createObjectURL(file));
       }
     });
-
+  
     event.target.value = '';
   }
 
@@ -209,8 +209,10 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   removeFile(index: number): void {
-    this.selectedFiles.splice(index, 1);
-    this.filePreviews.splice(index, 1);
+    if (index >= 0 && index < this.selectedFiles.length && index < this.filePreviews.length) {
+      this.selectedFiles.splice(index, 1);
+      this.filePreviews.splice(index, 1);
+    }
   }
 
   sendComment(): void {
@@ -221,6 +223,7 @@ export class TicketDetailsComponent implements OnInit {
           this.comment = '';
           this.selectedFiles = [];
           this.filePreviews = [];
+          this.downloadCommentImages();
         }
       });
     }
