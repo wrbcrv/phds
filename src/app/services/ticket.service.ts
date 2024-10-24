@@ -49,19 +49,11 @@ export class TicketService {
     return this.http.put<any>(`${this.apiUrl}/${ticketId}/assign-current-user`, {}, { params });
   }
 
-  assignCustomers(ticketId: number, customerIds: number[]): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${ticketId}/customers`, customerIds);
+  assignEntities(ticketId: number, entityIds: number[], entityType: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${ticketId}/${entityType}`, entityIds);
   }
 
-  assignAssignees(ticketId: number, assigneeIds: number[]): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${ticketId}/assignees`, assigneeIds);
-  }
-
-  removeAssignee(ticketId: number, assigneeId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${ticketId}/assignees/${assigneeId}`);
-  }
-
-  removeCustomer(ticketId: number, customerId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${ticketId}/customers/${customerId}`);
+  removeEntity(ticketId: number, entityId: number, entityType: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${ticketId}/${entityType}/${entityId}`);
   }
 }

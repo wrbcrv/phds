@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AutosizeModule } from 'ngx-autosize';
 import { AuthService } from '../../../services/auth.service';
+import { CommentService } from '../../../services/comment.service';
 import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
-import { CommentService } from '../../../services/comment.service';
 
 @Component({
   selector: 'phds-ticket-details',
@@ -28,12 +28,15 @@ export class TicketDetailsComponent implements OnInit {
   comment: string = '';
   editedDescription: string = '';
   editedSubject: string = '';
+  editingComment: boolean = false;
+  editingCommentId: number | null = null;
   filePreviews: string[] = [];
   imageUrls: { [key: number]: string } = {};
   isEditModalOpen: boolean = false;
   isPriorityDropdownOpen: boolean = false;
   isStatusDropdownOpen: boolean = false;
   locationHierarchy: string[] = [];
+  originalComment: string = '';
   priorityTranslationMap = PRIORITY_TRANSLATION_MAP;
   selectedFiles: File[] = [];
   selectedPriority: string | null = null;
@@ -111,6 +114,21 @@ export class TicketDetailsComponent implements OnInit {
         }
       });
     }
+  }
+
+  editComment(comment: any): void {
+    this.originalComment = comment.content;
+    this.comment = comment.content;
+    this.editingComment = true;
+    this.editingCommentId = comment.id;
+  }
+
+  cancelEdit(): void {
+    this.resetCommentForm();
+  }
+
+  closeMenuAfterAction(): void {
+    this.activeMenuIndex = null;
   }
 
   formatHierarchy(hierarchy: string[]): string[] {
@@ -194,27 +212,29 @@ export class TicketDetailsComponent implements OnInit {
     }
   }
 
-  removeAssignee(ticketId: number, assigneeId: number): void {
-    this.ticketService.removeAssignee(ticketId, assigneeId).subscribe({
+  removeEntity(ticketId: number, entityId: number, entityType: string): void {
+    this.ticketService.removeEntity(ticketId, entityId, entityType).subscribe({
       next: () => {
-        this.loadData();
+        this.loadData();  // Recarrega os dados após a remoção
       }
     });
-  }
-
-  removeCustomer(ticketId: number, customerId: number): void {
-    this.ticketService.removeCustomer(ticketId, customerId).subscribe({
-      next: () => {
-        this.loadData();
-      }
-    });
-  }
+  }  
 
   removeFile(index: number): void {
     if (index >= 0 && index < this.selectedFiles.length && index < this.filePreviews.length) {
       this.selectedFiles.splice(index, 1);
       this.filePreviews.splice(index, 1);
     }
+  }
+
+  resetCommentForm(): void {
+    this.comment = '';
+    this.originalComment = '';
+    this.selectedFiles = [];
+    this.filePreviews = [];
+    this.editingComment = false;
+    this.editingCommentId = null;
+    this.downloadCommentImages();
   }
 
   sendComment(): void {
@@ -233,5 +253,19 @@ export class TicketDetailsComponent implements OnInit {
 
   toggleMenu(index: number): void {
     this.activeMenuIndex = this.activeMenuIndex === index ? null : index;
+  }
+
+  updateComment(): void {
+    if (this.comment.trim() && this.editingCommentId) {
+      this.commentService.updateComment(this.ticket.id, this.editingCommentId, this.comment).subscribe({
+        next: (updatedComment) => {
+          const index = this.ticket.comments.findIndex((c: any) => c.id === this.editingCommentId);
+          if (index !== -1) {
+            this.ticket.comments[index] = updatedComment;
+          }
+          this.resetCommentForm();
+        }
+      });
+    }
   }
 }

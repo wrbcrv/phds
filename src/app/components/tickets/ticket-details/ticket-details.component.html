@@ -24,11 +24,11 @@
                     @if (activeMenuIndex === $index && !imageUrls[comment.id]) {
                       <div class="absolute top-[-5.625rem] right-0 bg-white shadow-sm rounded-2xl cursor-pointer text-sm w-44 z-10">
                         <ul class="space-y-1 border p-1 rounded-2xl">
-                          <li class="px-4 py-2 flex items-center">
+                          <li (click)="editComment(comment); closeMenuAfterAction()" class="px-4 py-2 flex items-center">
                             <i class="fa-solid fa-pen mr-3"></i>
                             <span>Editar</span>
                           </li>
-                          <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white">
+                          <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null; closeMenuAfterAction()" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white">
                             <i class="fa-solid fa-trash mr-3"></i>
                             <span>Cancelar envio</span>
                           </li>
@@ -47,11 +47,11 @@
                           @if (activeMenuIndex === $index) {
                             <div class="absolute top-[-5.625rem] right-0 bg-white shadow-sm rounded-2xl cursor-pointer text-sm w-44 z-10">
                               <ul class="space-y-1 border p-1 rounded-2xl">
-                                <li class="px-4 py-2 flex items-center">
+                                <li (click)="editComment(comment); closeMenuAfterAction()" class="px-4 py-2 flex items-center">
                                   <i class="fa-solid fa-pen mr-3"></i>
                                   <span>Editar</span>
                                 </li>
-                                <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white">
+                                <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null; closeMenuAfterAction()" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white">
                                   <i class="fa-solid fa-trash mr-3"></i>
                                   <span>Cancelar envio</span>
                                 </li>
@@ -132,6 +132,15 @@
           </div>
         }
       </div>
+      @if (editingComment) {      
+        <div class="flex">
+          <div class="w-full h-14 mb-2 flex items-center bg-blue-100 p-4 rounded-2xl">
+            <i class="fa-solid fa-pencil text-gray-700 mr-4"></i>
+            <span class="text-gray-700 flex-1">"{{ originalComment }}"</span>
+          </div>
+          <button (click)="cancelEdit()" class="w-14 h-14 text-black text-xs px-2 py-1 bg-blue-100 rounded-2xl ml-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+      }
       <div class="relative h-14 flex">
         <div class="relative flex-1 w-full">
           <textarea 
@@ -146,11 +155,11 @@
           <label 
             for="file-input" 
             class="cursor-pointer absolute top-1/2 right-4 transform -translate-y-1/2">
-            <i class="fa-regular fa-file-image text-lg"></i> 
+            <i class="fa-regular fa-image text-lg"></i> 
           </label>
         </div>
         <button 
-          (click)="sendComment()" 
+          (click)="editingComment ? updateComment() : sendComment()" 
           [disabled]="!comment.trim()" 
           [ngClass]="{'text-black': comment.trim(), 'text-gray-400': !comment.trim()}" 
           class="w-14 h-14 ml-2 px-4 flex items-center justify-center bg-gray-100 rounded-2xl">
@@ -159,45 +168,47 @@
       </div>
     </div>
   </div>
-  <div class="min-w-[512px] bg-white p-2 rounded-3xl">
-    <div class="flex flex-col p-4">
-      <div class="mb-4">
-        <div class="text-lg font-bold">Informações do Chamado</div>
+  <div class="min-w-[512px] rounded-3xl">
+    <div class="flex flex-col">
+      <div class="bg-white p-4 rounded-3xl mb-2">
+        <div class="mb-4">
+          <div class="text-lg font-bold">Informações do Chamado</div>
+        </div>
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-bold">Chamado</p>
+            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-bold">Status</p>
+            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-bold">Prioridade</p>
+            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-bold">Localização</p>
+            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer" (click)="openModal()">
+              {{ getLastLocation(ticket.location) }}
+            </p>
+          </div>
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-bold">Data de Criação</p>
+            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-bold">Última Atualização</p>
+            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-bold">Categoria</p>
+            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
+          </div>
+        </div>
       </div>
-      <div class="space-y-2">
-        <div class="flex justify-between items-center">
-          <p class="text-sm font-bold">Chamado</p>
-          <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
-        </div>
-        <div class="flex justify-between items-center">
-          <p class="text-sm font-bold">Status</p>
-          <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
-        </div>
-        <div class="flex justify-between items-center">
-          <p class="text-sm font-bold">Prioridade</p>
-          <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
-        </div>
-        <div class="flex justify-between items-center">
-          <p class="text-sm font-bold">Localização</p>
-          <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer" (click)="openModal()">
-            {{ getLastLocation(ticket.location) }}
-          </p>
-        </div>
-        <div class="flex justify-between items-center">
-          <p class="text-sm font-bold">Data de Criação</p>
-          <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
-        </div>
-        <div class="flex justify-between items-center">
-          <p class="text-sm font-bold">Última Atualização</p>
-          <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
-        </div>
-        <div class="flex justify-between items-center">
-          <p class="text-sm font-bold">Categoria</p>
-          <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
-        </div>
-      </div>
-      <div>
-        <div class="text-lg font-bold mt-4 mb-4">Envolvidos</div>
+      <div class="bg-white p-4 rounded-3xl">
+        <div class="text-lg font-bold mb-4">Envolvidos</div>
         <div class="flex flex-col space-y-2">
           <div class="space-y-2">
             <p class="text-sm font-bold">Clientes</p>
@@ -208,7 +219,7 @@
                     <div class="w-full flex justify-between bg-gray-100 px-3 py-1 rounded-full cursor-pointer" [ngClass]="{'mb-2': $index < ticket.customers.length - 1 }">
                       <span>{{ customers.fullName }}</span>
                       <div class="flex gap-1">
-                        <button (click)="removeCustomer(ticket.id, customers.id)" class="w-5"><i class="fa-solid fa-xmark"></i></button>
+                        <button (click)="removeEntity(ticket.id, customers.id, 'Customer')" class="w-5"><i class="fa-solid fa-xmark"></i></button>
                       </div>
                     </div>
                   </div>
@@ -231,7 +242,7 @@
                     <div class="w-full flex justify-between bg-gray-100 px-3 py-1 rounded-full cursor-pointer" [ngClass]="{'mb-2': $index < ticket.assignees.length - 1 }">
                       <span>{{ assignee.fullName }}</span>
                       <div class="flex gap-1">
-                        <button (click)="removeAssignee(ticket.id, assignee.id)" class="w-5"><i class="fa-solid fa-xmark"></i></button>
+                        <button (click)="removeEntity(ticket.id, assignee.id, 'Assignee')" class="w-5"><i class="fa-solid fa-xmark"></i></button>
                       </div>
                     </div>
                   </div>
