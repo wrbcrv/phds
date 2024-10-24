@@ -131,13 +131,13 @@ namespace Api.Controller
             }
         }
 
-        [HttpPut("{ticketId}/customers")]
+        [HttpPut("{ticketId}/{entityType}")]
         [Authorize(Roles = "Administrator, Agent")]
-        public async Task<IActionResult> AssignCustomers(int ticketId, [FromBody] List<int> customerIds)
+        public async Task<IActionResult> AssignEntities(int ticketId, string entityType, [FromBody] List<int> entityIds)
         {
             try
             {
-                var result = await _ticketService.AssignCustomersAsync(ticketId, customerIds);
+                var result = await _ticketService.AssignEntitiesAsync(ticketId, entityIds, entityType);
                 if (result == null)
                 {
                     return NotFound();
@@ -145,25 +145,9 @@ namespace Api.Controller
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpPut("{ticketId}/assignees")]
-        [Authorize(Roles = "Administrator, Agent")]
-        public async Task<IActionResult> AssignAssignees(int ticketId, [FromBody] List<int> assigneeIds)
-        {
-            try
-            {
-                var result = await _ticketService.AssignAssigneesAsync(ticketId, assigneeIds);
-                if (result == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(result);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -171,13 +155,13 @@ namespace Api.Controller
             }
         }
 
-        [HttpDelete("{ticketId}/assignees/{assigneeId}")]
+        [HttpDelete("{ticketId}/{entityType}/{entityId}")]
         [Authorize(Roles = "Administrator, Agent")]
-        public async Task<IActionResult> RemoveAssignee(int ticketId, int assigneeId)
+        public async Task<IActionResult> RemoveEntity(int ticketId, string entityType, int entityId)
         {
             try
             {
-                var result = await _ticketService.RemoveAssigneeAsync(ticketId, assigneeId);
+                var result = await _ticketService.RemoveEntityAsync(ticketId, entityId, entityType);
                 if (result == null)
                 {
                     return NotFound();
@@ -189,29 +173,9 @@ namespace Api.Controller
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpDelete("{ticketId}/customers/{customerId}")]
-        [Authorize(Roles = "Administrator, Agent")]
-        public async Task<IActionResult> RemoveCustomer(int ticketId, int customerId)
-        {
-            try
-            {
-                var result = await _ticketService.RemoveCustomerAsync(ticketId, customerId);
-                if (result == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

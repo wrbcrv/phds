@@ -105,38 +105,47 @@ namespace Api.Services
             return TicketResponseDTO.ValueOf(ticket);
         }
 
-        public async Task<TicketResponseDTO> AssignCustomersAsync(int ticketId, List<int> customerIds)
+        public async Task<TicketResponseDTO> AssignEntitiesAsync(int ticketId, List<int> entityIds, string entityType)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-            var customers = await _ticketRepository.GetUsersByIdsAsync(customerIds);
-            ticket.Customers = customers;
+            var entities = await _ticketRepository.GetUsersByIdsAsync(entityIds);
+
+            if (entityType == "Customer")
+            {
+                ticket.Customers = entities;
+            }
+            else if (entityType == "Assignee")
+            {
+                ticket.Assignees = entities;
+            }
+            else
+            {
+                throw new ArgumentException("Tipo de entidade inválido.");
+            }
+
             await _ticketRepository.UpdateAsync(ticket);
             return TicketResponseDTO.ValueOf(ticket);
         }
 
-        public async Task<TicketResponseDTO> AssignAssigneesAsync(int ticketId, List<int> assigneeIds)
+        public async Task<TicketResponseDTO> RemoveEntityAsync(int ticketId, int entityId, string entityType)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-            var assignees = await _ticketRepository.GetUsersByIdsAsync(assigneeIds);
-            ticket.Assignees = assignees;
-            await _ticketRepository.UpdateAsync(ticket);
-            return TicketResponseDTO.ValueOf(ticket);
-        }
 
-        public async Task<TicketResponseDTO> RemoveAssigneeAsync(int ticketId, int assigneeId)
-        {
-            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-            var assigneeToRemove = ticket.Assignees.FirstOrDefault(a => a.Id == assigneeId) ?? throw new KeyNotFoundException("Assignee não encontrado neste chamado.");
-            ticket.Assignees.Remove(assigneeToRemove);
-            await _ticketRepository.UpdateAsync(ticket);
-            return TicketResponseDTO.ValueOf(ticket);
-        }
+            if (entityType == "Customer")
+            {
+                var entityToRemove = ticket.Customers.FirstOrDefault(c => c.Id == entityId) ?? throw new KeyNotFoundException("Cliente não encontrado neste chamado.");
+                ticket.Customers.Remove(entityToRemove);
+            }
+            else if (entityType == "Assignee")
+            {
+                var entityToRemove = ticket.Assignees.FirstOrDefault(a => a.Id == entityId) ?? throw new KeyNotFoundException("Assignee não encontrado neste chamado.");
+                ticket.Assignees.Remove(entityToRemove);
+            }
+            else
+            {
+                throw new ArgumentException("Tipo de entidade inválido.");
+            }
 
-        public async Task<TicketResponseDTO> RemoveCustomerAsync(int ticketId, int customerId)
-        {
-            var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
-            var customerToRemove = ticket.Customers.FirstOrDefault(c => c.Id == customerId) ?? throw new KeyNotFoundException("Cliente não encontrado neste chamado.");
-            ticket.Customers.Remove(customerToRemove);
             await _ticketRepository.UpdateAsync(ticket);
             return TicketResponseDTO.ValueOf(ticket);
         }
