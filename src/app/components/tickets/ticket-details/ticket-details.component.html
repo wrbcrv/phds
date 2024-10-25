@@ -170,44 +170,42 @@
   </div>
   <div class="min-w-[512px] rounded-3xl">
     <div class="flex flex-col">
-      <div class="bg-white p-4 rounded-3xl mb-2">
+      <div class="bg-white p-6 rounded-3xl mb-2">
         <div class="mb-4">
           <div class="text-lg font-bold">Informações do Chamado</div>
         </div>
         <div class="space-y-2">
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Chamado</p>
-            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
+            <p class="w-10 text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
           </div>
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Status</p>
-            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
+            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
           </div>
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Prioridade</p>
-            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
+            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
           </div>
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Localização</p>
-            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer" (click)="openModal()">
-              {{ getLastLocation(ticket.location) }}
-            </p>
+            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer" (click)="openModal()">{{ getLastLocation(ticket.location) }}</p>
           </div>
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Data de Criação</p>
-            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
+            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
           </div>
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Última Atualização</p>
-            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
+            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
           </div>
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Categoria</p>
-            <p class="text-sm text-right bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
+            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
           </div>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-3xl">
+      <div class="bg-white p-6 rounded-3xl">
         <div class="text-lg font-bold mb-4">Envolvidos</div>
         <div class="flex flex-col space-y-2">
           <div class="space-y-2">

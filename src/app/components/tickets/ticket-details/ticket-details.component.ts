@@ -215,10 +215,10 @@ export class TicketDetailsComponent implements OnInit {
   removeEntity(ticketId: number, entityId: number, entityType: string): void {
     this.ticketService.removeEntity(ticketId, entityId, entityType).subscribe({
       next: () => {
-        this.loadData();  // Recarrega os dados após a remoção
+        this.loadData();
       }
     });
-  }  
+  }
 
   removeFile(index: number): void {
     if (index >= 0 && index < this.selectedFiles.length && index < this.filePreviews.length) {
