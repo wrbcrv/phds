@@ -25,6 +25,7 @@ namespace Api.Data
             modelBuilder.Entity<Ticket>().HasOne(t => t.Location).WithMany(a => a.Tickets).HasForeignKey(t => t.AgencyId).OnDelete(DeleteBehavior.SetNull);
             modelBuilder.Entity<Ticket>().HasMany(t => t.Customers).WithMany(u => u.CreatedTickets).UsingEntity(j => j.ToTable("TicketCustomers"));
             modelBuilder.Entity<Ticket>().HasMany(t => t.Assignees).WithMany(u => u.AssignedTickets).UsingEntity(j => j.ToTable("TicketAssignees"));
+            modelBuilder.Entity<Ticket>().HasMany(t => t.Observers).WithMany(u => u.ObservedTickets).UsingEntity(j => j.ToTable("TicketObservers"));
             modelBuilder.Entity<Comment>().HasOne(c => c.Author).WithMany(u => u.Comments).HasForeignKey(c => c.AuthorId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Comment>().HasOne(c => c.Ticket).WithMany(t => t.Comments).HasForeignKey(c => c.TicketId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<CommentFile>().HasOne(cf => cf.Comment).WithMany(c => c.Files).HasForeignKey(cf => cf.CommentId).OnDelete(DeleteBehavior.Cascade);

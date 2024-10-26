@@ -3,9 +3,6 @@ using Api.Models;
 using Api.Repositories.Interfaces;
 using Api.Services.Interfaces;
 using AutoMapper;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api.Services
 {
@@ -44,12 +41,14 @@ namespace Api.Services
             var location = await _ticketRepository.GetAgencyByIdAsync(ticketDTO.LocationId);
             var customers = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.CustomerIds);
             var assignees = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.AssigneeIds);
+            var observers = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.ObserverIds);
 
             var ticket = _mapper.Map<Ticket>(ticketDTO);
 
             ticket.Location = location;
             ticket.Customers = customers;
             ticket.Assignees = assignees;
+            ticket.Observers = observers;
 
             await _ticketRepository.AddAsync(ticket);
             return TicketResponseDTO.ValueOf(ticket);
@@ -73,32 +72,48 @@ namespace Api.Services
             await _ticketRepository.DeleteAsync(id);
         }
 
-        public async Task<TicketResponseDTO> AssignCurrentUserAsync(int ticketId, int userId, bool asAssignee)
+        public async Task<TicketResponseDTO> AssignCurrentUserAsync(int ticketId, int userId, AssignmentType assignmentType)
         {
             var ticket = await _ticketRepository.GetByIdAsync(ticketId) ?? throw new KeyNotFoundException("Chamado não encontrado.");
             var user = await _userRepository.GetByIdAsync(userId) ?? throw new KeyNotFoundException("Usuário não encontrado.");
 
-            if (asAssignee)
+            switch (assignmentType)
             {
-                if (!ticket.Assignees.Contains(user))
-                {
-                    ticket.Assignees.Add(user);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Usuário já está atribuído como Assignee.");
-                }
-            }
-            else
-            {
-                if (!ticket.Customers.Contains(user))
-                {
-                    ticket.Customers.Add(user);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Usuário já está atribuído como Customer.");
-                }
+                case AssignmentType.Observer:
+                    if (!ticket.Observers.Contains(user))
+                    {
+                        ticket.Observers.Add(user);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Usuário já está atribuído como Observer.");
+                    }
+                    break;
+
+                case AssignmentType.Assignee:
+                    if (!ticket.Assignees.Contains(user))
+                    {
+                        ticket.Assignees.Add(user);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Usuário já está atribuído como Assignee.");
+                    }
+                    break;
+
+                case AssignmentType.Customer:
+                    if (!ticket.Customers.Contains(user))
+                    {
+                        ticket.Customers.Add(user);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Usuário já está atribuído como Customer.");
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(assignmentType), "Tipo de atribuição inválido.");
             }
 
             await _ticketRepository.UpdateAsync(ticket);
@@ -117,6 +132,10 @@ namespace Api.Services
             else if (entityType == "Assignee")
             {
                 ticket.Assignees = entities;
+            }
+            else if (entityType == "Observer")
+            {
+                ticket.Observers = entities;
             }
             else
             {
@@ -140,6 +159,11 @@ namespace Api.Services
             {
                 var entityToRemove = ticket.Assignees.FirstOrDefault(a => a.Id == entityId) ?? throw new KeyNotFoundException("Assignee não encontrado neste chamado.");
                 ticket.Assignees.Remove(entityToRemove);
+            }
+            else if (entityType == "Observer")
+            {
+                var entityToRemove = ticket.Observers.FirstOrDefault(o => o.Id == entityId) ?? throw new KeyNotFoundException("Observer não encontrado neste chamado.");
+                ticket.Observers.Remove(entityToRemove);
             }
             else
             {

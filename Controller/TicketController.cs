@@ -107,13 +107,13 @@ namespace Api.Controller
 
         [HttpPut("{ticketId}/assign-current-user")]
         [Authorize(Roles = "Administrator, Agent")]
-        public async Task<IActionResult> AssignCurrentUser(int ticketId, [FromQuery] bool asAssignee = true)
+        public async Task<IActionResult> AssignCurrentUser(int ticketId, [FromQuery] AssignmentType assignmentType = AssignmentType.Assignee)
         {
             try
             {
                 var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                var result = await _ticketService.AssignCurrentUserAsync(ticketId, currentUserId, asAssignee);
+                var result = await _ticketService.AssignCurrentUserAsync(ticketId, currentUserId, assignmentType);
                 if (result == null)
                 {
                     return NotFound();

@@ -10,7 +10,7 @@ namespace Api.Services.Interfaces
         Task<TicketResponseDTO> CreateAsync(TicketDTO ticketDTO);
         Task<TicketResponseDTO> UpdateAsync(int id, TicketDTO ticketDTO);
         Task DeleteAsync(int id);
-        Task<TicketResponseDTO> AssignCurrentUserAsync(int ticketId, int userId, bool asAssignee);
+        Task<TicketResponseDTO> AssignCurrentUserAsync(int ticketId, int userId, AssignmentType assignmentType);
         Task<TicketResponseDTO> AssignEntitiesAsync(int ticketId, List<int> entityIds, string entityType);
         Task<TicketResponseDTO> RemoveEntityAsync(int ticketId, int entityId, string entityType);
     }
