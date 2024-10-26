@@ -11,9 +11,9 @@ namespace Api.Models
         public Type Type { get; set; }
         public Status Status { get; set; }
         public Priority Priority { get; set; }
+        public Category Category { get; set; }
         public int? AgencyId { get; set; }
         public Agency? Location { get; set; }
-        public Category Category { get; set; }
         public ICollection<User> Customers { get; set; } = [];
         public ICollection<User> Assignees { get; set; } = [];
         public ICollection<User> Observers { get; set; } = [];

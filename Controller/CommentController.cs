@@ -10,6 +10,26 @@ namespace Api.Controller
     [Authorize]
     public class CommentController(ICommentService commentService) : ControllerBase
     {
+        
+        [HttpGet]
+        [Authorize(Roles = "Administrator, Agent, Client")]
+        public async Task<ActionResult<IEnumerable<CommentResponseDTO>>> GetCommentsByTicketId(int ticketId)
+        {
+            try
+            {
+                var comments = await _commentService.GetCommentsByTicketIdAsync(ticketId);
+                if (comments == null || !comments.Any())
+                {
+                    return NotFound("Nenhum comentário encontrado para este ticket.");
+                }
+
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+            }
+        }
         private readonly ICommentService _commentService = commentService;
 
         [HttpPost("{authorId}")]

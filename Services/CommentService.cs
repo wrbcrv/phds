@@ -2,12 +2,7 @@ using Api.DTOs;
 using Api.Models;
 using Api.Repositories.Interfaces;
 using Api.Services.Interfaces;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api.Services
 {
@@ -31,6 +26,18 @@ namespace Api.Services
             _userRepository = userRepository;
             _notificationService = notificationService;
             _fileUploadService = fileUploadService;
+        }
+
+        public async Task<IEnumerable<CommentResponseDTO>> GetCommentsByTicketIdAsync(int ticketId)
+        {
+            var ticket = await _ticketRepository.GetByIdAsync(ticketId);
+            if (ticket == null)
+            {
+                throw new KeyNotFoundException("Ticket não encontrado.");
+            }
+
+            var comments = await _commentRepository.GetCommentsByTicketIdAsync(ticketId);
+            return comments.Select(CommentResponseDTO.ValueOf);
         }
 
         public async Task<CommentResponseDTO> AddCommentAsync(int ticketId, int authorId, string content, IList<IFormFile> files = null)

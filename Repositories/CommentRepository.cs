@@ -9,6 +9,15 @@ namespace Api.Repositories
     {
         private readonly AppDbContext _context = context;
 
+        public async Task<IEnumerable<Comment>> GetCommentsByTicketIdAsync(int ticketId)
+        {
+            return await _context.Comments
+                .Where(c => c.TicketId == ticketId)
+                .Include(c => c.Author)
+                .Include(c => c.Files)
+                .ToListAsync();
+        }
+
         public async Task<Comment> GetCommentByIdAsync(int commentId)
         {
             return await _context.Comments
