@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { TicketReq } from '../models/ticket-req.model';
+import { AssignmentType } from '../models/assignment-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -43,9 +44,8 @@ export class TicketService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  assignCurrentUser(ticketId: number, asAssignee: boolean = true): Observable<any> {
-    const params = new HttpParams().set('asAssignee', asAssignee.toString());
-
+  assignCurrentUser(ticketId: number, assignmentType: AssignmentType): Observable<any> {
+    const params = new HttpParams().set('assignmentType', assignmentType);
     return this.http.put<any>(`${this.apiUrl}/${ticketId}/assign-current-user`, {}, { params });
   }
 

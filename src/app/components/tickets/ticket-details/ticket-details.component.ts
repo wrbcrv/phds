@@ -9,6 +9,7 @@ import { CommentService } from '../../../services/comment.service';
 import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
+import { AssignmentType } from '../../../models/assignment-type.enum';
 
 @Component({
   selector: 'phds-ticket-details',
@@ -38,6 +39,7 @@ export class TicketDetailsComponent implements OnInit {
   locationHierarchy: string[] = [];
   originalComment: string = '';
   priorityTranslationMap = PRIORITY_TRANSLATION_MAP;
+  public assignmentType = AssignmentType;
   selectedFiles: File[] = [];
   selectedPriority: string | null = null;
   selectedStatus: string | null = null;
@@ -69,19 +71,9 @@ export class TicketDetailsComponent implements OnInit {
     });
   }
 
-  assignCurrentUserAsAssignee(): void {
+  assignCurrentUser(assignmentType: AssignmentType): void {
     if (this.ticket?.id) {
-      this.ticketService.assignCurrentUser(this.ticket.id, true).subscribe({
-        next: () => {
-          this.loadData();
-        }
-      });
-    }
-  }
-
-  assignCurrentUserAsCustomer(): void {
-    if (this.ticket?.id) {
-      this.ticketService.assignCurrentUser(this.ticket.id, false).subscribe({
+      this.ticketService.assignCurrentUser(this.ticket.id, assignmentType).subscribe({
         next: () => {
           this.loadData();
         }
