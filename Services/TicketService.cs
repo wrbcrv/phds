@@ -39,6 +39,12 @@ namespace Api.Services
         public async Task<TicketResponseDTO> CreateAsync(TicketDTO ticketDTO)
         {
             var location = await _ticketRepository.GetAgencyByIdAsync(ticketDTO.LocationId);
+
+            if (location != null && location.IsTopLevel)
+            {
+                throw new InvalidOperationException("Não é permitido cadastrar um location em uma agência de nível superior.");
+            }
+
             var customers = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.CustomerIds);
             var assignees = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.AssigneeIds);
             var observers = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.ObserverIds);
@@ -51,6 +57,7 @@ namespace Api.Services
             ticket.Observers = observers;
 
             await _ticketRepository.AddAsync(ticket);
+
             return TicketResponseDTO.ValueOf(ticket);
         }
 
@@ -62,7 +69,17 @@ namespace Api.Services
                 return null;
             }
 
+            var location = await _ticketRepository.GetAgencyByIdAsync(ticketDTO.LocationId);
+            var customers = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.CustomerIds);
+            var assignees = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.AssigneeIds);
+            var observers = await _ticketRepository.GetUsersByIdsAsync(ticketDTO.ObserverIds);
+
             _mapper.Map(ticketDTO, ticket);
+            ticket.Location = location;
+            ticket.Customers = customers;
+            ticket.Assignees = assignees;
+            ticket.Observers = observers;
+
             await _ticketRepository.UpdateAsync(ticket);
             return TicketResponseDTO.ValueOf(ticket);
         }

@@ -8,11 +8,11 @@ namespace Api.Controller
 {
     [ApiController]
     [Route("api/users")]
-    [Authorize]
+    /* [Authorize] */
     public class UsersController(IUserService userService, INotificationService notificationService) : ControllerBase
     {
         private readonly IUserService _userService = userService;
-        private readonly INotificationService _notificationService = notificationService;
+        
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -110,35 +110,6 @@ namespace Api.Controller
             }
         }
 
-        [HttpDelete("notifications/{id}")]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> DeleteNotification(int id)
-        {
-            try
-            {
-                await _notificationService.DeleteAsync(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet("notifications")]
-        public async Task<IActionResult> GetNotifications()
-        {
-            try
-            {
-                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-                var notifications = await _notificationService.GetByUserIdAsync(userId);
-                return Ok(notifications);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+        
     }
 }

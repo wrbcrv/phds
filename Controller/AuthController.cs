@@ -1,16 +1,19 @@
+using System.Security.Claims;
 using Api.DTOs;
 using Api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controller
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthController(IUserService userService, IJwtService jwtService, IConfiguration configuration) : ControllerBase
+    public class AuthController(IUserService userService, IJwtService jwtService, IConfiguration configuration, INotificationService notificationService) : ControllerBase
     {
         private readonly IUserService _userService = userService;
         private readonly IJwtService _jwtService = jwtService;
         private readonly IConfiguration _configuration = configuration;
+        private readonly INotificationService _notificationService = notificationService;
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
@@ -96,6 +99,38 @@ namespace Api.Controller
             catch (Exception ex)
             {
                 return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("notifications/{id}")]
+        [Authorize(Roles = "Administrator, Agent, Client")]
+        public async Task<IActionResult> DeleteNotification(int id)
+        {
+            try
+            {
+                await _notificationService.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("notifications")]
+        [Authorize(Roles = "Administrator, Agent, Client")]
+        public async Task<IActionResult> GetNotifications()
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                var notifications = await _notificationService.GetByUserIdAsync(userId);
+                return Ok(notifications);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
     }

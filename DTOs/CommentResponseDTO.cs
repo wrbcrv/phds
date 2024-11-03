@@ -7,10 +7,10 @@ namespace Api.DTOs
         public int Id { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
-        public bool IsUpdated { get; set; }
         public string Content { get; set; }
-        public UserSummaryResponseDTO Author { get; set; }
+        public bool IsUpdated { get; set; }
         public bool CanDelete { get; set; }
+        public UserSummaryResponseDTO Author { get; set; }
         public List<FileDTO> Files { get; set; }
 
         public static CommentResponseDTO ValueOf(Comment comment)

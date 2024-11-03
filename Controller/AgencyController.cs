@@ -7,7 +7,7 @@ namespace Api.Controller
 {
     [ApiController]
     [Route("api/agencies")]
-    [Authorize]
+    /* [Authorize] */
     public class AgencyController(IAgencyService agencyService) : ControllerBase
     {
         private readonly IAgencyService _agencyService = agencyService;

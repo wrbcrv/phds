@@ -5,8 +5,9 @@ namespace Api.DTOs
     public class AgencyResponseDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public List<AgencyResponseDTO> Children { get; set; } = new List<AgencyResponseDTO>();
+        public string? Name { get; set; }
+        public bool IsTopLevel { get; set; }
+        public List<AgencyResponseDTO> Children { get; set; } = [];
 
         public static AgencyResponseDTO ValueOf(Agency agency)
         {
@@ -14,7 +15,8 @@ namespace Api.DTOs
             {
                 Id = agency.Id,
                 Name = agency.Name,
-                Children = new List<AgencyResponseDTO>()
+                IsTopLevel = agency.IsTopLevel,
+                Children = []
             };
 
             return dto;
@@ -26,6 +28,7 @@ namespace Api.DTOs
             {
                 Id = agency.Id,
                 Name = agency.Name,
+                IsTopLevel = agency.IsTopLevel,
                 Children = allAgencies.Where(a => a.ParentId == agency.Id).Select(a => ValueOf(a, allAgencies)).ToList()
             };
 
