@@ -19,7 +19,7 @@ export class TicketService {
     return this.http.post<any>(this.apiUrl, ticket);
   }
 
-  update(id: number, ticket: TicketReq): Observable<any> {
+  update(id: number, ticket: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, ticket);
   }
 

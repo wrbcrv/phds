@@ -5,10 +5,10 @@
       <div class="relative cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-200" [ngClass]="{'bg-gray-200': isNotificationsDropdownOpen()}" (click)="toggleNotificationsDropdown()">
         <i [ngClass]="{'fa-regular': !isNotificationsDropdownOpen(), 'fa-solid': isNotificationsDropdownOpen(), 'fa-bell': true}" class="text-xl"></i>
         @if (notifications.length) {
-          <span class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">{{ notifications.length }}</span>
+          <span class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">{{ notifications.length }}</span>
         }
         @if (isNotificationsDropdownOpen()) {
-          <div class="absolute top-12 right-0 bg-white text-gray-800 shadow-lg z-50 text-left rounded-xl overflow-hidden w-96 md:w-96 transform translate-x-0 md:translate-x-0">
+          <div class="absolute top-12 right-0 bg-white text-gray-800 shadow-lg z-50 text-left rounded-3xl overflow-hidden w-96 md:w-96 transform translate-x-0 md:translate-x-0">
             <div class="flex justify-between items-center p-5">
               <h1>Notificações</h1>
             </div>
@@ -16,10 +16,10 @@
               @if (notifications.length > 0) {
                 <div>
                   @for (notification of notifications; track $index) {
-                    <div class="flex gap-2 justify-between items-center py-4 px-4 hover:bg-gray-100">
+                    <div class="flex justify-between items-center py-4 px-4 hover:bg-gray-100">
                       <a [routerLink]="['/ticket', notification.ticketId]" class="flex gap-4 cursor-pointer">
                         <div class="flex items-center justify-center min-w-8 h-8 bg-green-200 rounded-full">
-                          <i class="fa-regular fa-comments text-md text-green-500"></i>
+                          <i class="fa-regular fa-comments text-sm text-green-500"></i>
                         </div>
                         <div class="flex flex-col">
                           <span class="text-sm mb-2 line-clamp-6">{{ notification.message }}</span>
@@ -42,7 +42,7 @@
         @if (user) {
           <div (click)="toggleUserDropdown()" class="cursor-pointer w-9 h-9 md:w-12 md:h-12 bg-gray-500 text-white rounded-full flex justify-center items-center text-sm md:text-base font-bold">{{ getInitials(user.fullName) }}</div>
           @if (isUserDropdownOpen()) {
-            <div class="absolute top-14 right-0 bg-white text-gray-800 shadow-lg z-50 w-80 md:w-80 h-auto text-left rounded-xl overflow-hidden">
+            <div class="absolute top-14 right-0 bg-white text-gray-800 shadow-lg z-50 w-80 md:w-80 h-auto text-left rounded-3xl overflow-hidden">
               <div class="p-4 text-center">
                 <div class="text-md font-bold">{{ getNameAndSurname(user.fullName) }}</div>
                 <div class="text-sm text-gray-600">{{ user.email }}</div>

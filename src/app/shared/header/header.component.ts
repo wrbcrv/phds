@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit {
   }
 
   loadNotifications(): void {
-    this.userService.getNotifications().subscribe(
+    this.authService.getNotifications().subscribe(
       (res) => {
         this.notifications = res;
       },
@@ -54,7 +54,7 @@ export class HeaderComponent implements OnInit {
   }
 
   deleteNotification(id: number): void {
-    this.userService.deleteNotification(id).subscribe(
+    this.authService.deleteNotification(id).subscribe(
       (res) => {
         this.loadNotifications();
       }

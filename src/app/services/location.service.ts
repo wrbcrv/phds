@@ -8,7 +8,7 @@ export class LocationService {
 
   getLastLocation(location: any): string {
     if (!location) return '';
-    return `... ${location.name}`;
+    return `${location.name}`;
   }
 
   getFullLocation(location: any): string {

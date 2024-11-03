@@ -24,16 +24,4 @@ export class UserService {
       withCredentials: true
     });
   }
-
-  getNotifications(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/notifications`, {
-      withCredentials: true
-    });
-  }
-
-  deleteNotification(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/notifications/${id}`, {
-      withCredentials: true
-    });
-  }
 }

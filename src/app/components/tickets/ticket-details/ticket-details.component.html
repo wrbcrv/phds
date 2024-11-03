@@ -8,7 +8,7 @@
             <div class="text-base mt-2 mb-2 whitespace-pre-line" [innerHTML]="ticket.description"></div>
             <div class="self-end text-xs">{{ ticket.createdAt }}</div>
           </div>
-          @for (comment of ticket.comments; track $index) {
+          @for (comment of comments; track $index) {
             <div class="flex group relative">
               @if (comment.author.id !== userId) {
                 <div class="flex items-center justify-center min-w-8 h-8 rounded-full self-end mb-2 mr-2 cursor-pointer" [ngClass]="getGradient(comment.author.fullName)">
@@ -134,9 +134,12 @@
       </div>
       @if (editingComment) {      
         <div class="flex">
-          <div class="w-full h-14 mb-2 flex items-center bg-blue-100 p-4 rounded-2xl">
-            <i class="fa-solid fa-pencil text-gray-700 mr-4"></i>
-            <span class="text-gray-700 flex-1">"{{ originalComment }}"</span>
+          <div class="w-full h-14 mb-2 flex items-center bg-blue-100 p-4 rounded-2xl text-sm">
+            <i class="fa-solid fa-pencil text-gray-700 mr-4 text-md"></i>
+            <div class="flex flex-col">
+              <span>Editar mensagem</span>
+              <span class="text-gray-700 flex-1 text-xs">{{ originalComment }}</span>
+            </div>
           </div>
           <button (click)="cancelEdit()" class="w-14 h-14 text-black text-xs px-2 py-1 bg-blue-100 rounded-2xl ml-2"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
@@ -172,7 +175,10 @@
     <div class="flex flex-col">
       <div class="bg-white p-6 rounded-3xl mb-2">
         <div class="mb-4">
-          <div class="text-lg font-bold">Informações do Chamado</div>
+          <div class="text-lg font-bold">
+            <span>Informações do Chamado</span>
+            <span (click)="openEditModal()" class="text-sm"><i class="fa-solid fa-pen"></i></span>
+          </div>
         </div>
         <div class="space-y-2">
           <div class="flex justify-between items-center">
@@ -189,7 +195,7 @@
           </div>
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Localização</p>
-            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer" (click)="openModal()">{{ getLastLocation(ticket.location) }}</p>
+            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-2xl cursor-pointer max-w-72" (click)="openModal()">{{ getLastLocation(ticket.location) }}</p>
           </div>
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold">Data de Criação</p>
@@ -275,7 +281,7 @@
                 }
               </div>
               @if (!ticket.observers || ticket.observers.length === 0) {
-                <button (click)="assignCurrentUser(assignmentType.Observer)" class="self-start py-1"><i class="fa-solid fa-user"></i></button>
+                <button (click)="assignCurrentUser(assignmentType.Observer)" class="self-start py-1"><i class="fa-solid fa-eye"></i></button>
               }
             </div>
           </div>
@@ -285,14 +291,24 @@
   </div>
 </div>
 @if (showLocationModal) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-    <div class="bg-white p-6 rounded-3xl relative">
-      <button (click)="closeModal()" class="absolute w-8 h-8 top-2 right-2 text-md"><i class="fa-solid fa-close"></i></button>
-      <div class="space-y-2">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+    <div class="bg-white p-6 rounded-3xl shadow-lg flex flex-col space-y-4">
+      <div class="space-y-2 flex-grow">
         @for (location of locationHierarchy; track $index) {
           <pre class="whitespace-pre font-robotoMono">{{ location }}</pre>
         }
       </div>
+      <div class="flex justify-end">
+        <button (click)="closeModal()" class="text-sm bg-blue-500 text-white px-4 py-2 rounded-full w-fit">Fechar</button>
+      </div>
     </div>
-  </div>
+  </div> 
+}
+@if (isEditModalOpen) {
+  <phds-ticket-edit 
+  [ticket]="ticket" 
+  (closeModal)="closeEditModal()" 
+  (ticketUpdated)="updateTicket($event)">
+</phds-ticket-edit>
+
 }

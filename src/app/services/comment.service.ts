@@ -13,6 +13,10 @@ export class CommentService {
     private http: HttpClient
   ) { }
 
+  getCommentsByTicketId(ticketId: number | string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${ticketId}/comments`);
+  }
+
   addComment(ticketId: number | string, authorId: number | string, content: string, files?: File[]): Observable<any> {
     const formData: FormData = new FormData();
 

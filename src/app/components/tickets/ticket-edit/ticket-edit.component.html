@@ -1,0 +1,69 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 z-10" (click)="close()"></div>
+<div class="fixed top-1/2 left-1/2 w-[720px] h-[720px] bg-white rounded-3xl p-5 transform -translate-x-1/2 -translate-y-1/2 z-20">
+  <div class="mb-4 flex items-center">
+    <label for="status" class="text-sm font-medium text-gray-700 w-1/3">Status</label>
+    <div class="relative w-2/3">
+      <input id="status" type="text" readonly (click)="toggleDropdown('status')" class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer" placeholder="Selecione o status" [value]="displayedStatus" />
+      @if (isStatusDropdownOpen) {
+        <div #statusDropdown class="absolute z-10 mt-1 w-full text-sm bg-white border rounded-2xl shadow-sm">
+          @for (option of STATUS; track $index) {
+            <div div (click)="selectValue('status', option.value)" class="cursor-pointer px-4 py-2 hover:bg-gray-100">{{ option.label }}</div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  <div class="mb-4 flex items-center">
+    <label for="priority" class="text-sm font-medium text-gray-700 w-1/3">Prioridade</label>
+    <div class="relative w-2/3">
+      <input id="priority" type="text" readonly (click)="toggleDropdown('priority')" class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"  placeholder="Selecione a prioridade" [value]="displayedPriority" />
+      @if (isPriorityDropdownOpen) {
+        <div #priorityDropdown class="absolute z-10 mt-1 w-full text-sm bg-white border rounded-2xl shadow-sm">
+          @for (option of PRIORITY; track $index) {
+            <div (click)="selectValue('priority', option.value)" class="cursor-pointer px-4 py-2 hover:bg-gray-100">{{ option.label }}</div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  <div class="mb-4 flex items-center">
+    <label for="agency" class="text-sm font-medium text-gray-700 w-1/3">Agência</label>
+    <div class="relative w-2/3">
+      <input 
+        id="agency" 
+        type="text" 
+        readonly 
+        (click)="toggleDropdown('agency')" 
+        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer" 
+        placeholder="Selecione a agência" 
+        [value]="displayedAgency" 
+      />
+      <div class="absolute w-full">
+        <input 
+          *ngIf="isAgencyDropdownOpen"
+          type="text" 
+          class="w-full mt-1 text-sm border rounded-2xl px-4 py-2 text-gray-700" 
+          placeholder="Pesquisar" 
+          [(ngModel)]="searchTerm" 
+          (input)="filterAgencies()"
+          (click)="$event.stopPropagation()" 
+        />
+      </div>
+      <div *ngIf="isAgencyDropdownOpen" class="absolute z-10 mt-[46px] w-full max-h-52 text-sm bg-white border rounded-2xl shadow-sm overflow-y-auto">
+        <div *ngFor="let agency of filteredAgencies" 
+          (click)="!agency.isTopLevel ? selectAgency(agency.id, agency.name) : null" 
+          class="cursor-pointer px-4 py-2 hover:bg-gray-100" 
+          [ngStyle]="{ 'margin-left': (agency.level * 20) + 'px' }"
+          [class.text-gray-500]="agency.isTopLevel"
+          [class.bg-yellow-100]="agency.id === highlightedAgencyId"
+          [class.bg-blue-100]="agency.id === selectedAgencyId">
+          {{ agency.name }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-0 left-0 w-full bg-white flex justify-end space-x-4 p-4 rounded-b-3xl shadow-sm text-sm">
+    <button (click)="close()" class="w-24 px-4 py-2 text-black rounded-2xl hover:bg-gray-100">Cancelar</button>
+    <button (click)="updateTicket()" class="w-24 px-4 py-2 bg-blue-500 text-white rounded-2xl hover:bg-blue-600">Salvar</button>
+  </div>
+</div>

@@ -20,3 +20,42 @@
     font-family: 'Sui Genesis';
     src: url('../public/fonts/sui-generis-free.rg-regular.otf') format('opentype');
 }
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.8);
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(136, 136, 136, 1.0);
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(136, 136, 136, 0.8) transparent;
+}
+
+::-ms-scrollbar {
+    width: 12px;
+}
+
+::-ms-scrollbar-track {
+    background: transparent;
+}
+
+::-ms-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.8);
+    border-radius: 8px;
+}
+
+::-ms-scrollbar-thumb:hover {
+    background: rgba(136, 136, 136, 1.0);
+}

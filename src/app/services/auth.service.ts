@@ -38,6 +38,18 @@ export class AuthService {
     );
   }
 
+  getNotifications(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/notifications`, {
+      withCredentials: true
+    });
+  }
+
+  deleteNotification(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/notifications/${id}`, {
+      withCredentials: true
+    });
+  }
+
   isAdmin(): boolean {
     const user = this.userSubject.value;
     return user?.role === 'Administrator';

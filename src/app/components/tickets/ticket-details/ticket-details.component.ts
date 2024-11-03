@@ -10,6 +10,7 @@ import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
 import { AssignmentType } from '../../../models/assignment-type.enum';
+import { TicketEditComponent } from '../ticket-edit/ticket-edit.component';
 
 @Component({
   selector: 'phds-ticket-details',
@@ -17,7 +18,8 @@ import { AssignmentType } from '../../../models/assignment-type.enum';
   imports: [
     FormsModule,
     CommonModule,
-    AutosizeModule
+    AutosizeModule,
+    TicketEditComponent
   ],
   templateUrl: './ticket-details.component.html',
   styleUrls: ['./ticket-details.component.scss']
@@ -27,6 +29,7 @@ export class TicketDetailsComponent implements OnInit {
   availablePriorities: string[] = [];
   availableStatus: string[] = [];
   comment: string = '';
+  comments: any[] = [];
   editedDescription: string = '';
   editedSubject: string = '';
   editingComment: boolean = false;
@@ -58,17 +61,8 @@ export class TicketDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      this.ticket = data['ticket'];
-      this.title.setTitle(`Chamado #${this.ticket.id} • PHDS`);
-      this.downloadCommentImages();
-    });
-
-    this.authService.getUserInfo().subscribe({
-      next: (res) => {
-        this.userId = res.id;
-      }
-    });
+    this.loadTicketData();
+    this.loadUserInfo();
   }
 
   assignCurrentUser(assignmentType: AssignmentType): void {
@@ -179,9 +173,31 @@ export class TicketDetailsComponent implements OnInit {
       this.ticketService.findOne(this.ticket.id).subscribe({
         next: (ticket) => {
           this.ticket = ticket;
+          this.commentService.getCommentsByTicketId(this.ticket.id).subscribe({
+            next: (comments) => {
+              this.comments = comments;
+              this.downloadCommentImages();
+            }
+          });
         }
       });
     }
+  }
+
+  loadTicketData(): void {
+    this.route.data.subscribe(data => {
+      this.ticket = data['ticket'];
+      this.title.setTitle(`Chamado #${this.ticket.id} • PHDS`);
+      this.loadData();
+    });
+  }
+
+  loadUserInfo(): void {
+    this.authService.getUserInfo().subscribe({
+      next: (res) => {
+        this.userId = res.id;
+      }
+    });
   }
 
   onFileSelected(event: any): void {
@@ -233,7 +249,7 @@ export class TicketDetailsComponent implements OnInit {
     if (this.comment.trim() && this.userId) {
       this.commentService.addComment(this.ticket.id, this.userId, this.comment, this.selectedFiles).subscribe({
         next: (res) => {
-          this.ticket.comments.push(res);
+          this.comments.push(res);
           this.comment = '';
           this.selectedFiles = [];
           this.filePreviews = [];
@@ -247,17 +263,42 @@ export class TicketDetailsComponent implements OnInit {
     this.activeMenuIndex = this.activeMenuIndex === index ? null : index;
   }
 
+  updateTicket(updatedTicket: any): void {
+    if (this.ticket && this.ticket.id) {
+      this.ticketService.update(this.ticket.id, updatedTicket).subscribe({
+        next: () => {
+          this.closeEditModal();
+          this.loadData();
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar o ticket', err);
+        }
+      });
+    }
+  }
+
+
   updateComment(): void {
     if (this.comment.trim() && this.editingCommentId) {
       this.commentService.updateComment(this.ticket.id, this.editingCommentId, this.comment).subscribe({
         next: (updatedComment) => {
-          const index = this.ticket.comments.findIndex((c: any) => c.id === this.editingCommentId);
+          const index = this.comments.findIndex((c: any) => c.id === this.editingCommentId);
           if (index !== -1) {
-            this.ticket.comments[index] = updatedComment;
+            this.comments[index] = updatedComment;
           }
           this.resetCommentForm();
         }
       });
     }
+  }
+
+  openEditModal(): void {
+    this.selectedPriority = this.ticket.priority;
+    this.selectedStatus = this.ticket.status;
+    this.isEditModalOpen = true;
+  }
+
+  closeEditModal(): void {
+    this.isEditModalOpen = false;
   }
 }
