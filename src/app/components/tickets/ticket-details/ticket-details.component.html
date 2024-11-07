@@ -1,3 +1,24 @@
+@if (showLocationModal) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+    <div class="bg-white p-6 rounded-3xl shadow-lg flex flex-col space-y-4">
+      <div class="space-y-2 flex-grow">
+        @for (location of locationHierarchy; track $index) {
+          <pre class="whitespace-pre font-robotoMono">{{ location }}</pre>
+        }
+      </div>
+      <div class="flex justify-end">
+        <button (click)="closeModal()" class="text-sm bg-blue-500 text-white px-4 py-2 rounded-full w-fit">Fechar</button>
+      </div>
+    </div>
+  </div> 
+}
+@if (isEditModalOpen) {
+  <phds-ticket-edit 
+    [ticket]="ticket" 
+    (closeModal)="closeEditModal()" 
+    (ticketUpdated)="updateTicket($event)"
+  />
+}
 <div class="flex justify-center bg-gray-100 h-full">
   <div class="bg-white p-2 overflow-auto rounded-3xl mr-2 w-full h-full">
     <div class="flex flex-col h-full rounded-2xl overflow-hidden">
@@ -171,50 +192,56 @@
       </div>
     </div>
   </div>
-  <div class="min-w-[512px] rounded-3xl">
+  <div class="bg-white p-2 min-w-[512px] rounded-3xl">
     <div class="flex flex-col">
-      <div class="bg-white p-6 rounded-3xl mb-2">
-        <div class="mb-4">
-          <div class="text-lg font-bold">
-            <span>Informações do Chamado</span>
-            <span (click)="openEditModal()" class="text-sm"><i class="fa-solid fa-pen"></i></span>
+      <div class="rounded-3xl mb-2">
+        <div class="mb-1">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center font-bold">
+            <span class="text-sm">Informações do Chamado</span>
+            <div (click)="openEditModal()" class="bg-gray-100 flex items-center px-3 py-1 rounded-full cursor-pointer">
+              <i class="fa-solid fa-pen text-xs mr-2"></i>
+              <span class="text-sm font-normal">Editar</span>
+            </div>
           </div>
         </div>
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
+        <div class="space-y-1 mb-4">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Chamado</p>
-            <p class="w-10 text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
+            <p class="w-10 text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Status</p>
-            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
+            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Prioridade</p>
-            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
+            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Localização</p>
-            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-2xl cursor-pointer max-w-72" (click)="openModal()">{{ getLastLocation(ticket.location) }}</p>
+            <p class="text-sm text-center px-3 py-1 rounded-2xl cursor-pointer max-w-72" (click)="openModal()">{{ getLastLocation(ticket.location) }}</p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Data de Criação</p>
-            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
+            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Última Atualização</p>
-            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
+            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Categoria</p>
-            <p class="text-sm text-center bg-gray-100 px-3 py-1 rounded-full cursor-pointer">{{ ticket.category ? ticket.category : 'undefined' }}</p>
+            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ ticket.category }}</p>
           </div>
         </div>
       </div>
-      <div class="bg-white p-6 rounded-3xl">
-        <div class="text-lg font-bold mb-4">Envolvidos</div>
-        <div class="flex flex-col space-y-2">
-          <div class="space-y-2">
+      <div class="">
+        <div class="flex justify-between items-center border px-4 py-2 rounded-2xl mb-1">
+          <span class="text-sm font-bold">Envolvidos</span>
+          <span class="text-sm px-3 py-1">{{ actors }}</span>
+        </div>
+        <div class="flex flex-col space-y-1">
+          <div class="border rounded-2xl px-4 py-2 space-y-2">
             <p class="text-sm font-bold">Clientes</p>
             <div class="flex justify-between gap-2 text-sm">
               <div class="flex flex-col w-full">
@@ -239,7 +266,7 @@
               }
             </div>
           </div>
-          <div class="space-y-2">
+          <div class="border rounded-2xl px-4 py-2 space-y-2">
             <p class="text-sm font-bold">Atribuído a</p>
             <div class="flex justify-between gap-2 text-sm">
               <div class="flex flex-col w-full">
@@ -262,7 +289,7 @@
               }
             </div>
           </div>
-          <div class="space-y-2">
+          <div class="border rounded-2xl px-4 py-2 space-y-2">
             <p class="text-sm font-bold">Observadores</p>
             <div class="flex justify-between gap-2 text-sm">
               <div class="flex flex-col w-full">
@@ -290,25 +317,3 @@
     </div>
   </div>
 </div>
-@if (showLocationModal) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
-    <div class="bg-white p-6 rounded-3xl shadow-lg flex flex-col space-y-4">
-      <div class="space-y-2 flex-grow">
-        @for (location of locationHierarchy; track $index) {
-          <pre class="whitespace-pre font-robotoMono">{{ location }}</pre>
-        }
-      </div>
-      <div class="flex justify-end">
-        <button (click)="closeModal()" class="text-sm bg-blue-500 text-white px-4 py-2 rounded-full w-fit">Fechar</button>
-      </div>
-    </div>
-  </div> 
-}
-@if (isEditModalOpen) {
-  <phds-ticket-edit 
-  [ticket]="ticket" 
-  (closeModal)="closeEditModal()" 
-  (ticketUpdated)="updateTicket($event)">
-</phds-ticket-edit>
-
-}

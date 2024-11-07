@@ -301,4 +301,11 @@ export class TicketDetailsComponent implements OnInit {
   closeEditModal(): void {
     this.isEditModalOpen = false;
   }
+
+  get actors(): number {
+    const customersCount = this.ticket.customers ? this.ticket.customers.length : 0;
+    const assigneesCount = this.ticket.assignees ? this.ticket.assignees.length : 0;
+    const observersCount = this.ticket.observers ? this.ticket.observers.length : 0;
+    return customersCount + assigneesCount + observersCount;
+  }
 }

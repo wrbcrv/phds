@@ -13,8 +13,8 @@ export class UserService {
     private http: HttpClient
   ) { }
 
-  findAll(page: number, size: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?page=${page}&size=${size}`, {
+  findAll(page: number, size: number): Observable<{ items: any[], total: number }> {
+    return this.http.get<{ items: any[], total: number }>(`${this.apiUrl}?page=${page}&size=${size}`, {
       withCredentials: true
     });
   }
