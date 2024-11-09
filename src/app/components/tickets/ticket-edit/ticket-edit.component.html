@@ -52,7 +52,7 @@
         @for (agency of agencies; track $index) {
         <div (click)="!agency.isTopLevel ? selectAgency(agency.id, agency.name) : null"
           class="cursor-pointer px-4 py-2 hover:bg-gray-100"
-          [ngStyle]="{ 'padding-left': agency.level === 0 ? '16px' : (agency.level * 32) + 'px' }"
+          [ngStyle]="{ 'padding-left': agency.level === 0 ? '16px' : ((agency.level + 2) * 8) + 'px' }"
           [class.text-gray-500]="agency.isTopLevel" [class.bg-yellow-100]="agency.id === highlightedAgencyId"
           [class.bg-sky-100]="agency.id === selectedAgencyId">
           {{ agency.name }}
@@ -70,7 +70,7 @@
         type="text" 
         readonly 
         (click)="toggleDropdown('customer')" 
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"
+        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
         placeholder="Selecione" 
         [value]="displayedUserNames['customer']" 
       />
@@ -112,7 +112,7 @@
         type="text" 
         readonly 
         (click)="toggleDropdown('assignee')" 
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"
+        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
         placeholder="Selecione" 
         [value]="displayedUserNames['assignee']" 
       />
@@ -154,7 +154,7 @@
         type="text" 
         readonly 
         (click)="toggleDropdown('observer')" 
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"
+        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
         placeholder="Selecione" 
         [value]="displayedUserNames['observer']" 
       />

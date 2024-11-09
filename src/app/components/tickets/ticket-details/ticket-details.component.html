@@ -1,17 +1,3 @@
-@if (showLocationModal) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
-    <div class="bg-white p-6 rounded-3xl shadow-lg flex flex-col space-y-4">
-      <div class="space-y-2 flex-grow">
-        @for (location of locationHierarchy; track $index) {
-          <pre class="whitespace-pre font-robotoMono">{{ location }}</pre>
-        }
-      </div>
-      <div class="flex justify-end">
-        <button (click)="closeModal()" class="text-sm bg-blue-500 text-white px-4 py-2 rounded-full w-fit">Fechar</button>
-      </div>
-    </div>
-  </div> 
-}
 @if (isEditModalOpen) {
   <phds-ticket-edit 
     [ticket]="ticket" 
@@ -187,14 +173,14 @@
           [disabled]="!comment.trim()" 
           [ngClass]="{'text-black': comment.trim(), 'text-gray-400': !comment.trim()}" 
           class="w-14 h-14 ml-2 px-4 flex items-center justify-center bg-gray-100 rounded-2xl">
-          <i class="fa-solid fa-arrow-up text-lg"></i>
+          <i [ngClass]="editingComment ? 'fa-solid fa-check' :'fa-solid fa-arrow-up'" class="text-lg"></i>
         </button>
       </div>
     </div>
   </div>
-  <div class="bg-white p-2 min-w-[512px] rounded-3xl">
+  <div class="bg-white rounded-3xl p-2 min-w-[512px] overflow-y-auto">
     <div class="flex flex-col">
-      <div class="rounded-3xl mb-2">
+      <div>
         <div class="mb-1">
           <div class="border rounded-2xl px-4 py-2 flex justify-between items-center font-bold">
             <span class="text-sm">Informações do Chamado</span>
@@ -211,15 +197,40 @@
           </div>
           <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Status</p>
-            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ statusTranslationMap[ticket.status] }}</p>
+            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">
+              <span class="inline-block w-2 h-2 rounded-full mr-1"
+                  [ngClass]="{
+                    'bg-blue-400': ticket.status === 'Open',
+                    'bg-yellow-300': ticket.status === 'InProgress',
+                    'bg-green-500': ticket.status === 'Resolved',
+                    'bg-gray-400': ticket.status === 'Closed'
+                  }">
+              </span>
+              <span>{{ statusTranslationMap[ticket.status] }}</span>
+            </p>
           </div>
           <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Prioridade</p>
-            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ priorityTranslationMap[ticket.priority] }}</p>
+            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">
+              <span class="inline-block w-2 h-2 rounded-full mr-1"
+                  [ngClass]="{
+                    'bg-green-500': ticket.priority === 'Low',
+                    'bg-orange-400': ticket.priority === 'Medium',
+                    'bg-red-500': ticket.priority === 'High',
+                    'bg-red-700': ticket.priority === 'Urgent'
+                  }">
+                </span>
+              <span>{{ priorityTranslationMap[ticket.priority] }}</span>
+            </p>
           </div>
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
+          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center relative">
             <p class="text-sm font-bold">Localização</p>
             <p class="text-sm text-center px-3 py-1 rounded-2xl cursor-pointer max-w-72" (click)="openModal()">{{ getLastLocation(ticket.location) }}</p>
+            <div *ngIf="showLocationModal" #locationDropdown class="absolute top-full left-0  mt-1 border bg-white p-4 rounded-2xl shadow-lg w-full">
+              <div class="space-y-2">
+                <div *ngFor="let location of locationHierarchy; let i = index"><span class="whitespace-pre font-robotoMono text-xs">{{ location }}</span></div>
+              </div>
+            </div>
           </div>
           <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Data de Criação</p>
@@ -235,7 +246,7 @@
           </div>
         </div>
       </div>
-      <div class="">
+      <div>
         <div class="flex justify-between items-center border px-4 py-2 rounded-2xl mb-1">
           <span class="text-sm font-bold">Envolvidos</span>
           <span class="text-sm px-3 py-1">{{ actors }}</span>

@@ -3,7 +3,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-sidenav',
+  selector: 'phds-sidenav',
   standalone: true,
   imports: [
     CommonModule

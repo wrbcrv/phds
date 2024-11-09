@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -51,13 +51,16 @@ export class TicketDetailsComponent implements OnInit {
   ticket: any;
   userId: number | null = null;
 
+  @ViewChild('locationDropdown') locationDropdown: any;
+
   constructor(
     private authService: AuthService,
     private commentService: CommentService,
     private locationService: LocationService,
     private route: ActivatedRoute,
     private ticketService: TicketService,
-    private title: Title
+    private title: Title,
+    private elementRef: ElementRef
   ) { }
 
   ngOnInit(): void {
@@ -217,6 +220,13 @@ export class TicketDetailsComponent implements OnInit {
       this.locationHierarchy = this.getFullLocation(this.ticket.location).split(' > ');
       this.locationHierarchy = this.formatHierarchy(this.locationHierarchy);
       this.showLocationModal = true;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent): void {
+    if (this.locationDropdown && !this.locationDropdown.nativeElement.contains(event.target) && this.showLocationModal) {
+      this.closeModal();
     }
   }
 
