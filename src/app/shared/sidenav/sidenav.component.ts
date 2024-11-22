@@ -16,13 +16,13 @@ export class SidenavComponent implements OnInit {
     {
       label: 'Home',
       icon: '<i class="fa-solid fa-house"></i>',
-      url: '',
+      url: '/tickets',
       sub: null
     },
     {
       label: 'Chamados',
       icon: '<i class="fa-solid fa-circle-info"></i>',
-      url: '/chamados',
+      url: '/tickets',
       sub: [
         {
           label: 'Chamados Abertos',
@@ -30,7 +30,7 @@ export class SidenavComponent implements OnInit {
         },
         {
           label: 'Novo Chamado',
-          url: '/novo-chamado'
+          url: ''
         }
       ]
     },

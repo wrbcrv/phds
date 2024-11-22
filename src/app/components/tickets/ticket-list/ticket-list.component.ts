@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PAGE_SIZE_OPTIONS } from '../../../models/page-size.options';
 import { PRIORITY } from '../../../models/priority.options';
 import { STATUS } from '../../../models/status.options';
 import { AuthService } from '../../../services/auth.service';
+import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { SelectComponent } from '../../../shared/select/select.component';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
-import { LocationService } from '../../../services/location.service';
 
 @Component({
   selector: 'app-ticket-list',
@@ -43,14 +43,16 @@ export class TicketListComponent implements OnInit {
   currentUserId: number = 0;
   allSelected: boolean = false;
 
+  viewMode: 'grid' | 'list' = 'grid';
+
   constructor(
     private authService: AuthService,
     private ticketService: TicketService,
-    private locationService: LocationService,
-    private elementRef: ElementRef
+    private locationService: LocationService
   ) { }
 
   ngOnInit(): void {
+    this.getViewMode();
     this.authService.getUserInfo().subscribe(
       (user) => {
         this.currentUserId = user.id;
@@ -131,6 +133,18 @@ export class TicketListComponent implements OnInit {
       this.allSelected = false;
     } else {
       this.allSelected = this.tickets.every(t => t.selected);
+    }
+  }
+
+  setViewMode(mode: 'grid' | 'list'): void {
+    this.viewMode = mode;
+    localStorage.setItem('viewMode', mode);
+  }
+
+  getViewMode(): void {
+    const savedMode = localStorage.getItem('viewMode');
+    if (savedMode === 'grid' || savedMode === 'list') {
+      this.viewMode = savedMode as 'grid' | 'list';
     }
   }
 }

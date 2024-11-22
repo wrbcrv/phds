@@ -30,12 +30,12 @@
                     }
                     @if (activeMenuIndex === $index && !imageUrls[comment.id]) {
                       <div class="absolute top-[-5.625rem] right-0 bg-white shadow-sm rounded-2xl cursor-pointer text-sm w-44 z-10">
-                        <ul class="space-y-1 border p-1 rounded-2xl">
-                          <li (click)="editComment(comment); closeMenuAfterAction()" class="px-4 py-2 flex items-center">
+                        <ul class="border p-1 rounded-2xl">
+                          <li (click)="editComment(comment); closeMenuAfterAction()" class="px-4 py-2 flex items-center rounded-xl hover:bg-gray-100">
                             <i class="fa-solid fa-pen mr-3"></i>
                             <span>Editar</span>
                           </li>
-                          <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null; closeMenuAfterAction()" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white">
+                          <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null; closeMenuAfterAction()" [ngClass]="{'!text-red-200': !comment.canDelete}" class="px-4 py-2 flex items-center rounded-xl hover:bg-gray-100 text-red-500">
                             <i class="fa-solid fa-trash mr-3"></i>
                             <span>Cancelar envio</span>
                           </li>
@@ -53,12 +53,12 @@
                           <div (click)="toggleMenu($index)" class="cursor-pointer opacity-0 group-hover:opacity-100" [ngClass]="{'opacity-100': activeMenuIndex === $index}"><i [ngClass]="activeMenuIndex === $index ? 'fa-solid fa-chevron-circle-down' : 'fa-solid fa-chevron-circle-up'" class="text-md"></i></div>
                           @if (activeMenuIndex === $index) {
                             <div class="absolute top-[-5.625rem] right-0 bg-white shadow-sm rounded-2xl cursor-pointer text-sm w-44 z-10">
-                              <ul class="space-y-1 border p-1 rounded-2xl">
-                                <li (click)="editComment(comment); closeMenuAfterAction()" class="px-4 py-2 flex items-center">
+                              <ul class="border p-1 rounded-2xl">
+                                <li (click)="editComment(comment); closeMenuAfterAction()" class="px-4 py-2 rounded-xl hover:bg-gray-100 flex items-center">
                                   <i class="fa-solid fa-pen mr-3"></i>
                                   <span>Editar</span>
                                 </li>
-                                <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null; closeMenuAfterAction()" [ngClass]="{'opacity-50': !comment.canDelete}" class="px-4 py-2 flex items-center text-red-500 bg-white">
+                                <li (click)="comment.canDelete ? deleteComment(ticket.id, comment.id) : null; closeMenuAfterAction()" [ngClass]="{'!text-red-200': !comment.canDelete}" class="px-4 py-2 rounded-xl flex items-center text-red-500 bg-white">
                                   <i class="fa-solid fa-trash mr-3"></i>
                                   <span>Cancelar envio</span>
                                 </li>
@@ -83,7 +83,7 @@
                           @if (activeMenuIndex === $index) {
                             <div class="absolute top-[-3.375rem] left-0 bg-white shadow-sm rounded-2xl cursor-pointer text-smborder w-40 z-10">
                               <ul class="border p-1 rounded-2xl">
-                                <li class="px-4 py-2 flex items-center">
+                                <li class="px-4 py-2 rounded-xl hover:bg-gray-100 flex items-center">
                                   <i class="fa-regular fa-flag mr-3"></i>
                                   <span>Reportar</span>
                                 </li>
@@ -115,7 +115,7 @@
                     @if (activeMenuIndex === $index && !imageUrls[comment.id]) {
                       <div class="absolute top-[-3.375rem] left-0 bg-white shadow-sm rounded-2xl cursor-pointer text-smborder w-40 z-10">
                         <ul class="border p-1 rounded-2xl">
-                          <li class="px-4 py-2 flex items-center">
+                          <li class="px-4 py-2 rounded-xl hover:bg-gray-100 flex items-center">
                             <i class="fa-regular fa-flag mr-3"></i>
                             <span>Reportar</span>
                           </li>
@@ -182,7 +182,7 @@
     <div class="flex flex-col">
       <div>
         <div class="mb-1">
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center font-bold">
+          <div class="h-12 border rounded-2xl px-4 py-2 flex justify-between items-center font-bold">
             <span class="text-sm">Informações do Chamado</span>
             <div (click)="openEditModal()" class="bg-gray-100 flex items-center px-3 py-1 rounded-full cursor-pointer">
               <i class="fa-solid fa-pen text-xs mr-2"></i>
@@ -191,63 +191,61 @@
           </div>
         </div>
         <div class="space-y-1 mb-4">
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
+          <div class="h-12 border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Chamado</p>
             <p class="w-10 text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ ticket.id }}</p>
           </div>
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
+          <div class="h-12 border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Status</p>
-            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">
-              <span class="inline-block w-2 h-2 rounded-full mr-1"
-                  [ngClass]="{
-                    'bg-blue-400': ticket.status === 'Open',
-                    'bg-yellow-300': ticket.status === 'InProgress',
-                    'bg-green-500': ticket.status === 'Resolved',
-                    'bg-gray-400': ticket.status === 'Closed'
-                  }">
-              </span>
+            <p class="text-xs text-center px-3 py-1 rounded-full cursor-pointer"
+                [ngClass]="{
+                  'bg-blue-200 text-blue-800': ticket.status === 'Open',
+                  'bg-yellow-200 text-yellow-800': ticket.status === 'InProgress',
+                  'bg-green-200 text-green-800': ticket.status === 'Resolved',
+                  'bg-gray-200 text-gray-800': ticket.status === 'Closed'
+                }">
               <span>{{ statusTranslationMap[ticket.status] }}</span>
             </p>
           </div>
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
+          
+          <div class="h-12 border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Prioridade</p>
-            <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">
-              <span class="inline-block w-2 h-2 rounded-full mr-1"
-                  [ngClass]="{
-                    'bg-green-500': ticket.priority === 'Low',
-                    'bg-orange-400': ticket.priority === 'Medium',
-                    'bg-red-500': ticket.priority === 'High',
-                    'bg-red-700': ticket.priority === 'Urgent'
-                  }">
-                </span>
+            <p class="text-xs text-center px-3 py-1 rounded-full cursor-pointer"
+                [ngClass]="{
+                  'bg-green-200 text-green-800': ticket.priority === 'Low',
+                  'bg-orange-200 text-orange-800': ticket.priority === 'Medium',
+                  'bg-red-200 text-red-800': ticket.priority === 'High',
+                  'bg-red-300 text-red-800': ticket.priority === 'Urgent'
+                }">
               <span>{{ priorityTranslationMap[ticket.priority] }}</span>
             </p>
           </div>
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center relative">
+              
+          <div class="h-12 border rounded-2xl px-4 py-2 flex justify-between items-center relative">
             <p class="text-sm font-bold">Localização</p>
             <p class="text-sm text-center px-3 py-1 rounded-2xl cursor-pointer max-w-72" (click)="openModal()">{{ getLastLocation(ticket.location) }}</p>
-            <div *ngIf="showLocationModal" #locationDropdown class="absolute top-full left-0  mt-1 border bg-white p-4 rounded-2xl shadow-lg w-full">
+            <div *ngIf="showLocationModal" #locationDropdown class="absolute top-full left-0 mt-1 border bg-white p-4 rounded-2xl shadow-lg w-full">
               <div class="space-y-2">
                 <div *ngFor="let location of locationHierarchy; let i = index"><span class="whitespace-pre font-robotoMono text-xs">{{ location }}</span></div>
               </div>
             </div>
           </div>
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
+          <div class="h-12 border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Data de Criação</p>
             <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ ticket.createdAt }}</p>
           </div>
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
+          <div class="h-12 border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Última Atualização</p>
             <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ ticket.updatedAt }}</p>
           </div>
-          <div class="border rounded-2xl px-4 py-2 flex justify-between items-center">
+          <div class="h-12 border rounded-2xl px-4 py-2 flex justify-between items-center">
             <p class="text-sm font-bold">Categoria</p>
             <p class="text-sm text-center px-3 py-1 rounded-full cursor-pointer">{{ ticket.category }}</p>
           </div>
         </div>
       </div>
       <div>
-        <div class="flex justify-between items-center border px-4 py-2 rounded-2xl mb-1">
+        <div class="h-12 flex justify-between items-center border px-4 py-2 rounded-2xl mb-1">
           <span class="text-sm font-bold">Envolvidos</span>
           <span class="text-sm px-3 py-1">{{ actors }}</span>
         </div>
@@ -319,7 +317,7 @@
                 }
               </div>
               @if (!ticket.observers || ticket.observers.length === 0) {
-                <button (click)="assignCurrentUser(assignmentType.Observer)" class="self-start py-1"><i class="fa-solid fa-eye"></i></button>
+                <button (click)="assignCurrentUser(assignmentType.Observer)" class="self-start py-1"><i class="fa-solid fa-user"></i></button>
               }
             </div>
           </div>

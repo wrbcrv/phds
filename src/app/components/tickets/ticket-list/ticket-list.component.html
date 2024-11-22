@@ -1,90 +1,124 @@
-<div class="m-4 mt-0 ml-0">
+<div class="mt-0 ml-0 max-h-screen overflow-y-auto">
   <div class="mx-auto p-4">
-    <div class="flex justify-end items-center mb-4">
-      <div class="flex items-center gap-4 text-sm">
-        <phds-select 
-          [placeholder]="'Status'" 
-          [options]="statusOptions" 
-          [selectedValue]="selectedStatus" 
-          (valueChange)="onStatusChange($event)" 
-        />
-        <phds-select 
-          [placeholder]="'Prioridade'" 
-          [options]="priorityOptions" 
-          [selectedValue]="selectedPriority" 
-          (valueChange)="onPriorityChange($event)"
-        />
+    <div class="flex justify-between">
+      <div class="mb-4 flex justify-end space-x-2">
+        <button class="bg-gray-200 hover:bg-gray-300 text-sm w-8 h-8 py-2 px-4 rounded-full flex items-center justify-center" [ngClass]="{ 'bg-blue-200 text-blue-800': viewMode === 'grid' }" (click)="setViewMode('grid')"><i class="fa-solid fa-border-all"></i></button>
+        <button class="bg-gray-200 hover:bg-gray-300 text-sm w-8 h-8 py-2 px-4 rounded-full flex items-center justify-center" [ngClass]="{ 'bg-blue-200 text-blue-800': viewMode === 'list' }" (click)="setViewMode('list')"><i class="fas fa-list"></i></button>
       </div>
     </div>
-    <div class="overflow-x-auto border border-b-0 rounded-2xl rounded-b-none">
-      <table class="table-auto border-collapse overflow-hidden w-full rounded-t-xl">
-        <thead>
-          <tr class="h-10">
-            <th class="px-4 text-xs font-bold text-gray-600 text-left"><input type="checkbox" class="align-middle" (change)="toggleAll($event)"></th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap">Chamado</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left w-full">Assunto</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden md:table-cell">Criado em</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden md:table-cell">Status</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Prioridade</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden xl:table-cell">Localização</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden 2xl:table-cell">Cliente(s)</th>
-            <th class="px-4 text-xs font-bold text-gray-600 text-left whitespace-nowrap hidden 2xl:table-cell">Responsável(s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (ticket of tickets; track $index) {
-            <tr class="h-10 border-b border-t text-gray-800 cursor-pointer hover:bg-gray-100 group">
-              <td class="px-4 bg-gray-100 text-sm"><input type="checkbox" class="align-middle" [(ngModel)]="ticket.selected" (change)="onTicketSelect(ticket)"></td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap">{{ ticket.id }}</td>
-              <td class="px-4 bg-gray-100 text-sm flex-grow overflow-hidden">
-                <a class="truncate text-blue-900 font-semibold w-full" [routerLink]="['/ticket', ticket.id]">{{ ticket.subject }}</a>
-              </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden md:table-cell">{{ ticket.createdAt }}</td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden md:table-cell">
-                <span class="inline-block w-2 h-2 rounded-full mr-1"
-                  [ngClass]="{
-                    'bg-blue-400': ticket.status === 'Open',
-                    'bg-yellow-300': ticket.status === 'InProgress',
-                    'bg-green-500': ticket.status === 'Resolved',
-                    'bg-gray-400': ticket.status === 'Closed'
-                  }">
-                </span>
-                <span>{{ statusTranslationMap[ticket.status] }}</span>
-              </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell">
-                <span class="inline-block w-2 h-2 rounded-full mr-1"
-                  [ngClass]="{
-                    'bg-green-500': ticket.priority === 'Low',
-                    'bg-orange-400': ticket.priority === 'Medium',
-                    'bg-red-500': ticket.priority === 'High',
-                    'bg-red-700': ticket.priority === 'Urgent'
-                  }">
-                </span>
-                <span>{{ priorityTranslationMap[ticket.priority] }}</span>
-              </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden xl:table-cell text-ellipsis overflow-hidden">{{ getLastLocation(ticket.location) }}</td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden 2xl:table-cell">
-                <div class="flex items-center">
-                  <span>{{ ticket.customers[0]?.fullName }}</span>
-                  @if (ticket.customers.length > 1) {
-                    <span class="ml-2 text-blue-900 rounded-full text-xs font-bold font-robotoMono">+{{ ticket.customers.length - 1 }}</span>
-                  }
+    @if (viewMode === 'grid') {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        @for (ticket of tickets; track $index) {
+          <div class="bg-white border shadow-md rounded-3xl p-6 w-96- h-auto">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-md font-semibold text-gray-800 flex items-center">
+                <div title="{{ ticket.priority }}" class="w-3 h-3 rounded-full mr-2" [ngClass]="{
+                  'bg-green-500': ticket.priority === 'Low',
+                  'bg-yellow-500': ticket.priority === 'Medium',
+                  'bg-orange-500': ticket.priority === 'High',
+                  'bg-red-500': ticket.priority === 'Urgent'
+                }"></div> 
+                <span>Chamado #{{ ticket.id }}</span>
+              </h3>
+              <p class="text-xs text-gray-500">Aberto por</p>
+            </div>
+            <div class="mb-4">
+              <div class="text-xs text-gray-600 mb-3 truncate">
+                <span>{{ ticket.subject }}</span>
+              </div>
+              <div class="text-xs text-gray-600 space-y-2">
+                <div class="flex justify-between">
+                  <p><strong>Data de Abertura</strong></p>
+                  <p>{{ ticket.createdAt }}</p>
                 </div>
-              </td>
-              <td class="px-4 bg-gray-100 text-sm whitespace-nowrap hidden 2xl:table-cell">
-                <div class="flex items-center">
-                  <span>{{ ticket.assignees[0]?.fullName }}</span>
-                  @if (ticket.assignees.length > 1) {
-                    <span class="ml-2 text-blue-900 rounded-full text-xs font-bold">+{{ ticket.assignees.length - 1 }}</span>
-                  }
+                <div class="flex justify-between">
+                  <p><strong>Última atualização</strong></p>
+                  <p>{{ ticket.updatedAt }}</p>
                 </div>
-              </td>
+                <div class="flex justify-between">
+                  <p><strong>Responsável</strong></p>
+                  <p>{{ ticket.assignees.length > 0 ? ticket.assignees[0].fullName + (ticket.assignees.length > 1 ? ', +' + (ticket.assignees.length - 1) : '') : 'Nenhum usuário atribuído' }}</p>
+                </div>     
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <a routerLink="/ticket/{{ ticket.id }}" class="w-full text-center bg-blue-100 hover:bg-blue-200 text-xs text-blue-900 py-2 px-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Visualizar</a>
+              <a class="w-full text-center bg-green-100 hover:bg-green-200 text-xs text-green-900 py-2 px-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">Mensagem</a>
+            </div>
+          </div>
+        }
+      </div>
+    }
+    @else {
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm text-gray-600">
+          <thead>
+            <tr>
+              <th class="h-14 pl-4 w-10">
+                <div class="checkbox-wrapper">
+                  <input 
+                    type="checkbox" 
+                    [(ngModel)]="allSelected"
+                    (change)="toggleAll($event)"
+                    class="form-checkbox" 
+                  />              
+                </div>
+              </th>
+              <th class="h-14 px-4 text-left text-gray-800 w-20">ID</th>
+              <th class="h-14 px-4 text-left text-gray-800">Prioridade</th>
+              <th class="h-14 px-4 text-left text-gray-800">Assunto</th>
+              <th class="h-14 px-4 text-left text-gray-800">Data de Abertura</th>
+              <th class="h-14 px-4 text-left text-gray-800">Última Atualização</th>
+              <th class="h-14 px-4 text-left text-gray-800">Responsável</th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-    <div class="border border-t-0 rounded-2xl rounded-t-none overflow-hidden">
+          </thead>
+          <tbody class="divide-y divide-gray-200 text-sm">
+            @for (ticket of tickets; track $index) {
+              <tr>
+                <td class="h-[52px] pl-4 w-10">
+                  <div class="checkbox-wrapper">
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="ticket.selected"
+                      (change)="onTicketSelect(ticket)"
+                      class="form-checkbox"
+                    />
+                  </div>
+                </td>
+                <td class="h-[52px] px-4 w-20"><span class="text-gray-800">{{ ticket.id }}</span></td>
+                <td class="h-[52px] px-4 flex items-center space-x-2">
+                  <div
+                    title="{{ ticket.priority }}"
+                    class="w-2 h-2 rounded-full"
+                    [ngClass]="{
+                      'bg-green-500': ticket.priority === 'Low',
+                      'bg-yellow-500': ticket.priority === 'Medium',
+                      'bg-orange-500': ticket.priority === 'High',
+                      'bg-red-500': ticket.priority === 'Urgent'
+                    }"
+                  ></div>
+                  <span>{{ ticket.priority }}</span>
+                </td>
+                <td class="h-[52px] px-4 truncate max-w-xs" title="{{ ticket.subject }}">{{ ticket.subject }}</td>
+                <td class="h-[52px] px-4">{{ ticket.createdAt }}</td>
+                <td class="h-[52px] px-4">{{ ticket.updatedAt }}</td>
+                <td class="h-[52px] px-4">
+                  {{
+                    ticket.assignees.length > 0
+                      ? ticket.assignees[0].fullName +
+                        (ticket.assignees.length > 1
+                          ? ', +' + (ticket.assignees.length - 1)
+                          : '')
+                      : 'Nenhum usuário atribuído'
+                  }}
+                </td>           
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>    
+    }
+    <div>
       <phds-pagination
         [page]="page"
         [size]="size"

@@ -8,7 +8,7 @@ export const routes: Routes = [
   {
     path: '',
     component: LoginComponent,
-    title: 'Entrar • PHDS',
+    title: 'Entrar • PHDS'
   },
   {
     path: 'tickets',
@@ -20,5 +20,9 @@ export const routes: Routes = [
     component: TicketDetailsComponent,
     title: 'Detalhes do chamado • PHDS',
     resolve: { ticket: TicketResolver }
-  }
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
