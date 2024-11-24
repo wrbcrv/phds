@@ -6,8 +6,8 @@ namespace Api.DTOs
     public class AgencyHierarchyDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public AgencyHierarchyDTO Parent { get; set; }
+        public string? Name { get; set; }
+        public AgencyHierarchyDTO? Parent { get; set; }
         
         public static AgencyHierarchyDTO ValueOf(Agency agency)
         {

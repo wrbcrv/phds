@@ -5,8 +5,8 @@ namespace Api.DTOs
     public class UserAgencyResponseDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public UserAgencyResponseDTO Parent { get; set; }
+        public string? Name { get; set; }
+        public UserAgencyResponseDTO? Parent { get; set; }
 
         public static UserAgencyResponseDTO ValueOf(Agency agency, IEnumerable<Agency> allAgencies)
         {

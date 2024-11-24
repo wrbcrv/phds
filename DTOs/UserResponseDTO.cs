@@ -5,12 +5,12 @@ namespace Api.DTOs
     public class UserResponseDTO
     {
         public int Id { get; set; }
-        public string FullName { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
-        public AgencyHierarchyDTO Agency { get; set; }
-        public List<AssignedTicketResponseDTO> AssignedTickets { get; set; } = new List<AssignedTicketResponseDTO>();
+        public string? FullName { get; set; }
+        public string? Username { get; set; }
+        public string? Email { get; set; }
+        public string? Role { get; set; }
+        public AgencyHierarchyDTO? Agency { get; set; }
+        public List<AssignedTicketResponseDTO>? AssignedTickets { get; set; } = new List<AssignedTicketResponseDTO>();
 
         public static UserResponseDTO ValueOf(User user)
         {
