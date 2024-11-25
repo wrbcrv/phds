@@ -9,7 +9,6 @@ import { AuthService } from '../../../services/auth.service';
 import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
-import { SelectComponent } from '../../../shared/select/select.component';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
 
 @Component({
@@ -18,7 +17,6 @@ import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../share
   imports: [
     CommonModule,
     FormsModule,
-    SelectComponent,
     RouterModule,
     PaginationComponent
   ],

@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AutosizeModule } from 'ngx-autosize';
+import { AssignmentType } from '../../../models/assignment-type.enum';
 import { AuthService } from '../../../services/auth.service';
 import { CommentService } from '../../../services/comment.service';
 import { LocationService } from '../../../services/location.service';
 import { TicketService } from '../../../services/ticket.service';
 import { PRIORITY_TRANSLATION_MAP, STATUS_TRANSLATION_MAP } from '../../../shared/translations/translations';
-import { AssignmentType } from '../../../models/assignment-type.enum';
 import { TicketEditComponent } from '../ticket-edit/ticket-edit.component';
 
 @Component({
@@ -90,21 +90,6 @@ export class TicketDetailsComponent implements OnInit {
     });
   }
 
-  downloadCommentImages(): void {
-    if (this.ticket?.comments) {
-      this.ticket.comments.forEach((comment: any) => {
-        if (comment.id) {
-          this.commentService.downloadCommentFile(this.ticket.id, comment.id).subscribe({
-            next: (blob) => {
-              const objectUrl = URL.createObjectURL(blob);
-              this.imageUrls[comment.id] = objectUrl;
-            },
-          });
-        }
-      });
-    }
-  }
-
   editComment(comment: any): void {
     this.originalComment = comment.content;
     this.comment = comment.content;
@@ -179,7 +164,6 @@ export class TicketDetailsComponent implements OnInit {
           this.commentService.getCommentsByTicketId(this.ticket.id).subscribe({
             next: (comments) => {
               this.comments = comments;
-              this.downloadCommentImages();
             }
           });
         }
@@ -252,7 +236,6 @@ export class TicketDetailsComponent implements OnInit {
     this.filePreviews = [];
     this.editingComment = false;
     this.editingCommentId = null;
-    this.downloadCommentImages();
   }
 
   sendComment(): void {
@@ -263,7 +246,6 @@ export class TicketDetailsComponent implements OnInit {
           this.comment = '';
           this.selectedFiles = [];
           this.filePreviews = [];
-          this.downloadCommentImages();
         }
       });
     }

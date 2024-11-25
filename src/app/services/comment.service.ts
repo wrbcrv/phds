@@ -40,21 +40,4 @@ export class CommentService {
   deleteComment(ticketId: number | string, commentId: number | string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${ticketId}/comments/${commentId}`);
   }
-
-  downloadCommentFile(ticketId: number, commentId: number): Observable<Blob> {
-    return this.http.get<Blob>(`${this.apiUrl}/${ticketId}/comments/${commentId}/files/download`, {
-      responseType: 'blob' as 'json'
-    });
-  }
-
-  downloadFile(blob: Blob, fileName: string) {
-    const a = document.createElement('a');
-    const objectUrl = URL.createObjectURL(blob);
-    a.href = objectUrl;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(objectUrl);
-  }
 }
