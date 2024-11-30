@@ -185,7 +185,7 @@ export class TicketEditComponent implements OnInit {
 
   scrollToHighlightedAgency(): void {
     setTimeout(() => {
-      const highlightedElement = document.querySelector('.bg-yellow-100');
+      const highlightedElement = document.querySelector('.underline');
       if (highlightedElement) {
         highlightedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }

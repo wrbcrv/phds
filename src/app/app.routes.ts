@@ -8,21 +8,23 @@ export const routes: Routes = [
   {
     path: '',
     component: LoginComponent,
-    title: 'Entrar • PHDS'
+    title: 'Entrar - PHDS'
   },
   {
     path: 'tickets',
     component: TicketListComponent,
-    title: 'Chamados • PHDS'
+    title: 'Chamados - PHDS'
   },
   {
     path: 'ticket/:id',
     component: TicketDetailsComponent,
-    title: 'Detalhes do chamado • PHDS',
-    resolve: { ticket: TicketResolver }
+    title: 'Detalhes do chamado - PHDS',
+    resolve: {
+      ticket: TicketResolver
+    }
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: ''
   },
 ];

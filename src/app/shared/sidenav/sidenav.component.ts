@@ -30,10 +30,10 @@ export class SidenavComponent implements OnInit {
         },
         {
           label: 'Novo Chamado',
-          url: ''
+          url: '/ticket/create'
         }
       ]
-    },
+    }
   ];
 
   active: any = null;

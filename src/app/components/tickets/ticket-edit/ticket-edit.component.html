@@ -5,12 +5,12 @@
     <label for="status" class="text-sm font-medium text-gray-700 w-1/3">Status</label>
     <div class="relative w-2/3">
       <input id="status" type="text" readonly (click)="toggleDropdown('status')"
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"
+        class="w-full text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"
         placeholder="Selecione o status" [value]="displayedStatus" />
       @if (isStatusDropdownOpen) {
-      <div #statusDropdown class="absolute z-10 mt-1 w-full text-sm bg-white border rounded-2xl shadow-sm">
+      <div #statusDropdown class="absolute z-10 mt-1 w-full text-sm bg-white border border-gray-300 rounded-2xl shadow-sm">
         @for (option of STATUS; track $index) {
-        <div div (click)="selectValue('status', option.value)" class="cursor-pointer px-4 py-2 hover:bg-gray-100">{{
+        <div div (click)="selectValue('status', option.value)" class="cursor-pointer px-4 py-2 hover:underline">{{
           option.label }}</div>
         }
       </div>
@@ -21,12 +21,12 @@
     <label for="priority" class="text-sm font-medium text-gray-700 w-1/3">Prioridade</label>
     <div class="relative w-2/3">
       <input id="priority" type="text" readonly (click)="toggleDropdown('priority')"
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"
+        class="w-full text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"
         placeholder="Selecione a prioridade" [value]="displayedPriority" />
       @if (isPriorityDropdownOpen) {
-      <div #priorityDropdown class="absolute z-10 mt-1 w-full text-sm bg-white border rounded-2xl shadow-sm">
+      <div #priorityDropdown class="absolute z-10 mt-1 w-full text-sm bg-white border border-gray-300 rounded-2xl shadow-sm">
         @for (option of PRIORITY; track $index) {
-        <div (click)="selectValue('priority', option.value)" class="cursor-pointer px-4 py-2 hover:bg-gray-100">{{
+        <div (click)="selectValue('priority', option.value)" class="cursor-pointer px-4 py-2 hover:underline">{{
           option.label }}</div>
         }
       </div>
@@ -36,24 +36,19 @@
   <div class="mb-4 flex items-center">
     <label for="agency" class="text-sm font-medium text-gray-700 w-1/3">Agência</label>
     <div class="relative w-2/3">
-      <input id="agency" type="text" readonly (click)="toggleDropdown('agency')"
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer"
-        placeholder="Selecione a agência" [value]="displayedAgency" />
+      <input id="agency" type="text" readonly (click)="toggleDropdown('agency')" class="w-full text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700 cursor-pointer" placeholder="Selecione a agência" [value]="displayedAgency" />
       <div class="absolute w-full">
         @if (isAgencyDropdownOpen) {
-        <input type="text" class="w-full mt-1 text-sm border rounded-2xl px-4 py-2 text-gray-700"
-          placeholder="Pesquisar" [(ngModel)]="searchTerm" (input)="filterAgencies()"
-          (click)="$event.stopPropagation()" />
+        <input type="text" class="w-full mt-1 text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700" placeholder="Pesquisar" [(ngModel)]="searchTerm" (input)="filterAgencies()" (click)="$event.stopPropagation()" />
         }
       </div>
       @if (isAgencyDropdownOpen) {
-      <div
-        class="absolute z-10 mt-[46px] w-full max-h-52 text-sm bg-white border rounded-2xl shadow-sm overflow-y-auto">
+      <div class="absolute z-10 mt-[46px] w-full max-h-52 text-sm bg-white border border-gray-300 rounded-2xl shadow-sm overflow-y-auto">
         @for (agency of agencies; track $index) {
         <div (click)="!agency.isTopLevel ? selectAgency(agency.id, agency.name) : null"
-          class="cursor-pointer px-4 py-2 hover:bg-gray-100"
+          class="cursor-pointer px-4 py-2 hover:underline"
           [ngStyle]="{ 'padding-left': agency.level === 0 ? '16px' : ((agency.level + 2) * 8) + 'px' }"
-          [class.text-gray-500]="agency.isTopLevel" [class.bg-yellow-100]="agency.id === highlightedAgencyId"
+          [class.text-gray-500]="agency.isTopLevel" [class.underline]="agency.id === highlightedAgencyId"
           [class.bg-sky-100]="agency.id === selectedAgencyId">
           {{ agency.name }}
         </div>
@@ -70,7 +65,7 @@
         type="text" 
         readonly 
         (click)="toggleDropdown('customer')" 
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
+        class="w-full text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
         placeholder="Selecione" 
         [value]="displayedUserNames['customer']" 
       />
@@ -78,7 +73,7 @@
         <div class="absolute w-full z-20">
           <input 
             type="text" 
-            class="w-full mt-1 text-sm border rounded-2xl px-4 py-2 text-gray-700"
+            class="w-full mt-1 text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700"
             placeholder="Pesquisar" 
             [(ngModel)]="searchTerm" 
             (input)="filterUsers('customer')"
@@ -87,11 +82,11 @@
         </div>
       }
       @if (isDropdownOpen['customer']) {
-        <div class="absolute mt-[46px] w-full max-h-52 text-sm bg-white border rounded-2xl shadow-sm overflow-y-auto z-20">
+        <div class="absolute mt-[46px] w-full max-h-52 text-sm bg-white border border-gray-300 rounded-2xl shadow-sm overflow-y-auto z-20">
           @for (customer of filteredUsers['customer']; track $index) {
             <div  
               (click)="selectUser('customer', customer.id)" 
-              class="cursor-pointer flex justify-between items-center px-4 py-2 hover:bg-gray-100"
+              class="cursor-pointer flex justify-between items-center px-4 py-2 hover:underline"
               [class.bg-sky-100]="selectedUserIds['customer'].includes(customer.id)"
             >
               <span>{{ customer.fullName }}</span>
@@ -112,7 +107,7 @@
         type="text" 
         readonly 
         (click)="toggleDropdown('assignee')" 
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
+        class="w-full text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
         placeholder="Selecione" 
         [value]="displayedUserNames['assignee']" 
       />
@@ -120,7 +115,7 @@
         <div class="absolute w-full z-20">
           <input 
             type="text" 
-            class="w-full mt-1 text-sm border rounded-2xl px-4 py-2 text-gray-700"
+            class="w-full mt-1 text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700"
             placeholder="Pesquisar" 
             [(ngModel)]="searchTerm" 
             (input)="filterUsers('assignee')"
@@ -129,11 +124,11 @@
         </div>
       }
       @if (isDropdownOpen['assignee']) {
-        <div class="absolute mt-[46px] w-full max-h-52 text-sm bg-white border rounded-2xl shadow-sm overflow-y-auto z-20">
+        <div class="absolute mt-[46px] w-full max-h-52 text-sm bg-white border border-gray-300 rounded-2xl shadow-sm overflow-y-auto z-20">
           @for (assignee of filteredUsers['assignee']; track $index) {
             <div  
               (click)="selectUser('assignee', assignee.id)" 
-              class="cursor-pointer flex justify-between items-center px-4 py-2 hover:bg-gray-100"
+              class="cursor-pointer flex justify-between items-center px-4 py-2 hover:underline"
               [class.bg-sky-100]="selectedUserIds['assignee'].includes(assignee.id)"
             >
               <span>{{ assignee.fullName }}</span>
@@ -154,41 +149,38 @@
         type="text" 
         readonly 
         (click)="toggleDropdown('observer')" 
-        class="w-full text-sm border rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
+        class="w-full text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700 cursor-pointer truncate"
         placeholder="Selecione" 
         [value]="displayedUserNames['observer']" 
       />
-      <div *ngIf="isDropdownOpen['observer']" class="absolute w-full z-20">
-        <input 
-          type="text" 
-          class="w-full mt-1 text-sm border rounded-2xl px-4 py-2 text-gray-700"
-          placeholder="Pesquisar" 
-          [(ngModel)]="searchTerm" 
-          (input)="filterUsers('observer')"
-          (click)="$event.stopPropagation()" 
-        />
-      </div>
-      <div 
-        *ngIf="isDropdownOpen['observer']" 
-        class="absolute mt-[46px] w-full max-h-52 text-sm bg-white border rounded-2xl shadow-sm overflow-y-auto z-20"
-      >
-        <div 
-          *ngFor="let observer of filteredUsers['observer']" 
-          (click)="selectUser('observer', observer.id)" 
-          class="cursor-pointer flex justify-between items-center px-4 py-2 hover:bg-gray-100"
-          [class.bg-sky-100]="selectedUserIds['observer'].includes(observer.id)"
-        >
-          <span>{{ observer.fullName }}</span>
-          <span *ngIf="selectedUserIds['observer'].includes(observer.id)">
-            <i class="fa-solid fa-check"></i>
-          </span>
+      @if (isDropdownOpen['observer']) {
+        <div class="absolute w-full z-20">
+          <input 
+            type="text" 
+            class="w-full mt-1 text-sm border border-gray-300 rounded-2xl px-4 py-2 text-gray-700"
+            placeholder="Pesquisar" 
+            [(ngModel)]="searchTerm" 
+            (input)="filterUsers('observer')"
+            (click)="$event.stopPropagation()" 
+          />
         </div>
-      </div>
+      }
+      @if (isDropdownOpen['observer']) {
+        <div class="absolute mt-[46px] w-full max-h-52 text-sm bg-white border border-gray-300 rounded-2xl shadow-sm overflow-y-auto z-20">
+          @for (observer of filteredUsers['observer']; track $index) {
+            <div (click)="selectUser('observer', observer.id)" class="cursor-pointer flex justify-between items-center px-4 py-2 hover:underline" [class.bg-sky-100]="selectedUserIds['observer'].includes(observer.id)">
+              <span>{{ observer.fullName }}</span>
+              @if (selectedUserIds['observer'].includes(observer.id)) {
+                <span><i class="fa-solid fa-check"></i></span>
+              }
+            </div>
+          }
+        </div>
+      }
     </div>
   </div>  
   <div class="absolute bottom-0 left-0 w-full bg-white flex justify-end space-x-4 p-4 rounded-b-3xl shadow-sm text-sm">
     <button (click)="close()" class="w-24 px-4 py-2 text-black rounded-2xl hover:bg-gray-100">Cancelar</button>
-    <button (click)="updateTicket()"
-      class="w-24 px-4 py-2 bg-blue-500 text-white rounded-2xl hover:bg-blue-600">Salvar</button>
+    <button (click)="updateTicket()" class="w-24 px-4 py-2 bg-blue-500 text-white rounded-2xl hover:bg-blue-600">Salvar</button>
   </div>
 </div>

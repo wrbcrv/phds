@@ -32,7 +32,6 @@ export class LoginComponent {
       },
       (err) => {
         this.errorMessage = err.error; 
-        console.log(err);
         setTimeout(() => {
           this.errorMessage = null;
         }, 5000);
