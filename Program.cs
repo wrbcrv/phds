@@ -70,7 +70,6 @@ builder.Services.AddScoped<IAgencyRepository, AgencyRepository>();
 builder.Services.AddScoped<IAgencyService, AgencyService>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();

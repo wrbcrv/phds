@@ -2,7 +2,6 @@ using Api.DTOs;
 using Api.Models;
 using Api.Repositories.Interfaces;
 using Api.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Services
 {
@@ -12,20 +11,17 @@ namespace Api.Services
         private readonly ICommentRepository _commentRepository;
         private readonly IUserRepository _userRepository;
         private readonly INotificationService _notificationService;
-        private readonly IFileUploadService _fileUploadService;
 
         public CommentService(
             ITicketRepository ticketRepository,
             ICommentRepository commentRepository,
             IUserRepository userRepository,
-            INotificationService notificationService,
-            IFileUploadService fileUploadService)
+            INotificationService notificationService)
         {
             _ticketRepository = ticketRepository;
             _commentRepository = commentRepository;
             _userRepository = userRepository;
             _notificationService = notificationService;
-            _fileUploadService = fileUploadService;
         }
 
         public async Task<IEnumerable<CommentResponseDTO>> GetCommentsByTicketIdAsync(int ticketId)
@@ -58,21 +54,6 @@ namespace Api.Services
             };
 
             ticket.UpdatedAt = DateTime.UtcNow;
-
-            if (files != null && files.Any())
-            {
-                foreach (var file in files)
-                {
-                    var filePath = await _fileUploadService.UploadFileAsync(file, "uploads/comments");
-                    var commentFile = new CommentFile
-                    {
-                        FilePath = filePath,
-                        FileName = file.FileName,
-                        Comment = comment
-                    };
-                    comment.Files.Add(commentFile);
-                }
-            }
 
             await _commentRepository.AddCommentAsync(comment);
             await _notificationService.Notify(ticket, author, content);
@@ -120,29 +101,6 @@ namespace Api.Services
             ticket.UpdatedAt = DateTime.UtcNow;
 
             await _commentRepository.DeleteCommentAsync(commentId);
-        }
-
-        public async Task<FileResult> DownloadCommentFileAsync(int ticketId, int commentId)
-        {
-            var ticket = await _ticketRepository.GetByIdAsync(ticketId);
-            if (ticket == null)
-            {
-                throw new KeyNotFoundException("Ticket não encontrado.");
-            }
-
-            var comment = await _commentRepository.GetCommentByIdAsync(commentId);
-            if (comment == null || comment.TicketId != ticketId)
-            {
-                throw new KeyNotFoundException("Comentário não encontrado ou não pertence ao ticket informado.");
-            }
-
-            var commentFile = comment.Files.FirstOrDefault();
-            if (commentFile == null)
-            {
-                throw new InvalidOperationException("Nenhum arquivo associado ao comentário.");
-            }
-
-            return await _fileUploadService.DownloadFileAsync(commentFile.FilePath);
         }
     }
 }

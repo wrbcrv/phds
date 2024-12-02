@@ -14,5 +14,6 @@ namespace Api.Services.Interfaces
         Task<UserResponseDTO> FindByEmailAsync(string email);
         Task<UserResponseDTO> FindByUsernameAndPasswordAsync(string username, string password);
         Task<List<UserResponseDTO>> FindByFullNameAsync(string fullName);
+        Task<List<AssignedTicketResponseDTO>> GetAssignedTicketsAsync(int userId);
     }
 }

@@ -116,5 +116,22 @@ namespace Api.Services
 
             return null;
         }
+
+        /// <summary>
+        /// Retorna os chamados atribuídos a um usuário específico.
+        /// </summary>
+        /// <param name="userId">ID do usuário.</param>
+        /// <returns>Lista de DTOs de chamados atribuídos.</returns>
+        public async Task<List<AssignedTicketResponseDTO>> GetAssignedTicketsAsync(int userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new Exception("Usuário não encontrado.");
+            }
+
+            return user.AssignedTickets?.Select(AssignedTicketResponseDTO.FromTicket).ToList() ?? [];
+        }
     }
 }

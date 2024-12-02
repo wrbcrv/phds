@@ -109,20 +109,5 @@ namespace Api.Controller
                 return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
             }
         }
-
-        [HttpGet("{commentId}/files/download")]
-        [Authorize(Roles = "Administrator, Agent, Client")]
-        public async Task<IActionResult> DownloadCommentFile(int ticketId, int commentId)
-        {
-            try
-            {
-                var fileResult = await _commentService.DownloadCommentFileAsync(ticketId, commentId);
-                return fileResult;
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
     }
 }

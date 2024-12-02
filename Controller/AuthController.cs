@@ -23,7 +23,7 @@ namespace Api.Controller
                 var user = await _userService.FindByUsernameAndPasswordAsync(loginDTO.Username, loginDTO.Password);
                 if (user == null)
                 {
-                    return Unauthorized("Usuário ou senha incorretos.");
+                    return Unauthorized("Nome de usuário ou senha foram digitados incorretamente.");
                 }
 
                 var token = _jwtService.GenerateJwt(user);
@@ -131,6 +131,22 @@ namespace Api.Controller
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("assigned-tickets")]
+        [Authorize(Roles = "Administrator, Agent, Client")]
+        public async Task<IActionResult> GetAssignedTickets()
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var assignedTickets = await _userService.GetAssignedTicketsAsync(userId);
+                return Ok(assignedTickets);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
             }
         }
     }
